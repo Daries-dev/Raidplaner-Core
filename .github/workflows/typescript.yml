@@ -53,7 +53,7 @@ jobs:
         node-version: "18"
         cache: "npm"
     - run: npm install
-    - run: rm -r files_wcf/js/Daries/RP/
+    - run: rm -r files/js/Daries/RP/
     - run: |
         npx tsc
     - run: echo "::add-matcher::.github/diff.json"

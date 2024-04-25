@@ -4,7 +4,7 @@
     "target": "ES2022",
     "module": "amd",
     "rootDir": "ts/",
-    "outDir": "files_wcf/js/",
+    "outDir": "files/js/",
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
     "strictNullChecks": true,
     "moduleResolution": "node",
