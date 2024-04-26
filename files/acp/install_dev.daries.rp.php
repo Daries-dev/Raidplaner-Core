@@ -43,6 +43,6 @@ $sql = "UPDATE  wcf1_option
 $statement = WCF::getDB()->prepare($sql);
 $statement->execute([
     $gameID,
-    'rp_default_game_id',
+    'rp_current_game_id',
 ]);
 OptionEditor::resetCache();

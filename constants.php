@@ -13,4 +13,4 @@ define('RP_DIR', '');
 define('RELATIVE_RP_DIR', '');
 
 // option constants
-\define('RP_DEFAULT_GAME_ID', 0);
+\define('RP_CURRENT_GAME_ID', 0);

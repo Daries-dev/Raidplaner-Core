@@ -15,8 +15,8 @@
         <category name="wcf.acp.option">
             <item name="wcf.acp.option.category.rp"><![CDATA[Raidplaner]]></item>
             <item name="wcf.acp.option.category.rp.settings"><![CDATA[Einstellungen]]></item>
-            <item name="wcf.acp.option.rp_default_game_id"><![CDATA[Standard Spiel]]></item>
-            <item name="wcf.acp.option.rp_default_game_id.description"><![CDATA[{if LANGUAGE_USE_INFORMAL_VARIANT}Gebe{else}Geben Sie{/if} das Standard Spiel für den Raidplaner an.]]></item>
+            <item name="wcf.acp.option.rp_current_game_id"><![CDATA[Aktuelles Spiel]]></item>
+            <item name="wcf.acp.option.rp_current_game_id.description"><![CDATA[{if LANGUAGE_USE_INFORMAL_VARIANT}Lege{else}Legen Sie{/if} das Aktuelle Spiel für den Raidplaner fest.]]></item>
         </category>
 
         <category name="wcf.acp.pip">
