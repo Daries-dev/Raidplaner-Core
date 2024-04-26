@@ -27,4 +27,12 @@ final class Game extends DatabaseObject implements ITitledObject
     {
         return WCF::getLanguage()->get($this->title);
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function __toString(): string
+    {
+        return $this->getTitle();
+    }
 }

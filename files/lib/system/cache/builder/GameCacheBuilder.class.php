@@ -2,8 +2,9 @@
 
 namespace rp\system\cache\builder;
 
-use rp\data\game\GameList;
+use rp\data\game\Game;
 use wcf\system\cache\builder\AbstractCacheBuilder;
+use wcf\system\WCF;
 
 /**
  * Caches game information.
@@ -19,8 +20,23 @@ final class GameCacheBuilder extends AbstractCacheBuilder
      */
     public function rebuild(array $parameters): array
     {
-        $gameList = new GameList();
-        $gameList->readObjects();
-        return $gameList->getObjects();
+        $data = [
+            'games' => [],
+            'identifier' => [],
+        ];
+
+        // get games
+        $sql = "SELECT  *
+                FROM    rp1_game";
+        $statement = WCF::getDB()->prepare($sql);
+        $statement->execute();
+
+        /** @var Game $object */
+        while ($object = $statement->fetchObject(Game::class)) {
+            $data['games'][$object->gameID] = $object;
+            $data['identifier'][$object->identifier] = $object->gameID;
+        }
+
+        return $data;
     }
 }
