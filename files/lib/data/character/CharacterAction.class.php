@@ -49,7 +49,7 @@ class CharacterAction extends AbstractDatabaseObjectAction
             if (RequestHandler::getInstance()->isACPRequest()) {
                 $characterList = new CharacterList();
                 $characterList->getConditionBuilder()->add('userID = ?', [$this->parameters['data']['userID']]);
-                // TODO gameID
+                $characterList->getConditionBuilder()->add('gameID = ?', [RP_DEFAULT_GAME_ID]);
                 $characterList->getConditionBuilder()->add('isPrimary = ?', [1]);
                 $this->parameters['data']['isPrimary'] = \intval($characterList->countObjects() === 0);
             } else {
