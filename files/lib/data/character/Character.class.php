@@ -4,6 +4,8 @@ namespace rp\data\character;
 
 use wcf\data\DatabaseObject;
 use wcf\system\request\IRouteController;
+use wcf\system\request\LinkHandler;
+use wcf\system\WCF;
 
 /**
  * Represents a character.
@@ -30,8 +32,63 @@ final class Character extends DatabaseObject implements IRouteController
     /**
      * @inheritDoc
      */
+    protected static $databaseTableName = 'member';
+
+    /**
+     * Returns the character with the given character name.
+     */
+    public static function getCharacterByCharacterName(string $name): Character
+    {
+        $sql = "SELECT  *
+                FROM    rp1_member
+                WHERE   characterName = ?
+                    AND gameID = ?";
+        $statement = WCF::getDB()->prepare($sql);
+        $statement->execute([
+            $name,
+            RP_CURRENT_GAME_ID,
+        ]);
+        $row = $statement->fetchArray();
+        if (!$row) $row = [];
+
+        return new self(null, $row);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getLink(): string
+    {
+        return LinkHandler::getInstance()->getLink('Character', [
+            'application' => 'rp',
+            'forceFrontend' => true,
+            'object' => $this
+        ]);
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getTitle(): string
     {
         return $this->characterName;
+    }
+
+    protected function handleData($data): void
+    {
+        parent::handleData($data);
+
+        // unserialize additional data
+        $this->data['additionalData'] = (empty($data['additionalData']) ? [] : @\unserialize($data['additionalData']));
+    }
+
+    public function __get($name): mixed
+    {
+        $value = parent::__get($name);
+
+        // treat additional data as data variables if it is an array
+        $value ??= $this->data['additionalData'][$name] ?? null;
+
+        return $value;
     }
 }

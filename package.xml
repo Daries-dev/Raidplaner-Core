@@ -28,6 +28,7 @@
 		<instruction type="file" />
 		<instruction type="file" application="wcf">files_wcf.tar</instruction>
 		<instruction type="language" />
+		<instruction type="acpTemplate" />
 		<instruction type="database">acp/database/install_dev.daries.rp.php</instruction>
 		<instruction type="packageInstallationPlugin" />
 		<instruction type="userGroupOption" />

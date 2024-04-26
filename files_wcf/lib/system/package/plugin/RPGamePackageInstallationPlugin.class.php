@@ -155,10 +155,7 @@ final class RPGamePackageInstallationPlugin extends AbstractXMLPackageInstallati
             }
 
             // <title> can occur multiple times using the `language` attribute
-            if (!isset($elements['title'])) {
-                $elements['title'] = [];
-            }
-
+            $elements['title'] ??= [];
             $elements['title'][$element->getAttribute('language')] = $element->nodeValue;
         } else {
             $elements[$element->tagName] = $nodeValue;

@@ -3,16 +3,27 @@
     xsi:schemaLocation="http://www.woltlab.com http://www.woltlab.com/XSD/6.0/language.xsd"
     languagecode="de" languagename="Deutsch">
     <import>
-        <category name="rp.game">
-            <item name="rp.game.title"><![CDATA[Spiele]]></item>
-        </category>
-
         <category name="rp.acp.menu">
             <item name="rp.acp.menu.link.character"><![CDATA[Charakter]]></item>
             <item name="rp.acp.menu.link.character.add"><![CDATA[Charakter hinzufügen]]></item>
             <item name="rp.acp.menu.link.character.list"><![CDATA[Charaktere]]></item>
             <item name="rp.acp.menu.link.character.search"><![CDATA[Charakter suchen]]></item>
             <item name="rp.acp.menu.link.rp"><![CDATA[Raidplaner]]></item>
+        </category>
+
+        <category name="rp.character">
+            <item name="rp.character.add"><![CDATA[Charakter hinzufügen]]></item>
+            <item name="rp.character.category.character"><![CDATA[Charakter]]></item>
+            <item name="rp.character.characterName"><![CDATA[Charaktername]]></item>
+            <item name="rp.character.characterName.error.notUnique"><![CDATA[Dieser Charaktername ist bereits vergeben.]]></item>
+            <item name="rp.character.edit"><![CDATA[Charakter bearbeiten]]></item>
+            <item name="rp.character.guildName"><![CDATA[Gilde]]></item>
+            <item name="rp.character.list"><![CDATA[Charaktere]]></item>
+            <item name="rp.character.notes"><![CDATA[Notizen]]></item>
+        </category>
+
+        <category name="rp.game">
+            <item name="rp.game.title"><![CDATA[Spiele]]></item>
         </category>
 
         <category name="wcf.acp.group">
