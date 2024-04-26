@@ -12,6 +12,13 @@
             <item name="wcf.acp.group.option.category.admin.rp"><![CDATA[Raidplaner]]></item>
         </category>
 
+        <category name="wcf.acp.option">
+            <item name="wcf.acp.option.category.rp"><![CDATA[Raidplaner]]></item>
+            <item name="wcf.acp.option.category.rp.settings"><![CDATA[Settings]]></item>
+            <item name="wcf.acp.option.rp_default_game_id"><![CDATA[Default Game]]></item>
+            <item name="wcf.acp.option.rp_default_game_id.description"><![CDATA[Set the default game for the raid planner.]]></item>
+        </category>
+
         <category name="wcf.acp.pip">
             <item name="wcf.acp.pip.rpGame.identifier"><![CDATA[Game Identifier]]></item>
             <item name="wcf.acp.pip.rpGame.identifier.description"><![CDATA[The game identifier is used to update games and for game-related language item names. The identifier consists of least four segments separated by dots. Each segment must not be empty and may only contain the following characters: <kbd>[A-z0-9-_]</kbd>. In general, the first part of the game identifier is the package identifier. Example: <kbd>dev.daries.rp.game.foobar</kbd>]]></item>
