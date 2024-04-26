@@ -3,5 +3,16 @@
     xsi:schemaLocation="http://www.woltlab.com http://www.woltlab.com/XSD/6.0/language.xsd"
     languagecode="en" languagename="English">
     <import>
+        <category name="rp.game">
+            <item name="rp.game.title"><![CDATA[Games]]></item>
+        </category>
+
+        <category name="wcf.acp.pip">
+            <item name="wcf.acp.pip.rpGame.identifier"><![CDATA[Game Identifier]]></item>
+            <item name="wcf.acp.pip.rpGame.identifier.description"><![CDATA[The game identifier is used to update games and for game-related language item names. The identifier consists of least four segments separated by dots. Each segment must not be empty and may only contain the following characters: <kbd>[A-z0-9-_]</kbd>. In general, the first part of the game identifier is the package identifier. Example: <kbd>dev.daries.rp.game.foobar</kbd>]]></item>
+            <item name="wcf.acp.pip.rpGame.identifier.error.notUnique"><![CDATA[This identifier is already used by another game.]]></item>
+            <item name="wcf.acp.pip.rpGame.identifier.error.tooFewSegments"><![CDATA[This game identifier only contains {#$segmentCount} segment{if $segmentCount > 1}s{/if}.]]></item>
+            <item name="wcf.acp.pip.rpGame.info"><![CDATA[The <kbd>rpGame</kbd> package installation plugin installs new games.]]></item>
+        </category>
     </import>
 </language>

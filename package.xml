@@ -3,7 +3,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.woltlab.com http://www.woltlab.com/XSD/6.0/package.xsd">
 	<packageinformation>
-		<packagename>Raidplaner</packagename>
+		<packagename>Raidplaner: Core</packagename>
 		<packagedescription></packagedescription>
 		<isapplication>1</isapplication>
 		<applicationdirectory>rp</applicationdirectory>
@@ -27,5 +27,9 @@
 	<instructions type="install">
 		<instruction type="file" />
 		<instruction type="file" application="wcf">files_wcf.tar</instruction>
+		<instruction type="language" />
+		<instruction type="database">acp/database/install_dev.daries.rp.php</instruction>
+		<instruction type="packageInstallationPlugin" />
+		<instruction type="script">acp/install_dev.daries.rp.php</instruction>
 	</instructions>
 </package>
