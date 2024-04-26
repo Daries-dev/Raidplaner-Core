@@ -7,9 +7,22 @@
             <item name="rp.game.title"><![CDATA[Games]]></item>
         </category>
 
+        <category name="rp.acp.menu">
+            <item name="rp.acp.menu.link.character"><![CDATA[Character]]></item>
+            <item name="rp.acp.menu.link.character.add"><![CDATA[Add Character]]></item>
+            <item name="rp.acp.menu.link.character.list"><![CDATA[Characters]]></item>
+            <item name="rp.acp.menu.link.rp"><![CDATA[Raidplaner]]></item>
+            <item name="rp.acp.menu.link.character.search"><![CDATA[Search Characters]]></item>
+        </category>
+
         <category name="wcf.acp.group">
+            <item name="wcf.acp.group.option.admin.rp.canAddCharacter"><![CDATA[Can create characters]]></item>
+            <item name="wcf.acp.group.option.admin.rp.canDeleteCharacter"><![CDATA[Can delete characters]]></item>
+            <item name="wcf.acp.group.option.admin.rp.canEditCharacter"><![CDATA[Can edit characters]]></item>
             <item name="wcf.acp.group.option.admin.rp.canManageGame"><![CDATA[[Can manage game]]></item>
+            <item name="wcf.acp.group.option.admin.rp.canSearchCharacter"><![CDATA[Can search characters]]></item>
             <item name="wcf.acp.group.option.category.admin.rp"><![CDATA[Raidplaner]]></item>
+            <item name="wcf.acp.group.option.category.admin.rp.character"><![CDATA[Character]]></item>
         </category>
 
         <category name="wcf.acp.option">
