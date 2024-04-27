@@ -2,6 +2,21 @@
 <data xmlns="http://www.woltlab.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.woltlab.com http://www.woltlab.com/XSD/6.0/objectType.xsd">
     <import>
+        <!-- character search conditions -->
+        <type>
+            <name>dev.daries.rp.characterID</name>
+            <definitionname>dev.daries.rp.condition.characterSearch</definitionname>
+            <classname>rp\system\condition\character\CharacterIDCondition</classname>
+            <conditiongroup>general</conditiongroup>
+        </type>
+        <type>
+            <name>dev.daries.rp.characterName</name>
+            <definitionname>dev.daries.rp.condition.characterSearch</definitionname>
+            <classname>rp\system\condition\character\CharacterNameCondition</classname>
+            <conditiongroup>general</conditiongroup>
+        </type>
+        <!-- /character search conditions -->
+
         <!-- clipboard items -->
         <type>
             <name>dev.daries.rp.character</name>

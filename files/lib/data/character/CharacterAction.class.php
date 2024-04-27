@@ -2,8 +2,12 @@
 
 namespace rp\data\character;
 
+use rp\system\character\event\BeforeFindCharacters;
 use wcf\data\AbstractDatabaseObjectAction;
+use wcf\data\ISearchAction;
 use wcf\system\clipboard\ClipboardHandler;
+use wcf\system\event\EventHandler;
+use wcf\system\exception\UserInputException;
 use wcf\system\request\RequestHandler;
 use wcf\system\user\storage\UserStorageHandler;
 use wcf\system\WCF;
@@ -18,8 +22,13 @@ use wcf\system\WCF;
  * @method  CharacterEditor[]    getObjects()
  * @method  CharacterEditor  getSingleObject()
  */
-class CharacterAction extends AbstractDatabaseObjectAction
+class CharacterAction extends AbstractDatabaseObjectAction implements ISearchAction
 {
+    /**
+     * @inheritDoc
+     */
+    protected $allowGuestAccess = ['getSearchResultList'];
+
     /**
      * @inheritDoc
      */
@@ -100,6 +109,40 @@ class CharacterAction extends AbstractDatabaseObjectAction
         $this->unmarkItems();
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function getSearchResultList(): array
+    {
+        $searchString = $this->parameters['data']['searchString'];
+        $excludedSearchValues = $this->parameters['data']['excludedSearchValues'] ?? [];
+        $list = [];
+
+        // find characters
+        $searchString = \addcslashes($searchString, '_%');
+
+        $event = new BeforeFindCharacters($searchString);
+        EventHandler::getInstance()->fire($event);
+
+        $characterProfileList = new CharacterProfileList();
+        $characterProfileList->getConditionBuilder()->add("characterName LIKE ?", [$event->getSearchString() . '%']);
+        if (!empty($excludedSearchValues)) {
+            $characterProfileList->getConditionBuilder()->add("characterName NOT IN (?)", [$excludedSearchValues]);
+        }
+        $characterProfileList->sqlLimit = 10;
+        $characterProfileList->readObjects();
+
+        foreach ($characterProfileList as $characterProfile) {
+            $list[] = [
+                'icon' => '', // TODO ICON
+                'label' => $characterProfile->characterName,
+                'objectID' => $characterProfile->characterID,
+            ];
+        }
+
+        return $list;
+    }
+
     protected function unmarkItems(?array $characterIDs = null): void
     {
         $characterIDs ??= $this->getObjectIDs();
@@ -143,6 +186,18 @@ class CharacterAction extends AbstractDatabaseObjectAction
 
         if (empty($this->objects)) {
             $this->readObjects();
+        }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function validateGetSearchResultList(): void
+    {
+        $this->readString('searchString', false, 'data');
+
+        if (isset($this->parameters['data']['excludedSearchValues']) && !\is_array($this->parameters['data']['excludedSearchValues'])) {
+            throw new UserInputException('excludedSearchValues');
         }
     }
 }

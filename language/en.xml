@@ -4,6 +4,7 @@
     languagecode="en" languagename="English">
     <import>
         <category name="rp.acp.character">
+            <item name="rp.acp.character.condition.conditionGroup.general"><![CDATA[General]]></item>
             <item name="rp.acp.character.disable"><![CDATA[Disable]]></item>
             <item name="rp.acp.character.enable"><![CDATA[Enable]]></item>
             <item name="rp.acp.character.isDisabled"><![CDATA[Character is deactivated]]></item>
@@ -26,6 +27,7 @@
             <item name="rp.character.add"><![CDATA[Add Character]]></item>
             <item name="rp.character.category.character"><![CDATA[Character]]></item>
             <item name="rp.character.characterName"><![CDATA[Charactername]]></item>
+            <item name="rp.character.characterID"><![CDATA[Character ID]]></item>
             <item name="rp.character.characterName.error.notUnique"><![CDATA[This charactername is already in use.]]></item>
             <item name="rp.character.created"><![CDATA[Created]]></item>
             <item name="rp.character.edit"><![CDATA[Edit Character]]></item>
