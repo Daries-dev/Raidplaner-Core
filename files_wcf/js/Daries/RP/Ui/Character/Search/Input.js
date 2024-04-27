@@ -15,7 +15,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
         constructor(element, options) {
             options = Core.extend({
                 ajax: {
-                    className: "rp\\data\\character\\CharacterAction",
+                    className: "rp\\data\\character\\CharacterAction", //TODO className missing in UISearchInput
                 },
             }, options);
             super(element, options);
