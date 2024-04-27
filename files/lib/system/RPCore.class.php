@@ -4,6 +4,9 @@ namespace rp\system;
 
 use wcf\system\application\AbstractApplication;
 
+// define current raidplaner version
+\define('RP_VERSION', '1.0.0 dev 1');
+
 /**
  * This class extends the main WCF class by raidplaner specific functions.
  * 
