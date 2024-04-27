@@ -3,8 +3,10 @@
 namespace rp\data\character;
 
 use wcf\data\AbstractDatabaseObjectAction;
+use wcf\system\clipboard\ClipboardHandler;
 use wcf\system\request\RequestHandler;
 use wcf\system\user\storage\UserStorageHandler;
+use wcf\system\WCF;
 
 /**
  * Executes character related actions.
@@ -71,6 +73,46 @@ class CharacterAction extends AbstractDatabaseObjectAction
     }
 
     /**
+     * Disables characters.
+     */
+    public function disable(): void
+    {
+        foreach ($this->getObjects() as $character) {
+            $character->update([
+                'isDisabled' => 1
+            ]);
+        }
+
+        $this->unmarkItems();
+    }
+
+    /**
+     * Enables characters.
+     */
+    public function enable(): void
+    {
+        foreach ($this->getObjects() as $character) {
+            $character->update([
+                'isDisabled' => 0
+            ]);
+        }
+
+        $this->unmarkItems();
+    }
+
+    protected function unmarkItems(?array $characterIDs = null): void
+    {
+        $characterIDs ??= $this->getObjectIDs();
+
+        if (!empty($characterIDs)) {
+            ClipboardHandler::getInstance()->unmark(
+                $characterIDs,
+                ClipboardHandler::getInstance()->getObjectTypeID('dev.daries.rp.character')
+            );
+        }
+    }
+
+    /**
      * @inheritDoc
      */
     public function update(): void
@@ -82,5 +124,25 @@ class CharacterAction extends AbstractDatabaseObjectAction
         }
 
         parent::update();
+    }
+
+    /**
+     * Validates the disable action.
+     */
+    public function validateDisable()
+    {
+        $this->validateEnable();
+    }
+
+    /**
+     * Validates the enable action.
+     */
+    public function validateEnable(): void
+    {
+        WCF::getSession()->checkPermissions(['admin.rp.canEnableCharacter']);
+
+        if (empty($this->objects)) {
+            $this->readObjects();
+        }
     }
 }

@@ -2,9 +2,11 @@
 
 namespace rp\data\character;
 
+use rp\system\cache\runtime\CharacterProfileRuntimeCache;
 use wcf\data\DatabaseObject;
 use wcf\system\request\IRouteController;
 use wcf\system\request\LinkHandler;
+use wcf\system\user\storage\UserStorageHandler;
 use wcf\system\WCF;
 
 /**
@@ -64,6 +66,37 @@ final class Character extends DatabaseObject implements IRouteController
             'forceFrontend' => true,
             'object' => $this
         ]);
+    }
+
+    public function getPrimaryCharacter(): ?CharacterProfile
+    {
+        if ($this->isPrimary || !$this->userID) {
+            return new CharacterProfile($this);
+        } else {
+            $characterPrimaryIDs = UserStorageHandler::getInstance()->getField('characterPrimaryIDs', $this->userID);
+
+            // cache does not exist or is outdated
+            if ($characterPrimaryIDs === null) {
+                $sql = "SELECT  gameID, characterID
+                        FROM    rp" . WCF_N . "_member
+                        WHERE   userID = ?
+                            AND isPrimary = ?";
+                $statement = WCF::getDB()->prepareStatement($sql);
+                $statement->execute([$this->userID, 1]);
+                $characterPrimaryIDs = $statement->fetchMap('gameID', 'characterID');
+
+                // update storage characterPrimaryIDs
+                UserStorageHandler::getInstance()->update(
+                    $this->userID,
+                    'characterPrimaryIDs',
+                    \serialize($characterPrimaryIDs)
+                );
+            } else {
+                $characterPrimaryIDs = \unserialize($characterPrimaryIDs);
+            }
+
+            return CharacterProfileRuntimeCache::getInstance()->getObject($characterPrimaryIDs[$this->gameID]);
+        }
     }
 
     /**

@@ -5,6 +5,7 @@ namespace rp\acp\page;
 use rp\data\character\CharacterProfileList;
 use wcf\http\Helper;
 use wcf\page\SortablePage;
+use wcf\system\clipboard\ClipboardHandler;
 use wcf\system\database\util\PreparedStatementConditionBuilder;
 use wcf\system\exception\IllegalLinkException;
 use wcf\system\WCF;
@@ -72,6 +73,7 @@ final class CharacterListPage extends SortablePage
         parent::assignVariables();
 
         WCF::getTPL()->assign([
+            'hasMarkedItems' => ClipboardHandler::getInstance()->hasMarkedItems(ClipboardHandler::getInstance()->getObjectTypeID('dev.daries.rp.character')),
             'searchID' => $this->searchID,
         ]);
     }

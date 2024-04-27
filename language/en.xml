@@ -62,5 +62,13 @@
             <item name="wcf.acp.pip.rpGame.identifier.error.tooFewSegments"><![CDATA[This game identifier only contains {#$segmentCount} segment{if $segmentCount > 1}s{/if}.]]></item>
             <item name="wcf.acp.pip.rpGame.info"><![CDATA[The <kbd>rpGame</kbd> package installation plugin installs new games.]]></item>
         </category>
+        
+        <category name="wcf.clipboard">
+            <item name="wcf.clipboard.label.dev.daries.rp.character.marked"><![CDATA[{if $count == 1}One{else}{#$count}{/if} character{if $count != 1}s{/if}]]></item>
+            <item name="wcf.clipboard.item.dev.daries.rp.character.delete"><![CDATA[Delete ({#$count})]]></item>
+            <item name="wcf.clipboard.item.dev.daries.rp.character.delete.confirmMessage"><![CDATA[Do you really want to delete {if $count == 1}an{else}{#$count}{/if} character{if $count != 1}s{/if}?]]></item>
+            <item name="wcf.clipboard.item.dev.daries.rp.character.disable"><![CDATA[Disable ({#$count})]]></item>
+            <item name="wcf.clipboard.item.dev.daries.rp.character.enable"><![CDATA[Enable ({#$count})]]></item>
+        </category>
     </import>
 </language>

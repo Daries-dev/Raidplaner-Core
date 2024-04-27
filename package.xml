@@ -33,6 +33,8 @@
 		<instruction type="packageInstallationPlugin" />
 		<instruction type="userGroupOption" />
 		<instruction type="option" />
+		<instruction type="clipboardAction" />
+		<instruction type="objectType" />
 		<instruction type="acpMenu" />
 		<instruction type="script" run="standalone">acp/install_dev.daries.rp.php</instruction>
 	</instructions>

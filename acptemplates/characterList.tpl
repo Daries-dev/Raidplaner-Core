@@ -129,8 +129,7 @@
                                     {if $__wcf->session->getPermission('admin.rp.canDeleteCharacter')}
                                         <li class="dropdownDivider"></li>
                                         <li>
-                                            <a href="#" class="jsDelete"
-                                                data-confirm-message="{lang __encode=true objectTitle=$character->characterName}wcf.button.delete.confirmMessage{/lang}">
+                                            <a href="#" class="jsDelete" data-character-name="{$character->getTitle()}">
                                                 {lang}wcf.global.button.delete{/lang}
                                             </a>
                                         </li>
@@ -165,7 +164,7 @@
 
                             <span class="characterStatusIcons">
                                 {if $character->isDisabled}
-                                    <span class="jsTooltip jsCharacterDisabled" title="{lang}rp.acp.character.isDisabled{/lang}">
+                                    <span class="jsTooltip jsCharacterIsDisabled" title="{lang}rp.acp.character.isDisabled{/lang}">
                                         {icon name='power-off'}
                                     </span>
                                 {/if}
@@ -207,6 +206,18 @@
         </nav>
         {/hascontent}
     </footer>
+
+    <script data-relocate="true">
+        require(['WoltLabSuite/Core/Controller/Clipboard', 'Daries/RP/Acp/Ui/Character/Editor'], (
+            ControllerClipboard, { AcpUiCharacterEditor }) => {
+            ControllerClipboard.setup({
+                pageClassName: 'rp\\acp\\page\\CharacterListPage',
+                hasMarkedItems: {if $hasMarkedItems}true{else}false{/if},
+            });
+
+            new AcpUiCharacterEditor();
+        });
+    </script>
 {else}
     <woltlab-core-notice type="info">{lang}wcf.global.noItems{/lang}</woltlab-core-notice>
 {/if}
