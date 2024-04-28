@@ -151,7 +151,7 @@ final class RPGamePackageInstallationPlugin extends AbstractXMLPackageInstallati
 
         if ($element->tagName === 'title') {
             if (empty($element->getAttribute('language'))) {
-                throw new SystemException("Missing required attribute 'language' for game '" . $element->parentNode->getAttribute('identifier') . "'");
+                throw new SystemException("Missing required attribute 'language' for game '" . $element->parentNode->getAttribute('identifier') . "'.");
             }
 
             // <title> can occur multiple times using the `language` attribute
