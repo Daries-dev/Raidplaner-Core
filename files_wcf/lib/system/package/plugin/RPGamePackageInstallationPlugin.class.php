@@ -109,6 +109,15 @@ final class RPGamePackageInstallationPlugin extends AbstractXMLPackageInstallati
             $data['title'][$title->getAttribute('language')] = $title->nodeValue;
         }
 
+        if ($saveData) {
+            $titles = [];
+            foreach ($data['title'] as $languageID => $title) {
+                $titles[LanguageFactory::getInstance()->getLanguage($languageID)->languageCode] = $title;
+            }
+
+            $data['title'] = $titles;
+        }
+
         return $data;
     }
 
