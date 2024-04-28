@@ -64,7 +64,8 @@ final class RPGamePackageInstallationPlugin extends AbstractXMLPackageInstallati
                 ->required()
                 ->addValidator(FormFieldValidatorUtil::getDotSeparatedStringValidator(
                     'wcf.acp.pip.rpGame.identifier',
-                    4
+                    1,
+                    1
                 ))
                 ->addValidator(new FormFieldValidator('uniqueness', function (TextFormField $formField) {
                     if (

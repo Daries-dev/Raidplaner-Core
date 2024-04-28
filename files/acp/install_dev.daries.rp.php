@@ -12,8 +12,8 @@ $sql = "INSERT INTO rp1_game
         VALUES      (?, ?, ?)";
 $statement = WCF::getDB()->prepare($sql);
 $statement->execute([
-    'dev.daries.rp.game.default',
-    'rp.game.dev.daries.rp.game.default',
+    'default',
+    'rp.game.default',
     PackageCache::getInstance()->getPackageByIdentifier('dev.daries.rp')->packageID,
 ]);
 $gameID = WCF::getDB()->getInsertID('rp1_game', 'gameID');
@@ -35,7 +35,7 @@ foreach ($titles as $languageCode => $value) {
 
     LanguageItemEditor::create([
         'languageID' => $language->languageID,
-        'languageItem' => 'rp.game.dev.daries.rp.game.default',
+        'languageItem' => 'rp.game.default',
         'languageItemValue' => $value,
         'languageCategoryID' => $languageCategoryID,
         'packageID' => PackageCache::getInstance()->getPackageByIdentifier('dev.daries.rp')->packageID,
