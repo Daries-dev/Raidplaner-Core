@@ -25,19 +25,19 @@
 	</excludedpackages>
 
 	<instructions type="install">
-		<instruction type="file" />
 		<instruction type="file" application="wcf">files_wcf.tar</instruction>
-		<instruction type="language" />
-		<instruction type="acpTemplate" />
-		<instruction type="template" />
+		<instruction type="file" />
 		<instruction type="database">acp/database/install_dev.daries.rp.php</instruction>
-		<instruction type="packageInstallationPlugin" />
 		<instruction type="userGroupOption" />
+		<instruction type="template" />
+		<instruction type="acpTemplate" />
 		<instruction type="option" />
-		<instruction type="clipboardAction" />
+		<instruction type="language" />
 		<instruction type="objectTypeDefinition" />
 		<instruction type="objectType" />
+		<instruction type="clipboardAction" />
+		<instruction type="packageInstallationPlugin" />
 		<instruction type="acpMenu" />
-		<instruction type="script" run="standalone">acp/install_dev.daries.rp.php</instruction>
+		<instruction type="script">acp/install_dev.daries.rp.php</instruction>
 	</instructions>
 </package>

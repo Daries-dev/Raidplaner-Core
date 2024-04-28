@@ -25,13 +25,19 @@ $titles = [
 
 foreach ($titles as $languageCode => $value) {
     $language = LanguageFactory::getInstance()->getLanguageByCode($languageCode);
-    $languageCategory = LanguageFactory::getInstance()->getCategory('rp.game');
+
+    $sql = "SELECT  languageCategoryID
+            FROM    wcf1_language_category
+            WHERE   languageCategory = ?";
+    $statement = WCF::getDB()->prepare($sql, 1);
+    $statement->execute(['rp.game']);
+    $languageCategoryID = $statement->fetchSingleColumn();
 
     LanguageItemEditor::create([
         'languageID' => $language->languageID,
         'languageItem' => 'rp.game.dev.daries.rp.game.default',
         'languageItemValue' => $value,
-        'languageCategoryID' => $languageCategory->languageCategoryID,
+        'languageCategoryID' => $languageCategoryID,
         'packageID' => PackageCache::getInstance()->getPackageByIdentifier('dev.daries.rp')->packageID,
     ]);
 }
