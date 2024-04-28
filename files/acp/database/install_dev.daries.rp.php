@@ -19,8 +19,35 @@ use wcf\system\database\table\DatabaseTable;
 use wcf\system\database\table\index\DatabaseTableForeignKey;
 use wcf\system\database\table\index\DatabaseTableIndex;
 use wcf\system\database\table\index\DatabaseTablePrimaryIndex;
+use wcf\system\database\table\PartialDatabaseTable;
 
 return [
+    DatabaseTable::create('rp1_faction')
+        ->columns([
+            ObjectIdDatabaseTableColumn::create('factionID'),
+            NotNullInt10DatabaseTableColumn::create('gameID'),
+            NotNullVarchar255DatabaseTableColumn::create('identifier'),
+            NotNullVarchar255DatabaseTableColumn::create('title'),
+            NotNullVarchar255DatabaseTableColumn::create('icon')
+                ->defaultValue(''),
+            DefaultFalseBooleanDatabaseTableColumn::create('isDisabled'),
+            NotNullInt10DatabaseTableColumn::create('packageID'),
+        ])
+        ->indices([
+            DatabaseTablePrimaryIndex::create()
+                ->columns(['factionID']),
+            DatabaseTableIndex::create('identifier_gameID')
+                ->columns(['identifier', 'gameID'])
+                ->type(DatabaseTableIndex::UNIQUE_TYPE),
+        ])
+        ->foreignKeys([
+            DatabaseTableForeignKey::create()
+                ->columns(['packageID'])
+                ->referencedTable('wcf1_package')
+                ->referencedColumns(['packageID'])
+                ->onDelete('CASCADE'),
+        ]),
+
     DatabaseTable::create('rp1_game')
         ->columns([
             ObjectIdDatabaseTableColumn::create('gameID'),
@@ -40,6 +67,14 @@ return [
                 ->columns(['packageID'])
                 ->referencedTable('wcf1_package')
                 ->referencedColumns(['packageID'])
+                ->onDelete('CASCADE'),
+        ]),
+    PartialDatabaseTable::create('rp1_faction')
+        ->foreignKeys([
+            DatabaseTableForeignKey::create()
+                ->columns(['gameID'])
+                ->referencedTable('rp1_game')
+                ->referencedColumns(['gameID'])
                 ->onDelete('CASCADE'),
         ]),
 
