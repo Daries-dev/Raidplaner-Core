@@ -15,7 +15,7 @@ use wcf\system\form\builder\container\TabFormContainer;
 final class CharacterAddGeneralTab implements IEvent
 {
     public function __construct(
-        public readonly TabFormContainer $generalSection
+        public readonly TabFormContainer $characterGeneralTab
     ) {
     }
 }
