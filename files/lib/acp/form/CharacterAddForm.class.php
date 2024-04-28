@@ -4,7 +4,7 @@ namespace rp\acp\form;
 
 use rp\data\character\Character;
 use rp\data\character\CharacterAction;
-use rp\system\character\event\CharacterAddGeneralTab;
+use rp\system\character\event\CharacterAddCreateForm;
 use wcf\form\AbstractForm;
 use wcf\form\AbstractFormBuilderForm;
 use wcf\system\event\EventHandler;
@@ -120,10 +120,6 @@ class CharacterAddForm extends AbstractFormBuilderForm
             ->appendChild(FormContainer::create('characterGeneralSection'));
         $characterTab->appendChild($characterGeneralTab);
 
-        EventHandler::getInstance()->fire(
-            new CharacterAddGeneralTab($characterGeneralTab)
-        );
-
         $this->form->getDataHandler()->addProcessor(
             new CustomFormDataProcessor(
                 'customs',
@@ -137,6 +133,10 @@ class CharacterAddForm extends AbstractFormBuilderForm
                     return $parameters;
                 }
             )
+        );
+
+        EventHandler::getInstance()->fire(
+            new CharacterAddCreateForm($this->form)
         );
     }
 

@@ -63,7 +63,7 @@
 
         <category name="wcf.acp.pip">
             <item name="wcf.acp.pip.rpFaction.game"><![CDATA[Spiel]]></item>
-            <item name="wcf.acp.pip.rpFaction.game.description"><![CDATA[Diese Fraction gehört zum ausgewähltem Spiel.]]></item>
+            <item name="wcf.acp.pip.rpFaction.game.description"><![CDATA[Diese Faction gehört zum ausgewähltem Spiel.]]></item>
             <item name="wcf.acp.pip.rpFaction.icon"><![CDATA[Icon]]></item>
             <item name="wcf.acp.pip.rpFaction.icon.description"><![CDATA[Der angegebene Icon muss sich im <kbd>images/gameIdentifier/</kbd> der Endanwendung befinden.<br>Erlaubte Dateiendung: png]]></item>
             <item name="wcf.acp.pip.rpFaction.identifier"><![CDATA[Bezeichner der Fraktion]]></item>
