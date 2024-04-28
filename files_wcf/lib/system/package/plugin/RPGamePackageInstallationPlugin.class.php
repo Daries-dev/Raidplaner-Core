@@ -16,6 +16,7 @@ use wcf\system\form\builder\field\validation\FormFieldValidator;
 use wcf\system\form\builder\field\validation\FormFieldValidatorUtil;
 use wcf\system\form\builder\IFormDocument;
 use wcf\system\language\LanguageFactory;
+use wcf\system\Regex;
 use wcf\system\WCF;
 
 /**
@@ -62,11 +63,18 @@ final class RPGamePackageInstallationPlugin extends AbstractXMLPackageInstallati
                 ->label('wcf.acp.pip.rpGame.identifier')
                 ->description('wcf.acp.pip.rpGame.identifier.description')
                 ->required()
-                ->addValidator(FormFieldValidatorUtil::getDotSeparatedStringValidator(
-                    'wcf.acp.pip.rpGame.identifier',
-                    1,
-                    1
-                ))
+                ->addValidator(new FormFieldValidator('regex', function (TextFormField $formField) {
+                    $regex = Regex::compile('^[A-z0-9\-\_]+$');
+
+                    if (!$regex->match($formField->getSaveValue())) {
+                        $formField->addValidationError(
+                            new FormFieldValidationError(
+                                'invalid',
+                                'wcf.acp.pip.rpGame.identifier.error.invalid'
+                            )
+                        );
+                    }
+                }))
                 ->addValidator(new FormFieldValidator('uniqueness', function (TextFormField $formField) {
                     if (
                         $formField->getDocument()->getFormMode() === IFormDocument::FORM_MODE_CREATE
@@ -107,7 +115,7 @@ final class RPGamePackageInstallationPlugin extends AbstractXMLPackageInstallati
 
         /** @var \DOMElement $title */
         foreach ($element->getElementsByTagName('title') as $title) {
-            $data['title'][$title->getAttribute('language')] = $title->nodeValue;
+            $data['title'][LanguageFactory::getInstance()->getLanguageByCode($title->getAttribute('language'))->languageID] = $title->nodeValue;
         }
 
         if ($saveData) {
