@@ -172,6 +172,10 @@ class CharacterAddForm extends AbstractFormBuilderForm
             }
         }
 
+        if (!isset($characterData['userID']) || $characterData['userID'] === 0) {
+            $characterData['userID'] = null;
+        }
+
         $characterData['additionalData'] = @\serialize($formData['data']);
         unset($formData['data']);
 
