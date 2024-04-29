@@ -1,8 +1,8 @@
 <?php
 
-namespace rp\data\faction;
+namespace rp\data\race;
 
-use rp\system\cache\builder\FactionCacheBuilder;
+use rp\system\cache\builder\RaceCacheBuilder;
 use wcf\data\DatabaseObjectEditor;
 use wcf\data\IEditableCachedObject;
 use wcf\data\language\category\LanguageCategory;
@@ -11,45 +11,45 @@ use wcf\system\language\LanguageFactory;
 use wcf\system\WCF;
 
 /**
- * Provides functions to edit faction.
+ * Provides functions to edit race.
  * 
  * @author  Marco Daries
  * @copyright   2023-2024 Daries.dev
  * @license Free License <https://daries.dev/en/license-for-free-plugins>
  * 
- * @method  Faction     getDecoratedObject()
- * @mixin   Faction
+ * @method  Race        getDecoratedObject()
+ * @mixin   Race
  */
-class FactionEditor extends DatabaseObjectEditor implements IEditableCachedObject
+class RaceEditor extends DatabaseObjectEditor implements IEditableCachedObject
 {
     /**
      * @inheritDoc
      */
-    protected static $baseClass = Faction::class;
+    protected static $baseClass = Race::class;
 
     /**
      * @inheritDoc
      */
-    public static function create(array $parameters = []): Faction
+    public static function create(array $parameters = []): Race
     {
-        $title = '';
+        $titles = '';
         if (\is_array($parameters['title'])) {
-            $title = $parameters['title'];
+            $titles = $parameters['title'];
             $parameters['title'] = '';
         }
 
-        /** @var Faction $faction */
-        $faction = parent::create($parameters);
+        /** @var Race $race */
+        $race = parent::create($parameters);
 
-        // save faction title
+        // save race title
         if (!empty($titles)) {
-            $factionEditor = new self($faction);
-            $factionEditor->saveTitles($titles);
-            $faction = new static::$baseClass($faction->factionID);
+            $raceEditor = new self($race);
+            $raceEditor->saveTitles($titles);
+            $race = new static::$baseClass($race->raceID);
         }
 
         /** @noinspection PhpIncompatibleReturnTypeInspection */
-        return $faction;
+        return $race;
     }
 
     /**
@@ -57,11 +57,11 @@ class FactionEditor extends DatabaseObjectEditor implements IEditableCachedObjec
      */
     public static function resetCache(): void
     {
-        FactionCacheBuilder::getInstance()->reset();
+        RaceCacheBuilder::getInstance()->reset();
     }
 
     /**
-     * Saves the titles of the faction in language items.
+     * Saves the titles of the race in language items.
      */
     protected function saveTitles(array $titles): void
     {
@@ -91,7 +91,7 @@ class FactionEditor extends DatabaseObjectEditor implements IEditableCachedObjec
             $languages->readObjects();
         } else {
             $languages = LanguageFactory::getInstance()->getLanguages();
-            $languageCategory = LanguageFactory::getInstance()->getCategory('rp.faction');
+            $languageCategory = LanguageFactory::getInstance()->getCategory('rp.race');
         }
 
         // save new titles
@@ -107,15 +107,15 @@ class FactionEditor extends DatabaseObjectEditor implements IEditableCachedObjec
 
             $statement->execute([
                 $language->languageID,
-                'rp.faction.' . $this->identifier,
+                'rp.race.' . $this->identifier,
                 $value,
                 $languageCategory->languageCategoryID,
                 $this->packageID,
             ]);
         }
 
-        // update faction
-        $this->update(['title' => 'rp.faction.' . $this->identifier]);
+        // update race
+        $this->update(['title' => 'rp.race.' . $this->identifier]);
     }
 
     /**
@@ -135,7 +135,7 @@ class FactionEditor extends DatabaseObjectEditor implements IEditableCachedObjec
 
         parent::update($parameters);
 
-        // save faction title
+        // save race title
         if (!empty($titles)) {
             $this->saveTitles($titles);
         }

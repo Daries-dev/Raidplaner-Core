@@ -48,6 +48,7 @@ class GameEditor extends DatabaseObjectEditor implements IEditableCachedObject
         if (!empty($titles)) {
             $gameEditor = new self($game);
             $gameEditor->saveTitles($titles);
+            $game = new static::$baseClass($game->gameID);
         }
 
         /** @noinspection PhpIncompatibleReturnTypeInspection */
@@ -129,10 +130,7 @@ class GameEditor extends DatabaseObjectEditor implements IEditableCachedObject
         $statement = WCF::getDB()->prepare($sql);
 
         foreach ($languages as $language) {
-            $value = $defaultValue;
-            if (isset($titles[$language->languageCode])) {
-                $value = $titles[$language->languageCode];
-            }
+            $value = $titles[$language->languageCode] ?? $defaultValue;
 
             $statement->execute([
                 $language->languageID,

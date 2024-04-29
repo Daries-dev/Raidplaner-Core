@@ -43,6 +43,10 @@
         <category name="rp.game">
             <item name="rp.game.title"><![CDATA[Games]]></item>
         </category>
+    
+        <category name="rp.race">
+            <item name="rp.race.title"><![CDATA[Race]]></item>
+        </category>
 
         <category name="wcf.acp.group">
             <item name="wcf.acp.group.option.admin.rp.canAddCharacter"><![CDATA[Can create characters]]></item>

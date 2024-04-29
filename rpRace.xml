@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="http://www.woltlab.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.woltlab.com http://www.woltlab.com/XSD/6.0/rPRace.xsd">
+	<import>
+		<race identifier="test9">
+			<game>swtor</game>
+			<title language="de">test</title>
+			<title language="en">test</title>
+			<factions>
+				<faction>test</faction>
+			</factions>
+		</race>
+		<race identifier="test10">
+			<game>swtor</game>
+			<title language="en">Test</title>
+			<title language="de">Test</title>
+			<factions>
+				<faction>imperial</faction>
+			</factions>
+		</race>
+	</import>
+</data>

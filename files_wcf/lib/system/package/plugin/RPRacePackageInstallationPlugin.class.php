@@ -2,14 +2,18 @@
 
 namespace wcf\system\package\plugin;
 
-use rp\data\faction\FactionEditor;
-use rp\data\faction\FactionList;
 use rp\data\game\GameCache;
+use rp\data\race\Race;
+use rp\data\race\RaceEditor;
+use rp\data\race\RaceList;
+use wcf\data\IStorableObject;
+use wcf\system\database\util\PreparedStatementConditionBuilder;
 use wcf\system\devtools\pip\IDevtoolsPipEntryList;
 use wcf\system\devtools\pip\IGuiPackageInstallationPlugin;
 use wcf\system\devtools\pip\TXmlGuiPackageInstallationPlugin;
 use wcf\system\exception\SystemException;
 use wcf\system\form\builder\container\FormContainer;
+use wcf\system\form\builder\field\ItemListFormField;
 use wcf\system\form\builder\field\SingleSelectionFormField;
 use wcf\system\form\builder\field\TextFormField;
 use wcf\system\form\builder\field\TitleFormField;
@@ -21,13 +25,13 @@ use wcf\system\Regex;
 use wcf\system\WCF;
 
 /**
- * Installs, updates and deletes factions.
+ * Installs, updates and deletes races.
  * 
  * @author  Marco Daries
  * @copyright   2023-2024 Daries.dev
  * @license Free License <https://daries.dev/en/license-for-free-plugins>
  */
-final class RPFactionPackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin implements
+final class RPRacePackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin implements
     IGuiPackageInstallationPlugin,
     IUniqueNameXMLPackageInstallationPlugin
 {
@@ -41,17 +45,29 @@ final class RPFactionPackageInstallationPlugin extends AbstractXMLPackageInstall
     /**
      * @inheritDoc
      */
-    public $className = FactionEditor::class;
+    public $className = RaceEditor::class;
+
+    /**
+     * list of factions per race id
+     * @var string[]
+     */
+    public array $factions = [];
+
+    /**
+     * list of created or updated races by id
+     * @var RaceEditor[]
+     */
+    protected array $races = [];
 
     /**
      * @inheritDoc
      */
-    public $tableName = 'faction';
+    public $tableName = 'race';
 
     /**
      * @inheritDoc
      */
-    public $tagName = 'faction';
+    public $tagName = 'race';
 
     /**
      * @inheritDoc
@@ -63,8 +79,8 @@ final class RPFactionPackageInstallationPlugin extends AbstractXMLPackageInstall
 
         $dataContainer->appendChildren([
             TextFormField::create('identifier')
-                ->label('wcf.acp.pip.rpFaction.identifier')
-                ->description('wcf.acp.pip.rpFaction.identifier.description')
+                ->label('wcf.acp.pip.rpRace.identifier')
+                ->description('wcf.acp.pip.rpRace.identifier.description')
                 ->required()
                 ->addValidator(new FormFieldValidator('regex', function (TextFormField $formField) {
                     $regex = Regex::compile('^[A-z0-9\-\_]+$');
@@ -73,7 +89,7 @@ final class RPFactionPackageInstallationPlugin extends AbstractXMLPackageInstall
                         $formField->addValidationError(
                             new FormFieldValidationError(
                                 'invalid',
-                                'wcf.acp.pip.rpFaction.identifier.error.invalid'
+                                'wcf.acp.pip.rpRace.identifier.error.invalid'
                             )
                         );
                     }
@@ -87,15 +103,15 @@ final class RPFactionPackageInstallationPlugin extends AbstractXMLPackageInstall
                         $gameFormField = $formField->getDocument()->getNodeById('game');
                         $gameID = GameCache::getInstance()->getGameByIdentifier($gameFormField->getSaveValue())->gameID;
 
-                        $factionList = new FactionList();
-                        $factionList->getConditionBuilder()->add('identifier = ?', [$formField->getValue()]);
-                        $factionList->getConditionBuilder()->add('gameID = ?', [$gameID]);
+                        $raceList = new RaceList();
+                        $raceList->getConditionBuilder()->add('identifier = ?', [$formField->getValue()]);
+                        $raceList->getConditionBuilder()->add('gameID = ?', [$gameID]);
 
-                        if ($factionList->countObjects() > 0) {
+                        if ($raceList->countObjects() > 0) {
                             $formField->addValidationError(
                                 new FormFieldValidationError(
                                     'notUnique',
-                                    'wcf.acp.pip.rpFaction.identifier.error.noUnique'
+                                    'wcf.acp.pip.rpRace.identifier.error.noUnique'
                                 )
                             );
                         }
@@ -109,8 +125,8 @@ final class RPFactionPackageInstallationPlugin extends AbstractXMLPackageInstall
                 ->languageItemPattern('__NONE__'),
 
             SingleSelectionFormField::create('game')
-                ->label('wcf.acp.pip.rpFaction.game')
-                ->description('wcf.acp.pip.rpFaction.game.description')
+                ->label('wcf.acp.pip.rpRace.game')
+                ->description('wcf.acp.pip.rpRace.game.description')
                 ->required()
                 ->options(static function () {
                     $options = [];
@@ -123,9 +139,15 @@ final class RPFactionPackageInstallationPlugin extends AbstractXMLPackageInstall
                     return $options;
                 }),
 
+            ItemListFormField::create('factions')
+                ->label('wcf.acp.pip.rpRace.factions')
+                ->description('wcf.acp.pip.rpRace.factions.description')
+                ->saveValueType(ItemListFormField::SAVE_VALUE_TYPE_ARRAY)
+                ->required(),
+
             TextFormField::create('icon')
-                ->label('wcf.acp.pip.rpFaction.icon')
-                ->description('wcf.acp.pip.rpFaction.icon.description'),
+                ->label('wcf.acp.pip.rpRace.icon')
+                ->description('wcf.acp.pip.rpRace.icon.description'),
         ]);
     }
 
@@ -154,6 +176,19 @@ final class RPFactionPackageInstallationPlugin extends AbstractXMLPackageInstall
             }
         }
 
+        $factions = $element->getElementsByTagName('factions')->item(0);
+        if ($factions !== null) {
+            $entry = [];
+            /** @var \DOMElement $faction */
+            foreach ($factions->getElementsByTagName('faction') as $faction) {
+                $entry[] = $faction->nodeValue;
+            }
+
+            if (!empty($entry)) {
+                $data['factions'] = $entry;
+            }
+        }
+
         if ($saveData) {
             if (isset($data['game'])) {
                 $data['gameID'] = GameCache::getInstance()->getGameByIdentifier($data['game'])?->gameID;
@@ -164,8 +199,12 @@ final class RPFactionPackageInstallationPlugin extends AbstractXMLPackageInstall
             foreach ($data['title'] as $languageID => $title) {
                 $titles[LanguageFactory::getInstance()->getLanguage($languageID)->languageCode] = $title;
             }
-
             $data['title'] = $titles;
+
+            if (isset($data['factions'])) {
+                $this->factions[$data['identifier']] = $data['factions'];
+                unset($data['factions']);
+            }
         }
 
         return $data;
@@ -177,7 +216,7 @@ final class RPFactionPackageInstallationPlugin extends AbstractXMLPackageInstall
     protected function findExistingItem(array $data): array
     {
         $sql = "SELECT  *
-                FROM    rp" . WCF_N . "_faction
+                FROM    rp" . WCF_N . "_race
                 WHERE   identifier = ?
                     AND packageID = ?";
         $parameters = [
@@ -196,7 +235,7 @@ final class RPFactionPackageInstallationPlugin extends AbstractXMLPackageInstall
      */
     public static function getDefaultFilename(): string
     {
-        return 'rpFaction.xml';
+        return 'rpRace.xml';
     }
 
     /**
@@ -216,6 +255,15 @@ final class RPFactionPackageInstallationPlugin extends AbstractXMLPackageInstall
             $elements['title'] ??= [];
 
             $elements['title'][$element->getAttribute('language')] = $element->nodeValue;
+        } else if ($element->tagName == 'factions') {
+            $nodeValue = [];
+
+            $factions = $xpath->query('child::ns:faction', $element);
+            foreach ($factions as $faction) {
+                $nodeValue[] = $faction->nodeValue;
+            }
+
+            $elements['factions'] = $nodeValue;
         } else {
             $elements[$element->tagName] = $nodeValue;
         }
@@ -242,7 +290,7 @@ final class RPFactionPackageInstallationPlugin extends AbstractXMLPackageInstall
      */
     public static function getSyncDependencies()
     {
-        return ['language', 'rpGame'];
+        return ['language', 'rpGame', 'rpFaction'];
     }
 
     /**
@@ -250,7 +298,7 @@ final class RPFactionPackageInstallationPlugin extends AbstractXMLPackageInstall
      */
     protected function handleDelete(array $items)
     {
-        $sql = "DELETE FROM rp1_faction
+        $sql = "DELETE FROM rp1_race
                 WHERE       identifier = ?
                     AND     packageID = ?";
         $statement = WCF::getDB()->prepare($sql);
@@ -267,10 +315,78 @@ final class RPFactionPackageInstallationPlugin extends AbstractXMLPackageInstall
             ]);
 
             $languageItemStatement->execute([
-                'rp.faction.' . $item['attributes']['identifier'],
+                'rp.race.' . $item['attributes']['identifier'],
             ]);
         }
         WCF::getDB()->commitTransaction();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function import(array $row, array $data): IStorableObject
+    {
+        $race = parent::import($row, $data);
+
+        $this->races[$race->raceID] = ($race instanceof Race) ? new RaceEditor($race) : $race;
+
+        return $race;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function postImport(): void
+    {
+        if (empty($this->factions)) {
+            return;
+        }
+
+        $conditions = new PreparedStatementConditionBuilder();
+        $conditions->add('identifier IN (?)', [\array_keys($this->factions)]);
+        $conditions->add('packageID = ?', [$this->installation->getPackageID()]);
+
+        $sql = "SELECT  *
+                FROM    rp1_race
+                {$conditions}";
+        $statement = WCF::getDB()->prepare($sql);
+        $statement->execute($conditions->getParameters());
+
+        /** @var Race[] $races */
+        $races = $statement->fetchObjects(Race::class, 'identifier');
+
+        // save factions
+        $sql = "DELETE FROM rp1_race_to_faction
+                WHERE       raceID = ?";
+        $deleteStatement = WCF::getDB()->prepare($sql);
+
+        $sql = "INSERT IGNORE   rp1_race_to_faction
+                                (raceID, factionID)
+                VALUES          (?, ?)";
+        $insertStatement = WCF::getDB()->prepare($sql);
+
+        foreach ($this->factions as $raceIdentifier => $factions) {
+            // delete old factions
+            $deleteStatement->execute([$races[$raceIdentifier]->raceID]);
+
+            // get faction ids
+            $conditionBuilder = new PreparedStatementConditionBuilder();
+            $conditionBuilder->add('identifier IN (?)', [$factions]);
+            $sql = "SELECT  factionID
+                    FROM    rp1_faction
+                    {$conditionBuilder}";
+            $statement = WCF::getDB()->prepare($sql);
+            $statement->execute($conditionBuilder->getParameters());
+            $factionIDs = $statement->fetchAll(\PDO::FETCH_COLUMN);
+
+            // save faction ids
+            foreach ($factionIDs as $factionID) {
+                $insertStatement->execute([
+                    $races[$raceIdentifier]->raceID,
+                    $factionID,
+                ]);
+            }
+        }
     }
 
     /**
@@ -281,29 +397,40 @@ final class RPFactionPackageInstallationPlugin extends AbstractXMLPackageInstall
         $formData = $form->getData();
         $data = $formData['data'];
 
-        $faction = $document->createElement($this->tagName);
-        $faction->setAttribute('identifier', $data['identifier']);
+        $race = $document->createElement($this->tagName);
+        $race->setAttribute('identifier', $data['identifier']);
 
         if (!empty($data['game'])) {
-            $faction->appendChild($document->createElement('game', $data['game']));
+            $race->appendChild($document->createElement('game', $data['game']));
         }
 
         foreach ($formData['title_i18n'] as $languageID => $title) {
             $title = $document->createElement('title', $this->getAutoCdataValue($title));
             $title->setAttribute('language', LanguageFactory::getInstance()->getLanguage($languageID)->languageCode);
 
-            $faction->appendChild($title);
+            $race->appendChild($title);
         }
 
         $this->appendElementChildren(
-            $faction,
+            $race,
             [
                 'icon' => '',
             ],
             $form
         );
 
-        return $faction;
+        if (!empty($formData['factions'])) {
+            $factions = $document->createElement('factions');
+
+            \sort($formData['factions']);
+            foreach ($formData['factions'] as $faction) {
+                $factions->appendChild($document->createElement('faction', $faction));
+            }
+
+            $race->appendChild($factions);
+        }
+
+        return $race;
     }
 
     /**
@@ -315,7 +442,11 @@ final class RPFactionPackageInstallationPlugin extends AbstractXMLPackageInstall
         $gameID = GameCache::getInstance()->getGameByIdentifier($data['elements']['game'] ?? '')?->gameID;
 
         if ($gameID === null) {
-            throw new SystemException("The faction '" . $data['attributes']['identifier'] . "' must either have an associated game or unable to find game '" . $data['elements']['game'] . "'.");
+            throw new SystemException("The race '" . $data['attributes']['identifier'] . "' must either have an associated game or unable to find game '" . $data['elements']['game'] . "'.");
+        }
+
+        if (!empty($data['elements']['factions'])) {
+            $this->factions[$data['attributes']['identifier']] = $data['elements']['factions'];
         }
 
         return [
@@ -332,8 +463,8 @@ final class RPFactionPackageInstallationPlugin extends AbstractXMLPackageInstall
     protected function setEntryListKeys(IDevtoolsPipEntryList $entryList): void
     {
         $entryList->setKeys([
-            'identifier' => 'wcf.acp.pip.rpFaction.identifier',
-            'game' => 'wcf.acp.pip.rpFaction.game',
+            'identifier' => 'wcf.acp.pip.rpRace.identifier',
+            'game' => 'wcf.acp.pip.rpRace.game',
         ]);
     }
 }
