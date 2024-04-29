@@ -1,0 +1,79 @@
+<?php
+
+namespace rp\data\role;
+
+use rp\system\cache\builder\RoleCacheBuilder;
+use wcf\system\SingletonFactory;
+
+/**
+ * Manages the role cache.
+ * 
+ * @author  Marco Daries
+ * @copyright   2023-2024 Daries.dev
+ * @license Free License <https://daries.dev/en/license-for-free-plugins>
+ */
+final class RoleCache extends SingletonFactory
+{
+    /**
+     * cached role ids with role identifier as key
+     * @var int[]
+     */
+    protected array $cachedIdentifier = [];
+
+    /**
+     * cached roles
+     * @var Role[]
+     */
+    protected array $cachedRoles = [];
+
+    /**
+     * Returns the role with the given role id or `null` if no such role exists.
+     */
+    public function getRoleByID(int $roleID): ?Role
+    {
+        return $this->cachedRoles[$roleID] ?? null;
+    }
+
+    /**
+     * Returns the role with the given role identifier or `null` if no such role exists.
+     */
+    public function getRoleByIdentifier(string $identifier): ?Role
+    {
+        return $this->getRoleByID($this->cachedIdentifier[$identifier] ?? 0);
+    }
+
+    /**
+     * Returns all roles.
+     * 
+     * @return	Role[]
+     */
+    public function getRoles(): array
+    {
+        return $this->cachedRoles;
+    }
+
+    /**
+     * Returns the roles with the given role ids.
+     * 
+     * @return	Role[]
+     */
+    public function getRolesByIDs(array $roleIDs): array
+    {
+        $returnValues = [];
+
+        foreach ($roleIDs as $roleID) {
+            $returnValues[] = $this->getRoleByID($roleID);
+        }
+
+        return $returnValues;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function init(): void
+    {
+        $this->cachedRoles = RoleCacheBuilder::getInstance()->getData(['gameID' => RP_CURRENT_GAME_ID], 'role');
+        $this->cachedIdentifier = RoleCacheBuilder::getInstance()->getData(['gameID' => RP_CURRENT_GAME_ID], 'identifier');
+    }
+}

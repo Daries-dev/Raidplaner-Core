@@ -176,4 +176,35 @@ return [
                 ->referencedColumns(['factionID'])
                 ->onDelete('CASCADE'),
         ]),
+
+    DatabaseTable::create('rp1_role')
+        ->columns([
+            ObjectIdDatabaseTableColumn::create('roleID'),
+            NotNullInt10DatabaseTableColumn::create('gameID'),
+            NotNullVarchar255DatabaseTableColumn::create('identifier'),
+            NotNullVarchar255DatabaseTableColumn::create('title'),
+            NotNullVarchar255DatabaseTableColumn::create('icon')
+                ->defaultValue(''),
+            DefaultFalseBooleanDatabaseTableColumn::create('isDisabled'),
+            NotNullInt10DatabaseTableColumn::create('packageID'),
+        ])
+        ->indices([
+            DatabaseTablePrimaryIndex::create()
+                ->columns(['roleID']),
+            DatabaseTableIndex::create('identifier_gameID')
+                ->columns(['identifier', 'gameID'])
+                ->type(DatabaseTableIndex::UNIQUE_TYPE),
+        ])
+        ->foreignKeys([
+            DatabaseTableForeignKey::create()
+                ->columns(['gameID'])
+                ->referencedTable('rp1_game')
+                ->referencedColumns(['gameID'])
+                ->onDelete('CASCADE'),
+            DatabaseTableForeignKey::create()
+                ->columns(['packageID'])
+                ->referencedTable('wcf1_package')
+                ->referencedColumns(['packageID'])
+                ->onDelete('CASCADE'),
+        ]),
 ];
