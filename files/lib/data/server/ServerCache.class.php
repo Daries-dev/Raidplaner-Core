@@ -1,0 +1,79 @@
+<?php
+
+namespace rp\data\server;
+
+use rp\system\cache\builder\ServerCacheBuilder;
+use wcf\system\SingletonFactory;
+
+/**
+ * Manages the server cache.
+ * 
+ * @author  Marco Daries
+ * @copyright   2023-2024 Daries.dev
+ * @license Free License <https://daries.dev/en/license-for-free-plugins>
+ */
+final class ServerCache extends SingletonFactory
+{
+    /**
+     * cached server ids with server identifier as key
+     * @var int[]
+     */
+    protected array $cachedIdentifier = [];
+
+    /**
+     * cached servers
+     * @var Server[]
+     */
+    protected array $cachedServers = [];
+
+    /**
+     * Returns the server with the given server id or `null` if no such server exists.
+     */
+    public function getServerByID(int $serverID): ?Server
+    {
+        return $this->cachedServers[$serverID] ?? null;
+    }
+
+    /**
+     * Returns the server with the given server identifier or `null` if no such server exists.
+     */
+    public function getServerByIdentifier(string $identifier): ?Server
+    {
+        return $this->getServerByID($this->cachedIdentifier[$identifier] ?? 0);
+    }
+
+    /**
+     * Returns all servers.
+     * 
+     * @return	Server[]
+     */
+    public function getServers(): array
+    {
+        return $this->cachedServers;
+    }
+
+    /**
+     * Returns the servers with the given server ids.
+     * 
+     * @return	Server[]
+     */
+    public function getServersByIDs(array $serverIDs): array
+    {
+        $returnValues = [];
+
+        foreach ($serverIDs as $serverID) {
+            $returnValues[] = $this->getServerByID($serverID);
+        }
+
+        return $returnValues;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function init(): void
+    {
+        $this->cachedIdentifier = ServerCacheBuilder::getInstance()->getData(['gameID' => RP_CURRENT_GAME_ID], 'identifier');
+        $this->cachedServers = ServerCacheBuilder::getInstance()->getData(['gameID' => RP_CURRENT_GAME_ID], 'server');
+    }
+}
