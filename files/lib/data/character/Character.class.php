@@ -14,7 +14,7 @@ use wcf\system\WCF;
  * 
  * @author  Marco Daries
  * @copyright   2023-2024 Daries.dev
- * @license Free License <https://daries.dev/en/license-for-free-plugins>
+ * @license Raidplaner is licensed under Creative Commons Attribution-ShareAlike 4.0 International 
  * 
  * @property-read   int $characterID        unique id of the game
  * @property-read   string  $characterName      name of the character

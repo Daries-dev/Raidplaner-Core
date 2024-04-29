@@ -22,7 +22,7 @@ use wcf\util\HeaderUtil;
  * 
  * @author  Marco Daries
  * @copyright   2023-2024 Daries.dev
- * @license Free License <https://daries.dev/en/license-for-free-plugins>
+ * @license Raidplaner is licensed under Creative Commons Attribution-ShareAlike 4.0 International 
  */
 final class CharacterSearchForm extends AbstractFormBuilderForm
 {

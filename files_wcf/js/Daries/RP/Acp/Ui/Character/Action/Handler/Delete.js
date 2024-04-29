@@ -3,7 +3,7 @@
  *
  * @author  Marco Daries
  * @copyright   2023-2024 Daries.dev
- * @license Free License <https://daries.dev/en/license-for-free-plugins>
+ * @license Raidplaner is licensed under Creative Commons Attribution-ShareAlike 4.0 International 
  */
 define(["require", "exports", "WoltLabSuite/Core/Component/Confirmation", "WoltLabSuite/Core/Ajax", "WoltLabSuite/Core/Ui/Notification"], function (require, exports, Confirmation_1, Ajax_1, Notification_1) {
     "use strict";
