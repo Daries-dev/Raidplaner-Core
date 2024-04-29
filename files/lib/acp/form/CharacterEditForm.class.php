@@ -75,7 +75,7 @@ class CharacterEditForm extends CharacterAddForm
             }
 
             EventHandler::getInstance()->fire(
-                new CharacterEditData($this->form)
+                new CharacterEditData($this->form, $this->formObject)
             );
         }
     }

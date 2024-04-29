@@ -2,6 +2,7 @@
 
 namespace rp\system\character\event;
 
+use wcf\data\IStorableObject;
 use wcf\system\event\IEvent;
 use wcf\system\form\builder\IFormDocument;
 
@@ -13,7 +14,8 @@ use wcf\system\form\builder\IFormDocument;
 final class CharacterEditData implements IEvent
 {
     public function __construct(
-        public readonly IFormDocument $form
+        public readonly IFormDocument $form,
+        public readonly IStorableObject $formObject,
     ) {
     }
 }
