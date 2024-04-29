@@ -15,16 +15,16 @@ use wcf\system\SingletonFactory;
 final class ClassificationCache extends SingletonFactory
 {
     /**
-     * cached classification ids with classification identifier as key
-     * @var int[]
-     */
-    protected array $cachedIdentifier = [];
-
-    /**
      * cached classifications
      * @var Classification[]
      */
     protected array $cachedClassifications = [];
+
+    /**
+     * cached classification ids with classification identifier as key
+     * @var int[]
+     */
+    protected array $cachedIdentifier = [];
 
     /**
      * Returns the classification with the given classification id or `null` if no such classification exists.

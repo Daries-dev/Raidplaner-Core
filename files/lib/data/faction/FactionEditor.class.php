@@ -32,9 +32,9 @@ class FactionEditor extends DatabaseObjectEditor implements IEditableCachedObjec
      */
     public static function create(array $parameters = []): Faction
     {
-        $title = '';
+        $titles = '';
         if (\is_array($parameters['title'])) {
-            $title = $parameters['title'];
+            $titles = $parameters['title'];
             $parameters['title'] = '';
         }
 

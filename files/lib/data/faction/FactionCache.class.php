@@ -15,16 +15,16 @@ use wcf\system\SingletonFactory;
 final class FactionCache extends SingletonFactory
 {
     /**
-     * cached faction ids with faction identifier as key
-     * @var int[]
-     */
-    protected array $cachedIdentifier = [];
-
-    /**
      * cached factions
      * @var Faction[]
      */
     protected array $cachedFactions = [];
+
+    /**
+     * cached faction ids with faction identifier as key
+     * @var int[]
+     */
+    protected array $cachedIdentifier = [];
 
     /**
      * Returns the faction with the given faction id or `null` if no such faction exists.

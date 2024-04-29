@@ -66,7 +66,7 @@ final class Classification extends DatabaseObject implements ITitledObject
      */
     public function getTitle(): string
     {
-        return WCF::getLanguage()->get('rp.classification.' . $this->getGame()->identifier . '.' . $this->identifier);
+        return WCF::getLanguage()->get($this->title);
     }
 
     /**

@@ -73,7 +73,7 @@ final class RoleCache extends SingletonFactory
      */
     protected function init(): void
     {
-        $this->cachedRoles = RoleCacheBuilder::getInstance()->getData(['gameID' => RP_CURRENT_GAME_ID], 'role');
         $this->cachedIdentifier = RoleCacheBuilder::getInstance()->getData(['gameID' => RP_CURRENT_GAME_ID], 'identifier');
+        $this->cachedRoles = RoleCacheBuilder::getInstance()->getData(['gameID' => RP_CURRENT_GAME_ID], 'role');
     }
 }

@@ -66,7 +66,7 @@ final class Role extends DatabaseObject implements ITitledObject
      */
     public function getTitle(): string
     {
-        return WCF::getLanguage()->get('rp.role.' . $this->getGame()->identifier . '.' . $this->identifier);
+        return WCF::getLanguage()->get($this->title);
     }
 
     /**

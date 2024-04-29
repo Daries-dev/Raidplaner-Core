@@ -15,16 +15,16 @@ use wcf\system\SingletonFactory;
 final class GameCache extends SingletonFactory
 {
     /**
-     * cached game ids with game identifier as key
-     * @var int[]
-     */
-    protected array $cachedIdentifier = [];
-
-    /**
      * cached games
      * @var Game[]
      */
     protected array $cachedGames = [];
+
+    /**
+     * cached game ids with game identifier as key
+     * @var int[]
+     */
+    protected array $cachedIdentifier = [];
 
     /**
      * Returns the current selected game.
