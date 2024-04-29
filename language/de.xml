@@ -36,6 +36,10 @@
             <item name="rp.character.notes"><![CDATA[Notizen]]></item>
         </category>
 
+        <category name="rp.classification">
+            <item name="rp.classification.title"><![CDATA[Klassifizierung]]></item>
+        </category>
+
         <category name="rp.faction">
             <item name="rp.faction.title"><![CDATA[Fraktion]]></item>
         </category>

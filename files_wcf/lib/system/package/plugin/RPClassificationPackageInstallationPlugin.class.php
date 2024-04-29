@@ -2,10 +2,10 @@
 
 namespace wcf\system\package\plugin;
 
+use rp\data\classification\Classification;
+use rp\data\classification\ClassificationEditor;
+use rp\data\classification\ClassificationList;
 use rp\data\game\GameCache;
-use rp\data\race\Race;
-use rp\data\race\RaceEditor;
-use rp\data\race\RaceList;
 use wcf\data\IStorableObject;
 use wcf\system\database\util\PreparedStatementConditionBuilder;
 use wcf\system\devtools\pip\IDevtoolsPipEntryList;
@@ -25,13 +25,13 @@ use wcf\system\Regex;
 use wcf\system\WCF;
 
 /**
- * Installs, updates and deletes races.
+ * Installs, updates and deletes classifications.
  * 
  * @author  Marco Daries
  * @copyright   2023-2024 Daries.dev
  * @license Free License <https://daries.dev/en/license-for-free-plugins>
  */
-final class RPRacePackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin implements
+final class RPClassificationPackageInstallationPlugin extends AbstractXMLPackageInstallationPlugin implements
     IGuiPackageInstallationPlugin,
     IUniqueNameXMLPackageInstallationPlugin
 {
@@ -43,31 +43,43 @@ final class RPRacePackageInstallationPlugin extends AbstractXMLPackageInstallati
     public $application = 'rp';
 
     /**
-     * @inheritDoc
+     * list of created or updated classifications by id
+     * @var ClassificationEditor[]
      */
-    public $className = RaceEditor::class;
+    protected array $classifications = [];
 
     /**
-     * list of factions per race id
+     * @inheritDoc
+     */
+    public $className = ClassificationEditor::class;
+
+    /**
+     * list of factions per classification id
      * @var string[]
      */
     public array $factions = [];
 
     /**
-     * list of created or updated races by id
-     * @var RaceEditor[]
+     * list of races per classification id
+     * @var string[]
      */
-    protected array $races = [];
+    public array $races = [];
+
+    /**
+     * list of roles per classification id
+     * @var string[]
+     */
+    public array $roles = [];
 
     /**
      * @inheritDoc
      */
-    public $tableName = 'race';
+    public $tableName = 'classification';
 
     /**
      * @inheritDoc
      */
-    public $tagName = 'race';
+    public $tagName = 'classification';
 
     /**
      * @inheritDoc
@@ -79,8 +91,8 @@ final class RPRacePackageInstallationPlugin extends AbstractXMLPackageInstallati
 
         $dataContainer->appendChildren([
             TextFormField::create('identifier')
-                ->label('wcf.acp.pip.rpRace.identifier')
-                ->description('wcf.acp.pip.rpRace.identifier.description')
+                ->label('wcf.acp.pip.rpClassification.identifier')
+                ->description('wcf.acp.pip.rpClassification.identifier.description')
                 ->required()
                 ->addValidator(new FormFieldValidator('regex', function (TextFormField $formField) {
                     $regex = Regex::compile('^[A-z0-9\-\_]+$');
@@ -89,7 +101,7 @@ final class RPRacePackageInstallationPlugin extends AbstractXMLPackageInstallati
                         $formField->addValidationError(
                             new FormFieldValidationError(
                                 'invalid',
-                                'wcf.acp.pip.rpRace.identifier.error.invalid'
+                                'wcf.acp.pip.rpClassification.identifier.error.invalid'
                             )
                         );
                     }
@@ -103,15 +115,15 @@ final class RPRacePackageInstallationPlugin extends AbstractXMLPackageInstallati
                         $gameFormField = $formField->getDocument()->getNodeById('game');
                         $gameID = GameCache::getInstance()->getGameByIdentifier($gameFormField->getSaveValue())->gameID;
 
-                        $raceList = new RaceList();
-                        $raceList->getConditionBuilder()->add('identifier = ?', [$formField->getValue()]);
-                        $raceList->getConditionBuilder()->add('gameID = ?', [$gameID]);
+                        $classificationList = new ClassificationList();
+                        $classificationList->getConditionBuilder()->add('identifier = ?', [$formField->getValue()]);
+                        $classificationList->getConditionBuilder()->add('gameID = ?', [$gameID]);
 
-                        if ($raceList->countObjects() > 0) {
+                        if ($classificationList->countObjects() > 0) {
                             $formField->addValidationError(
                                 new FormFieldValidationError(
                                     'notUnique',
-                                    'wcf.acp.pip.rpRace.identifier.error.noUnique'
+                                    'wcf.acp.pip.rpClassification.identifier.error.noUnique'
                                 )
                             );
                         }
@@ -125,8 +137,8 @@ final class RPRacePackageInstallationPlugin extends AbstractXMLPackageInstallati
                 ->languageItemPattern('__NONE__'),
 
             SingleSelectionFormField::create('game')
-                ->label('wcf.acp.pip.rpRace.game')
-                ->description('wcf.acp.pip.rpRace.game.description')
+                ->label('wcf.acp.pip.rpClassification.game')
+                ->description('wcf.acp.pip.rpClassification.game.description')
                 ->required()
                 ->options(static function () {
                     $options = [];
@@ -140,14 +152,26 @@ final class RPRacePackageInstallationPlugin extends AbstractXMLPackageInstallati
                 }),
 
             ItemListFormField::create('factions')
-                ->label('wcf.acp.pip.rpRace.factions')
-                ->description('wcf.acp.pip.rpRace.factions.description')
+                ->label('wcf.acp.pip.rpClassification.factions')
+                ->description('wcf.acp.pip.rpClassification.factions.description')
+                ->saveValueType(ItemListFormField::SAVE_VALUE_TYPE_ARRAY)
+                ->required(),
+
+            ItemListFormField::create('races')
+                ->label('wcf.acp.pip.rpClassification.races')
+                ->description('wcf.acp.pip.rpClassification.races.description')
+                ->saveValueType(ItemListFormField::SAVE_VALUE_TYPE_ARRAY)
+                ->required(),
+
+            ItemListFormField::create('roles')
+                ->label('wcf.acp.pip.rpClassification.roles')
+                ->description('wcf.acp.pip.rpClassification.roles.description')
                 ->saveValueType(ItemListFormField::SAVE_VALUE_TYPE_ARRAY)
                 ->required(),
 
             TextFormField::create('icon')
-                ->label('wcf.acp.pip.rpRace.icon')
-                ->description('wcf.acp.pip.rpRace.icon.description'),
+                ->label('wcf.acp.pip.rpClassification.icon')
+                ->description('wcf.acp.pip.rpClassification.icon.description'),
         ]);
     }
 
@@ -189,6 +213,32 @@ final class RPRacePackageInstallationPlugin extends AbstractXMLPackageInstallati
             }
         }
 
+        $races = $element->getElementsByTagName('races')->item(0);
+        if ($races !== null) {
+            $entry = [];
+            /** @var \DOMElement $race */
+            foreach ($races->getElementsByTagName('race') as $race) {
+                $entry[] = $race->nodeValue;
+            }
+
+            if (!empty($entry)) {
+                $data['race'] = $entry;
+            }
+        }
+
+        $roles = $element->getElementsByTagName('roles')->item(0);
+        if ($roles !== null) {
+            $entry = [];
+            /** @var \DOMElement $role */
+            foreach ($roles->getElementsByTagName('role') as $role) {
+                $entry[] = $role->nodeValue;
+            }
+
+            if (!empty($entry)) {
+                $data['roles'] = $entry;
+            }
+        }
+
         if ($saveData) {
             if (isset($data['game'])) {
                 $data['gameID'] = GameCache::getInstance()->getGameByIdentifier($data['game'])?->gameID;
@@ -205,6 +255,16 @@ final class RPRacePackageInstallationPlugin extends AbstractXMLPackageInstallati
                 $this->factions[$data['identifier']] = $data['factions'];
                 unset($data['factions']);
             }
+
+            if (isset($data['races'])) {
+                $this->races[$data['identifier']] = $data['races'];
+                unset($data['races']);
+            }
+
+            if (isset($data['roles'])) {
+                $this->roles[$data['identifier']] = $data['roles'];
+                unset($data['roles']);
+            }
         }
 
         return $data;
@@ -216,7 +276,7 @@ final class RPRacePackageInstallationPlugin extends AbstractXMLPackageInstallati
     protected function findExistingItem(array $data): array
     {
         $sql = "SELECT  *
-                FROM    rp" . WCF_N . "_race
+                FROM    rp" . WCF_N . "_classification
                 WHERE   identifier = ?
                     AND packageID = ?";
         $parameters = [
@@ -235,7 +295,7 @@ final class RPRacePackageInstallationPlugin extends AbstractXMLPackageInstallati
      */
     public static function getDefaultFilename(): string
     {
-        return 'rpRace.xml';
+        return 'rpClassification.xml';
     }
 
     /**
@@ -248,7 +308,7 @@ final class RPRacePackageInstallationPlugin extends AbstractXMLPackageInstallati
 
         if ($element->tagName === 'title') {
             if (empty($element->getAttribute('language'))) {
-                throw new SystemException("Missing required attribute 'language' for race item '" . $element->parentNode->getAttribute('identifier') . "'");
+                throw new SystemException("Missing required attribute 'language' for classification item '" . $element->parentNode->getAttribute('identifier') . "'");
             }
 
             // <title> can occur multiple items using the `language` attribute
@@ -264,6 +324,24 @@ final class RPRacePackageInstallationPlugin extends AbstractXMLPackageInstallati
             }
 
             $elements['factions'] = $nodeValue;
+        } else if ($element->tagName == 'races') {
+            $nodeValue = [];
+
+            $races = $xpath->query('child::ns:race', $element);
+            foreach ($races as $race) {
+                $nodeValue[] = $race->nodeValue;
+            }
+
+            $elements['races'] = $nodeValue;
+        } else if ($element->tagName == 'roles') {
+            $nodeValue = [];
+
+            $roles = $xpath->query('child::ns:role', $element);
+            foreach ($roles as $role) {
+                $nodeValue[] = $role->nodeValue;
+            }
+
+            $elements['roles'] = $nodeValue;
         } else {
             $elements[$element->tagName] = $nodeValue;
         }
@@ -290,7 +368,7 @@ final class RPRacePackageInstallationPlugin extends AbstractXMLPackageInstallati
      */
     public static function getSyncDependencies()
     {
-        return ['language', 'rpGame', 'rpFaction'];
+        return ['language', 'rpGame', 'rpFaction', 'rpRace', 'rpRole'];
     }
 
     /**
@@ -298,7 +376,7 @@ final class RPRacePackageInstallationPlugin extends AbstractXMLPackageInstallati
      */
     protected function handleDelete(array $items)
     {
-        $sql = "DELETE FROM rp1_race
+        $sql = "DELETE FROM rp1_classification
                 WHERE       identifier = ?
                     AND     packageID = ?";
         $statement = WCF::getDB()->prepare($sql);
@@ -315,7 +393,7 @@ final class RPRacePackageInstallationPlugin extends AbstractXMLPackageInstallati
             ]);
 
             $languageItemStatement->execute([
-                'rp.race.' . $item['attributes']['identifier'],
+                'rp.classification.' . $item['attributes']['identifier'],
             ]);
         }
         WCF::getDB()->commitTransaction();
@@ -326,11 +404,11 @@ final class RPRacePackageInstallationPlugin extends AbstractXMLPackageInstallati
      */
     protected function import(array $row, array $data): IStorableObject
     {
-        $race = parent::import($row, $data);
+        $classification = parent::import($row, $data);
 
-        $this->races[$race->raceID] = ($race instanceof Race) ? new RaceEditor($race) : $race;
+        $this->classifications[$classification->classificationID] = ($classification instanceof Classification) ? new ClassificationEditor($classification) : $classification;
 
-        return $race;
+        return $classification;
     }
 
     /**
@@ -338,36 +416,47 @@ final class RPRacePackageInstallationPlugin extends AbstractXMLPackageInstallati
      */
     protected function postImport(): void
     {
-        if (empty($this->factions)) {
-            return;
+        if (!empty($this->factions)) {
+            $this->postImportFactions();
         }
 
+        if (!empty($this->races)) {
+            $this->postImportRaces();
+        }
+
+        if (!empty($this->roles)) {
+            $this->postImportRoles();
+        }
+    }
+
+    protected function postImportFactions(): void
+    {
         $conditions = new PreparedStatementConditionBuilder();
         $conditions->add('identifier IN (?)', [\array_keys($this->factions)]);
         $conditions->add('packageID = ?', [$this->installation->getPackageID()]);
 
         $sql = "SELECT  *
-                FROM    rp1_race
+                FROM    rp1_classification
                 {$conditions}";
         $statement = WCF::getDB()->prepare($sql);
         $statement->execute($conditions->getParameters());
 
-        /** @var Race[] $races */
-        $races = $statement->fetchObjects(Race::class, 'identifier');
+        /** @var Classification[] $classifications */
+        $classifications = $statement->fetchObjects(Classification::class, 'identifier');
 
         // save factions
-        $sql = "DELETE FROM rp1_race_to_faction
-                WHERE       raceID = ?";
+        $sql = "DELETE FROM rp1_classification_to_faction
+                WHERE       classificationID = ?";
         $deleteStatement = WCF::getDB()->prepare($sql);
 
-        $sql = "INSERT IGNORE   rp1_race_to_faction
-                                (raceID, factionID)
+        $sql = "INSERT IGNORE   rp1_classification_to_faction
+                                (classificationID, factionID)
                 VALUES          (?, ?)";
         $insertStatement = WCF::getDB()->prepare($sql);
 
-        foreach ($this->factions as $raceIdentifier => $factions) {
+        foreach ($this->factions as $classificationIdentifier => $factions) {
             // delete old factions
-            $deleteStatement->execute([$races[$raceIdentifier]->raceID]);
+            $deleteStatement->execute([$classifications[$classificationIdentifier]->classificationID]);
 
             // get faction ids
             $conditionBuilder = new PreparedStatementConditionBuilder();
@@ -382,8 +471,106 @@ final class RPRacePackageInstallationPlugin extends AbstractXMLPackageInstallati
             // save faction ids
             foreach ($factionIDs as $factionID) {
                 $insertStatement->execute([
-                    $races[$raceIdentifier]->raceID,
+                    $classifications[$classificationIdentifier]->classificationID,
                     $factionID,
+                ]);
+            }
+        }
+    }
+
+    protected function postImportRaces(): void
+    {
+        $conditions = new PreparedStatementConditionBuilder();
+        $conditions->add('identifier IN (?)', [\array_keys($this->races)]);
+        $conditions->add('packageID = ?', [$this->installation->getPackageID()]);
+
+        $sql = "SELECT  *
+                FROM    rp1_classification
+                {$conditions}";
+        $statement = WCF::getDB()->prepare($sql);
+        $statement->execute($conditions->getParameters());
+
+        /** @var Classification[] $classifications */
+        $classifications = $statement->fetchObjects(Classification::class, 'identifier');
+
+        // save races
+        $sql = "DELETE FROM rp1_classification_to_race
+                WHERE       classificationID = ?";
+        $deleteStatement = WCF::getDB()->prepare($sql);
+
+        $sql = "INSERT IGNORE   rp1_classification_to_race
+                                (classificationID, raceID)
+                VALUES          (?, ?)";
+        $insertStatement = WCF::getDB()->prepare($sql);
+
+        foreach ($this->races as $classificationIdentifier => $races) {
+            // delete old races
+            $deleteStatement->execute([$classifications[$classificationIdentifier]->classificationID]);
+
+            // get race ids
+            $conditionBuilder = new PreparedStatementConditionBuilder();
+            $conditionBuilder->add('identifier IN (?)', [$races]);
+            $sql = "SELECT  raceID
+                    FROM    rp1_race
+                    {$conditionBuilder}";
+            $statement = WCF::getDB()->prepare($sql);
+            $statement->execute($conditionBuilder->getParameters());
+            $raceIDs = $statement->fetchAll(\PDO::FETCH_COLUMN);
+
+            // save race ids
+            foreach ($raceIDs as $raceID) {
+                $insertStatement->execute([
+                    $classifications[$classificationIdentifier]->classificationID,
+                    $raceID,
+                ]);
+            }
+        }
+    }
+
+    protected function postImportRoles(): void
+    {
+        $conditions = new PreparedStatementConditionBuilder();
+        $conditions->add('identifier IN (?)', [\array_keys($this->roles)]);
+        $conditions->add('packageID = ?', [$this->installation->getPackageID()]);
+
+        $sql = "SELECT  *
+                FROM    rp1_classification
+                {$conditions}";
+        $statement = WCF::getDB()->prepare($sql);
+        $statement->execute($conditions->getParameters());
+
+        /** @var Classification[] $classifications */
+        $classifications = $statement->fetchObjects(Classification::class, 'identifier');
+
+        // save roles
+        $sql = "DELETE FROM rp1_classification_to_role
+                WHERE       classificationID = ?";
+        $deleteStatement = WCF::getDB()->prepare($sql);
+
+        $sql = "INSERT IGNORE   rp1_classification_to_role
+                                (classificationID, roleID)
+                VALUES          (?, ?)";
+        $insertStatement = WCF::getDB()->prepare($sql);
+
+        foreach ($this->roles as $classificationIdentifier => $roles) {
+            // delete old roles
+            $deleteStatement->execute([$classifications[$classificationIdentifier]->classificationID]);
+
+            // get role ids
+            $conditionBuilder = new PreparedStatementConditionBuilder();
+            $conditionBuilder->add('identifier IN (?)', [$roles]);
+            $sql = "SELECT  roleID
+                    FROM    rp1_role
+                    {$conditionBuilder}";
+            $statement = WCF::getDB()->prepare($sql);
+            $statement->execute($conditionBuilder->getParameters());
+            $roleIDs = $statement->fetchAll(\PDO::FETCH_COLUMN);
+
+            // save role ids
+            foreach ($roleIDs as $roleID) {
+                $insertStatement->execute([
+                    $classifications[$classificationIdentifier]->classificationID,
+                    $roleID,
                 ]);
             }
         }
@@ -397,22 +584,22 @@ final class RPRacePackageInstallationPlugin extends AbstractXMLPackageInstallati
         $formData = $form->getData();
         $data = $formData['data'];
 
-        $race = $document->createElement($this->tagName);
-        $race->setAttribute('identifier', $data['identifier']);
+        $classification = $document->createElement($this->tagName);
+        $classification->setAttribute('identifier', $data['identifier']);
 
         if (!empty($data['game'])) {
-            $race->appendChild($document->createElement('game', $data['game']));
+            $classification->appendChild($document->createElement('game', $data['game']));
         }
 
         foreach ($formData['title_i18n'] as $languageID => $title) {
             $title = $document->createElement('title', $this->getAutoCdataValue($title));
             $title->setAttribute('language', LanguageFactory::getInstance()->getLanguage($languageID)->languageCode);
 
-            $race->appendChild($title);
+            $classification->appendChild($title);
         }
 
         $this->appendElementChildren(
-            $race,
+            $classification,
             [
                 'icon' => '',
             ],
@@ -427,10 +614,32 @@ final class RPRacePackageInstallationPlugin extends AbstractXMLPackageInstallati
                 $factions->appendChild($document->createElement('faction', $faction));
             }
 
-            $race->appendChild($factions);
+            $classification->appendChild($factions);
         }
 
-        return $race;
+        if (!empty($formData['races'])) {
+            $races = $document->createElement('races');
+
+            \sort($formData['races']);
+            foreach ($formData['races'] as $race) {
+                $races->appendChild($document->createElement('race', $race));
+            }
+
+            $classification->appendChild($races);
+        }
+
+        if (!empty($formData['roles'])) {
+            $roles = $document->createElement('roles');
+
+            \sort($formData['roles']);
+            foreach ($formData['roles'] as $role) {
+                $roles->appendChild($document->createElement('role', $role));
+            }
+
+            $classification->appendChild($roles);
+        }
+
+        return $classification;
     }
 
     /**
@@ -442,11 +651,19 @@ final class RPRacePackageInstallationPlugin extends AbstractXMLPackageInstallati
         $gameID = GameCache::getInstance()->getGameByIdentifier($data['elements']['game'] ?? '')?->gameID;
 
         if ($gameID === null) {
-            throw new SystemException("The race '" . $data['attributes']['identifier'] . "' must either have an associated game or unable to find game '" . $data['elements']['game'] . "'.");
+            throw new SystemException("The classification '" . $data['attributes']['identifier'] . "' must either have an associated game or unable to find game '" . $data['elements']['game'] . "'.");
         }
 
         if (!empty($data['elements']['factions'])) {
             $this->factions[$data['attributes']['identifier']] = $data['elements']['factions'];
+        }
+
+        if (!empty($data['elements']['races'])) {
+            $this->races[$data['attributes']['identifier']] = $data['elements']['races'];
+        }
+
+        if (!empty($data['elements']['roles'])) {
+            $this->roles[$data['attributes']['identifier']] = $data['elements']['roles'];
         }
 
         return [
@@ -463,8 +680,8 @@ final class RPRacePackageInstallationPlugin extends AbstractXMLPackageInstallati
     protected function setEntryListKeys(IDevtoolsPipEntryList $entryList): void
     {
         $entryList->setKeys([
-            'identifier' => 'wcf.acp.pip.rpRace.identifier',
-            'game' => 'wcf.acp.pip.rpRace.game',
+            'identifier' => 'wcf.acp.pip.rpClassification.identifier',
+            'game' => 'wcf.acp.pip.rpClassification.game',
         ]);
     }
 }

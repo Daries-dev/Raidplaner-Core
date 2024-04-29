@@ -19,32 +19,34 @@
     <!-- import element -->
     <xs:complexType name="import">
         <xs:sequence>
-            <xs:element name="race" type="race_import" maxOccurs="unbounded" />
+            <xs:element name="classification" type="classification_import" maxOccurs="unbounded" />
         </xs:sequence>
     </xs:complexType>
 
     <!-- delete element -->
     <xs:complexType name="delete">
         <xs:sequence>
-            <xs:element name="race" type="race_delete" maxOccurs="unbounded" />
+            <xs:element name="classification" type="classification_delete" maxOccurs="unbounded" />
         </xs:sequence>
     </xs:complexType>
 
-    <!-- deleted race -->
-    <xs:complexType name="race_delete">
+    <!-- deleted classification -->
+    <xs:complexType name="classification_delete">
         <xs:attribute name="identifier" type="wl:woltlab_varchar" use="required"></xs:attribute>
     </xs:complexType>
 
-    <!-- imported/updated race -->
-    <xs:complexType name="race_import">
+    <!-- imported/updated classification -->
+    <xs:complexType name="classification_import">
         <xs:complexContent>
-            <xs:extension base="race_delete">
+            <xs:extension base="classification_delete">
                 <xs:choice maxOccurs="unbounded">
                     <xs:element name="title" type="title_element" minOccurs="1"
                         maxOccurs="unbounded" />
                     <xs:element name="game" type="wl:woltlab_varchar" minOccurs="1" maxOccurs="1" />
                     <xs:element name="icon" type="wl:woltlab_varchar" minOccurs="0" maxOccurs="1" />
                     <xs:element name="factions" type="factions_element" minOccurs="0" />
+                    <xs:element name="races" type="races_element" minOccurs="0" />
+                    <xs:element name="roles" type="roles_element" minOccurs="0" />
                 </xs:choice>
             </xs:extension>
         </xs:complexContent>
@@ -63,6 +65,20 @@
     <xs:complexType name="factions_element">
         <xs:choice maxOccurs="unbounded">
             <xs:element name="faction" type="xs:string" minOccurs="1" />
+        </xs:choice>
+    </xs:complexType>
+
+    <!-- races element -->
+    <xs:complexType name="races_element">
+        <xs:choice maxOccurs="unbounded">
+            <xs:element name="race" type="xs:string" minOccurs="1" />
+        </xs:choice>
+    </xs:complexType>
+
+    <!-- roles element -->
+    <xs:complexType name="roles_element">
+        <xs:choice maxOccurs="unbounded">
+            <xs:element name="role" type="xs:string" minOccurs="1" />
         </xs:choice>
     </xs:complexType>
 </xs:schema>
