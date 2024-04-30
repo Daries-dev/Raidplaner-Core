@@ -37,6 +37,22 @@ final class Character extends DatabaseObject implements IRouteController
     protected static $databaseTableName = 'member';
 
     /**
+     * Returns true if the active user can edit this character.
+     */
+    public function canEdit(): bool
+    {
+        if (WCF::getSession()->getPermission('admin.rp.canEditCharacter')) {
+            return true;
+        }
+
+        if ($this->userID == WCF::getUser()->userID && WCF::getSession()->getPermission('user.rp.canEditOwnCharacter')) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Returns the character with the given character name.
      */
     public static function getCharacterByCharacterName(string $name): Character

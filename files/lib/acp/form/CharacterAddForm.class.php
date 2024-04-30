@@ -38,6 +38,16 @@ class CharacterAddForm extends AbstractFormBuilderForm
     public $activeMenuItem = 'rp.acp.menu.link.character.add';
 
     /**
+     * @inheritDoc
+     */
+    public $objectEditLinkApplication = 'rp';
+
+    /**
+     * @inheritDoc
+     */
+    public $objectEditLinkController = CharacterEditForm::class;
+
+    /**
      * ids of the fields containing object data
      * @var string[]
      */
@@ -193,11 +203,11 @@ class CharacterAddForm extends AbstractFormBuilderForm
 
         WCF::getTPL()->assign('success', true);
 
-        if ($this->formAction === 'create') {
+        if ($this->formAction === 'create' && $this->objectEditLinkController) {
             WCF::getTPL()->assign(
                 'objectEditLink',
-                LinkHandler::getInstance()->getControllerLink(CharacterEditForm::class, [
-                    'application' => 'rp',
+                LinkHandler::getInstance()->getControllerLink($this->objectEditLinkController, [
+                    'application' => $this->objectEditLinkApplication,
                     'id' => $this->objectAction->getReturnValues()['returnValues']->getObjectID(),
                 ])
             );
