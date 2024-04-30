@@ -68,13 +68,27 @@
             <item name="wcf.acp.group.option.admin.rp.canSearchCharacter"><![CDATA[Can search characters]]></item>
             <item name="wcf.acp.group.option.category.admin.rp"><![CDATA[Raidplaner]]></item>
             <item name="wcf.acp.group.option.category.admin.rp.character"><![CDATA[Character]]></item>
+            <item name="wcf.acp.group.option.category.user.rp"><![CDATA[Raidplaner]]></item>
+            <item name="wcf.acp.group.option.category.user.rp.character"><![CDATA[Character]]></item>
+            <item name="wcf.acp.group.option.user.rp.canAddCharacter"><![CDATA[Can add characters]]></item>
+            <item name="wcf.acp.group.option.user.rp.canDeleteOwnCharacter"><![CDATA[Can delete their characters]]></item>
+            <item name="wcf.acp.group.option.user.rp.canEditOwnCharacter"><![CDATA[Can edit own characters]]></item>
+            <item name="wcf.acp.group.option.user.rp.canViewCharactersList"><![CDATA[Can view characters list]]></item>
         </category>
 
         <category name="wcf.acp.option">
             <item name="wcf.acp.option.category.rp"><![CDATA[Raidplaner]]></item>
             <item name="wcf.acp.option.category.rp.settings"><![CDATA[Settings]]></item>
+            <item name="wcf.acp.option.category.rp.character"><![CDATA[Character]]></item>
+            <item name="wcf.acp.option.category.rp.character.list"><![CDATA[Character List]]></item>
+            <item name="wcf.acp.option.rp_characters_list_default_sort_field"><![CDATA[Sort by]]></item>
+            <item name="wcf.acp.option.rp_characters_list_default_sort_field.description"><![CDATA[Choose default sort option of character list.]]></item>
+            <item name="wcf.acp.option.rp_characters_list_default_sort_order"><![CDATA[Sort Order]]></item>
+            <item name="wcf.acp.option.rp_characters_list_default_sort_order.description"><![CDATA[Choose default sort order of character list.]]></item>
+            <item name="wcf.acp.option.rp_characters_list_per_page"><![CDATA[Characters per Page]]></item>
             <item name="wcf.acp.option.rp_current_game_id"><![CDATA[Current Game]]></item>
             <item name="wcf.acp.option.rp_current_game_id.description"><![CDATA[Set the current game for the Raidplaner.]]></item>
+            <item name="wcf.acp.option.rp_show_twinks"><![CDATA[Show Twinks]]></item>
             <item name="wcf.acp.option.rp_show_twinks.description"><![CDATA[With Twink display enabled, points for main characters and Twinks are counted separately. When disabled, all points are attributed to the main character.]]></item>
         </category>
 

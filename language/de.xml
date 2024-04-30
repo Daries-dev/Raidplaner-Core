@@ -68,6 +68,12 @@
             <item name="wcf.acp.group.option.admin.rp.canSearchCharacter"><![CDATA[Kann Charaktere suchen]]></item>
             <item name="wcf.acp.group.option.category.admin.rp"><![CDATA[Raidplaner]]></item>
             <item name="wcf.acp.group.option.category.admin.rp.character"><![CDATA[Charakter]]></item>
+            <item name="wcf.acp.group.option.category.user.rp"><![CDATA[Raidplaner]]></item>
+            <item name="wcf.acp.group.option.category.user.rp.character"><![CDATA[Charakter]]></item>
+            <item name="wcf.acp.group.option.user.rp.canAddCharacter"><![CDATA[Kann Charaktere hinzufügen]]></item>
+            <item name="wcf.acp.group.option.user.rp.canDeleteOwnCharacter"><![CDATA[Kann eigende Charaktere löschen]]></item>
+            <item name="wcf.acp.group.option.user.rp.canEditOwnCharacter"><![CDATA[Kann eigene Charaktere bearbeiten]]></item>
+            <item name="wcf.acp.group.option.user.rp.canViewCharactersList"><![CDATA[Kann Charakter-Liste sehen]]></item>
         </category>
 
         <category name="wcf.acp.option">
