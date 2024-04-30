@@ -38,6 +38,8 @@
 		<instruction type="clipboardAction" />
 		<instruction type="packageInstallationPlugin" />
 		<instruction type="acpMenu" />
+		<instruction type="page" />
+		<instruction type="menuItem" />
 		<instruction type="script">acp/install_dev.daries.rp.php</instruction>
 	</instructions>
 </package>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="http://www.woltlab.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.woltlab.com http://www.woltlab.com/XSD/6.0/page.xsd">
+    <import>
+        <!-- dynamic -->
+        <page identifier="dev.daries.rp.CharactersList">
+            <pageType>system</pageType>
+            <controller>rp\page\CharactersListPage</controller>
+            <name language="de">Charaktere</name>
+            <name language="en">Characters</name>
+            <permissions>user.rp.canViewCharactersList</permissions>
+            <content language="en">
+                <title>Characters</title>
+            </content>
+            <content language="de">
+                <title>Charaktere</title>
+            </content>
+        </page>
+        <page identifier="dev.daries.rp.CharacterAdd">
+            <pageType>system</pageType>
+            <controller>rp\form\CharacterAddForm</controller>
+            <name language="de">Charakter erstellen</name>
+            <name language="en">Add Character</name>
+            <hasFixedParent>1</hasFixedParent>
+            <parent>dev.daries.rp.CharactersList</parent>
+            <content language="en">
+                <title>Add Character</title>
+            </content>
+            <content language="de">
+                <title>Charakter erstellen</title>
+            </content>
+        </page>
+        <page identifier="dev.daries.rp.CharacterEdit">
+            <pageType>system</pageType>
+            <controller>rp\form\CharacterEditForm</controller>
+            <name language="de">Charakter bearbeiten</name>
+            <name language="en">Edit Character</name>
+            <hasFixedParent>1</hasFixedParent>
+            <parent>dev.daries.rp.CharactersList</parent>
+            <content language="en">
+                <title>Edit Character</title>
+            </content>
+            <content language="de">
+                <title>Charakter bearbeiten</title>
+            </content>
+        </page>
+    </import>
+</data>
+        
