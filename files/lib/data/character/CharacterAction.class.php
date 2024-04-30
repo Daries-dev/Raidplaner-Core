@@ -2,6 +2,7 @@
 
 namespace rp\data\character;
 
+use rp\system\character\CharacterHandler;
 use rp\system\character\event\BeforeFindCharacters;
 use wcf\data\AbstractDatabaseObjectAction;
 use wcf\data\ISearchAction;
@@ -64,7 +65,7 @@ class CharacterAction extends AbstractDatabaseObjectAction implements ISearchAct
                 $characterList->getConditionBuilder()->add('isPrimary = ?', [1]);
                 $this->parameters['data']['isPrimary'] = \intval($characterList->countObjects() === 0);
             } else {
-                $this->parameters['data']['isPrimary'] = 0; // TODO
+                $this->parameters['data']['isPrimary'] = \intval(CharacterHandler::getInstance()->getPrimaryCharacter() === null);
             }
         } else {
             $this->parameters['data']['isPrimary'] = 1;
