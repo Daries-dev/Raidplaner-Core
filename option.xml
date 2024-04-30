@@ -8,6 +8,14 @@
                 <parent>rp</parent>
                 <showorder>1</showorder>
             </category>
+            <category name="rp.character">
+                <parent>rp</parent>
+                <showorder>2</showorder>
+            </category>
+            <category name="rp.character.list">
+                <parent>rp.character</parent>
+                <showorder>1</showorder>
+            </category>
         </categories>
 
         <options>
@@ -25,6 +33,38 @@
                 <optiontype>gameSelect</optiontype>
             </option>
             <!-- /rp.settings -->
+
+            <!-- rp.character -->
+            <option name="rp_show_twinks">
+                <categoryname>rp.character</categoryname>
+                <optiontype>boolean</optiontype>
+                <defaultvalue>1</defaultvalue>
+            </option>
+            <!-- /rp.character -->
+
+            <!-- rp.character.list -->
+            <option name="rp_characters_list_per_page">
+                <categoryname>rp.character.list</categoryname>
+                <optiontype>integer</optiontype>
+                <defaultvalue>30</defaultvalue>
+                <minvalue>5</minvalue>
+                <maxvalue>100</maxvalue>
+            </option>
+            <option name="rp_characters_list_default_sort_field">
+                <categoryname>rp.character.list</categoryname>
+                <optiontype>select</optiontype>
+                <defaultvalue>characterName</defaultvalue>
+                <selectoptions>characterName:rp.character.characterName
+created:rp.character.created</selectoptions>
+            </option>
+            <option name="rp_characters_list_default_sort_order">
+                <categoryname>rp.character.list</categoryname>
+                <optiontype>select</optiontype>
+                <defaultvalue>ASC</defaultvalue>
+                <selectoptions>ASC:wcf.global.sortOrder.ascending
+DESC:wcf.global.sortOrder.descending</selectoptions>
+            </option>
+            <!-- /rp.character.list -->
         </options>
     </import>
 </data>

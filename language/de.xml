@@ -72,9 +72,18 @@
 
         <category name="wcf.acp.option">
             <item name="wcf.acp.option.category.rp"><![CDATA[Raidplaner]]></item>
+            <item name="wcf.acp.option.category.rp.character"><![CDATA[Charakter]]></item>
+            <item name="wcf.acp.option.category.rp.character.list"><![CDATA[Charakterliste]]></item>
             <item name="wcf.acp.option.category.rp.settings"><![CDATA[Einstellungen]]></item>
+            <item name="wcf.acp.option.rp_characters_list_default_sort_field"><![CDATA[Standard-Sortierung]]></item>
+            <item name="wcf.acp.option.rp_characters_list_default_sort_field.description"><![CDATA[]]></item>
+            <item name="wcf.acp.option.rp_characters_list_default_sort_order"><![CDATA[Standard-Reihenfolge]]></item>
+            <item name="wcf.acp.option.rp_characters_list_default_sort_order.description"><![CDATA[]]></item>
+            <item name="wcf.acp.option.rp_characters_list_per_page"><![CDATA[Charaktere pro Seite]]></item>
             <item name="wcf.acp.option.rp_current_game_id"><![CDATA[Aktuelles Spiel]]></item>
             <item name="wcf.acp.option.rp_current_game_id.description"><![CDATA[{if LANGUAGE_USE_INFORMAL_VARIANT}Lege{else}Legen Sie{/if} das Aktuelle Spiel für den Raidplaner fest.]]></item>
+            <item name="wcf.acp.option.rp_show_twinks"><![CDATA[Twinks anzeigen]]></item>
+            <item name="wcf.acp.option.rp_show_twinks.description"><![CDATA[Bei aktivierter Twink-Anzeige werden Punkte für Hauptcharaktere und Twinks separat gezählt. Bei Deaktivierung werden alle Punkte dem Hauptcharakter zugeordnet.]]></item>
         </category>
 
         <category name="wcf.acp.pip">
