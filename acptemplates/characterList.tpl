@@ -54,10 +54,17 @@
     {/hascontent}
 </header>
 
+{capture assign='pagesLinks'}
+    <woltlab-core-pagination page="{$pageNo}" count="{$pages}"
+        url="{link application='rp' controller='CharacterList' id=$searchID}pageNo=%d&sortField=$sortField&sortOrder=$sortOrder{/link}">
+    </woltlab-core-pagination>
+{/capture}
+
+
 {hascontent}
 <div class="paginationTop">
     {content}
-    {pages print=true assign=pagesLinks controller="CharacterList" application="rp" id=$searchID link="pageNo=%d&sortField=$sortField&sortOrder=$sortOrder"}
+    {@$pagesLinks}
     {/content}
 </div>
 {/hascontent}
