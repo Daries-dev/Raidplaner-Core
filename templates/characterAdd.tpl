@@ -13,7 +13,7 @@
     {/if}
 
     <li>
-        <a href="{link controller='CharactersList' application='rp'}{/link}" class="button">
+        <a href="{link application='rp' controller='CharactersList'}{/link}" class="button">
             {icon name="list"}
             <span>{lang}rp.character.list{/lang}</span>
         </a>

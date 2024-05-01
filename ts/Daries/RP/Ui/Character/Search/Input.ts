@@ -15,7 +15,7 @@ export class UiCharacterSearchInput extends UiSearchInput {
     options = Core.extend(
       {
         ajax: {
-          className: "rp\\data\\character\\CharacterAction", //TODO className missing in UISearchInput
+          className: "rp\\data\\character\\CharacterAction",
         },
       },
       options,

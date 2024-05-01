@@ -3,7 +3,7 @@
  *
  * @author  Marco Daries
  * @copyright   2023-2024 Daries.dev
- * @license Raidplaner is licensed under Creative Commons Attribution-ShareAlike 4.0 International 
+ * @license Raidplaner is licensed under Creative Commons Attribution-ShareAlike 4.0 International
  */
 define(["require", "exports", "tslib", "WoltLabSuite/Core/Event/Handler", "WoltLabSuite/Core/Ajax", "./Action/DeleteAction", "./Action/DisableAction", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/Ui/Notification", "WoltLabSuite/Core/Core", "WoltLabSuite/Core/Ui/Dropdown/Simple", "WoltLabSuite/Core/Controller/Clipboard"], function (require, exports, tslib_1, Handler_1, Ajax_1, DeleteAction_1, DisableAction_1, Language_1, Notification_1, Core_1, Simple_1, Clipboard_1) {
     "use strict";
