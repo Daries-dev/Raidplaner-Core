@@ -148,7 +148,7 @@
                             </div>
                         </td>
                         <td class="columnID columnCharacterID">{@$character->characterID}</td>
-                        <td class="columnIcon"></td>
+                        <td class="columnIcon">{@$character->getAvatar()->getImageTag(24)}</td>
                         <td class="columnText columnCharacterName">
                             <span class="characterName">
                                 <a href="{link application='rp' controller='CharacterEdit' id=$character->characterID}{/link}">

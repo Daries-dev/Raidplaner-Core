@@ -2,8 +2,12 @@
 
 namespace rp\data\character;
 
+use rp\data\character\avatar\CharacterAvatar;
+use rp\data\character\avatar\CharacterAvatarDecorator;
+use rp\data\character\avatar\DefaultCharacterAvatar;
 use wcf\data\DatabaseObjectDecorator;
 use wcf\data\ITitledLinkObject;
+use wcf\system\user\storage\UserStorageHandler;
 
 /**
  * Decorates the character object and provides functions to retrieve data for character profiles.
@@ -15,9 +19,63 @@ use wcf\data\ITitledLinkObject;
 final class CharacterProfile extends DatabaseObjectDecorator implements ITitledLinkObject
 {
     /**
+     * character avatar
+     */
+    protected ?CharacterAvatarDecorator $avatar = null;
+
+    /**
      * @inheritDoc
      */
     protected static $baseClass = Character::class;
+
+    /**
+     * Returns the character's avatar.
+     */
+    public function getAvatar(): CharacterAvatarDecorator
+    {
+        if ($this->avatar === null) {
+            $avatar = null;
+
+            if ($this->avatarID) {
+                if (!$this->fileHash) {
+                    $avatars = [];
+
+                    if ($this->userID) {
+                        $data = UserStorageHandler::getInstance()->getField('characterAvatars', $this->userID);
+                        if ($data !== null) {
+                            $avatars = \unserialize($data);
+                        }
+
+                        if (isset($avatars[$this->characterID])) {
+                            $avatar = $avatars[$this->characterID];
+                        } else {
+                            $avatar = new CharacterAvatar($this->avatarID);
+
+                            $avatars[$this->characterID] = $avatar;
+                            UserStorageHandler::getInstance()->update(
+                                $this->userID,
+                                'characterAvatars',
+                                \serialize($avatars)
+                            );
+                        }
+                    } else {
+                        $avatar = new CharacterAvatar($this->avatarID);
+                    }
+                } else {
+                    $avatar = new CharacterAvatar(null, $this->getDecoratedObject()->data);
+                }
+            }
+
+            // use default avatar
+            if ($avatar === null) {
+                $avatar = new DefaultCharacterAvatar($this->characterName);
+            }
+
+            $this->avatar = new CharacterAvatarDecorator($avatar);
+        }
+
+        return $this->avatar;
+    }
 
     /**
      * Returns the character profile with the given character name.
@@ -28,7 +86,7 @@ final class CharacterProfile extends DatabaseObjectDecorator implements ITitledL
         return new self($character);
     }
 
-        /**
+    /**
      * @inheritDoc
      */
     public function getLink(): string

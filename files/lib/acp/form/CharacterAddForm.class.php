@@ -15,6 +15,7 @@ use wcf\system\form\builder\container\TabTabMenuFormContainer;
 use wcf\system\form\builder\data\processor\CustomFormDataProcessor;
 use wcf\system\form\builder\field\MultilineTextFormField;
 use wcf\system\form\builder\field\TextFormField;
+use wcf\system\form\builder\field\UploadFormField;
 use wcf\system\form\builder\field\user\UserFormField;
 use wcf\system\form\builder\field\validation\FormFieldValidationError;
 use wcf\system\form\builder\field\validation\FormFieldValidator;
@@ -118,7 +119,28 @@ class CharacterAddForm extends AbstractFormBuilderForm
                 MultilineTextFormField::create('notes')
                     ->label('rp.character.notes'),
             ]);
-        $dataTab->appendChild($dataContainer);
+        $avatarContainer = FormContainer::create('avatar')
+            ->appendChild(
+                UploadFormField::create('avatarFile')
+                    ->label('rp.character.avatar')
+                    ->description('rp.character.avatar.description')
+                    ->maximum(1)
+                    ->imageOnly()
+                    ->allowSvgImage()
+                    ->maximumFilesize(WCF::getSession()->getPermission('user.rp.characterAvatarMaxSize'))
+                    ->setAcceptableFiles(\explode("\n", WCF::getSession()->getPermission('user.rp.characterAvatarAllowedFileExtensions')))
+                    ->available(
+                        (
+                            $this->formObject === null ||
+                            ($this->formObject !== null && WCF::getSession()->getPermission('user.rp.canEditOwnCharacter'))
+                        )
+                            && WCF::getSession()->getPermission('user.rp.canUploadCharacterAvatar')
+                    )
+            );
+        $dataTab->appendChildren([
+            $dataContainer,
+            $avatarContainer
+        ]);
 
         // character tab
         $characterTab = TabTabMenuFormContainer::create('characterTab');

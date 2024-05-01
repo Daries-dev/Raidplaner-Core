@@ -2,6 +2,7 @@
 
 namespace rp\data\character;
 
+use rp\data\character\avatar\CharacterAvatar;
 use rp\system\cache\runtime\CharacterProfileRuntimeCache;
 use wcf\data\DatabaseObject;
 use wcf\system\request\IRouteController;
@@ -50,6 +51,21 @@ final class Character extends DatabaseObject implements IRouteController
         }
 
         return false;
+    }
+
+    /**
+     * Returns the absolute location of the icon file.
+     *
+     * @return string[]
+     */
+    public function getAvatarFileUploadFileLocations(): array
+    {
+        if ($this->avatarID) {
+            $avatar = new CharacterAvatar($this->avatarID);
+            return [$avatar->getLocation()];
+        }
+
+        return [];
     }
 
     /**

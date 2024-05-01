@@ -25,6 +25,8 @@
 
         <category name="rp.character">
             <item name="rp.character.add"><![CDATA[Charakter hinzufügen]]></item>
+            <item name="rp.character.avatar"><![CDATA[Avatar]]></item>
+            <item name="rp.character.avatar.description"><![CDATA[Avatare dürfen die Dateiendungen {"\n"|str_replace:', ':$__wcf->session->getPermission('user.rp.characterAvatarAllowedFileExtensions')} und maximal eine Dateigröße von {@$__wcf->session->getPermission('user.rp.characterAvatarMaxSize')|filesize} besitzen. Die Mindestgröße für Avatare liegt bei 128×128 Pixel.]]></item>
             <item name="rp.character.category.character"><![CDATA[Charakter]]></item>
             <item name="rp.character.characterID"><![CDATA[Charakter-ID]]></item>
             <item name="rp.character.characterName"><![CDATA[Charaktername]]></item>
@@ -73,7 +75,10 @@
             <item name="wcf.acp.group.option.user.rp.canAddCharacter"><![CDATA[Kann Charaktere hinzufügen]]></item>
             <item name="wcf.acp.group.option.user.rp.canDeleteOwnCharacter"><![CDATA[Kann eigende Charaktere löschen]]></item>
             <item name="wcf.acp.group.option.user.rp.canEditOwnCharacter"><![CDATA[Kann eigene Charaktere bearbeiten]]></item>
+            <item name="wcf.acp.group.option.user.rp.canUploadCharacterAvatar"><![CDATA[Kann eigenen Avatar hochladen]]></item>
             <item name="wcf.acp.group.option.user.rp.canViewCharactersList"><![CDATA[Kann Charakter-Liste sehen]]></item>
+            <item name="wcf.acp.group.option.user.rp.characterAvatarAllowedFileExtensions"><![CDATA[Erlaubte Dateiendungen]]></item>
+            <item name="wcf.acp.group.option.user.rp.characterAvatarMaxSize"><![CDATA[Maximale Dateigröße]]></item>
         </category>
 
         <category name="wcf.acp.option">
