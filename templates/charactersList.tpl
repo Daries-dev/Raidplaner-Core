@@ -194,4 +194,17 @@
     {/hascontent}
 </footer>
 
+<script data-relocate="true">
+    require(['Daries/RP/Ui/Character/Search/Input'], ({ UiCharacterSearchInput }) => {
+        new UiCharacterSearchInput(document.getElementById('searchCharacterName'), {
+            callbackSelect(item) {
+                const link = '{link controller='Character' application='rp' id=2147483646 title='wcftitleplaceholder' encode=false}{/link}';
+                window.location = link.replace('2147483646', item.dataset.objectId).replace(
+                    'wcftitleplaceholder',
+                    item.dataset.label);
+            }
+        });
+    });
+</script>
+
 {include file='footer'}

@@ -170,7 +170,7 @@ class CharacterAction extends AbstractDatabaseObjectAction implements ISearchAct
 
         foreach ($characterProfileList as $characterProfile) {
             $list[] = [
-                'icon' => '', // TODO ICON
+                'icon' => $characterProfile->getAvatar()->getImageTag(16),
                 'label' => $characterProfile->characterName,
                 'objectID' => $characterProfile->characterID,
             ];
