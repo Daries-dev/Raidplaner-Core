@@ -31,6 +31,7 @@
             <item name="rp.character.characterID"><![CDATA[Character ID]]></item>
             <item name="rp.character.characterName"><![CDATA[Charactername]]></item>
             <item name="rp.character.characterName.error.notUnique"><![CDATA[This charactername is already in use.]]></item>
+            <item name="rp.character.characters"><![CDATA[Characters]]></item>
             <item name="rp.character.charactersList.created"><![CDATA[Added at {@$character->created|date}]]></item>
             <item name="rp.character.created"><![CDATA[Created]]></item>
             <item name="rp.character.edit"><![CDATA[Edit Character]]></item>
@@ -40,6 +41,8 @@
             <item name="rp.character.noCharacters"><![CDATA[No characters matched your criteria. <a href="{link application='rp' controller='CharactersList'}{/link}">Reset the applied filters.</a>]]></item>
             <item name="rp.character.notes"><![CDATA[Notes]]></item>
             <item name="rp.character.primary"><![CDATA[Main]]></item>
+            <item name="rp.character.profile.about.noData"><![CDATA[{if $userID == $__wcf->getUser()->userID}You have not provided any details yet.{else}There are no details visible to you.{/if}]]></item>
+            <item name="rp.character.profile.menu.about"><![CDATA[About Character]]></item>
             <item name="rp.character.search"><![CDATA[Search Characters]]></item>
             <item name="rp.character.search.results"><![CDATA[Search Results]]></item>
             <item name="rp.character.sort.letters"><![CDATA[First Letter]]></item>
@@ -47,6 +50,7 @@
             <item name="rp.character.sort.ownCharacters"><![CDATA[Show own characters]]></item>
             <item name="rp.character.sortField.characterName"><![CDATA[Charctername]]></item>
             <item name="rp.character.sortField.created"><![CDATA[Created]]></item>
+            <item name="rp.character.views"><![CDATA[Views]]></item>
         </category>
 
         <category name="rp.classification">
