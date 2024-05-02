@@ -5,6 +5,7 @@ namespace rp\acp\form;
 use rp\data\character\CharacterList;
 use wcf\data\object\type\ObjectType;
 use wcf\data\object\type\ObjectTypeCache;
+use wcf\data\search\Search;
 use wcf\data\search\SearchEditor;
 use wcf\form\AbstractForm;
 use wcf\form\AbstractFormBuilderForm;
@@ -24,7 +25,7 @@ use wcf\util\HeaderUtil;
  * @copyright   2023-2024 Daries.dev
  * @license Raidplaner is licensed under Creative Commons Attribution-ShareAlike 4.0 International 
  */
-final class CharacterSearchForm extends AbstractFormBuilderForm
+class CharacterSearchForm extends AbstractFormBuilderForm
 {
     /**
      * @inheritDoc
@@ -56,6 +57,11 @@ final class CharacterSearchForm extends AbstractFormBuilderForm
      * @inheritDoc
      */
     public $neededPermissions = ['admin.rp.canSearchCharacter'];
+
+    /**
+     * search object
+     */
+    protected ?Search $searchObj = null;
 
     /**
      * sort field
@@ -112,11 +118,11 @@ final class CharacterSearchForm extends AbstractFormBuilderForm
             'matches' => $this->characterList->getObjectIDs(),
         ]);
 
-        $search = SearchEditor::create([
+        $this->searchObj = SearchEditor::create([
             'searchData' => $data,
             'searchTime' => TIME_NOW,
             'searchType' => 'characters',
-            'userID' => WCF::getUser()->userID,
+            'userID' => WCF::getUser()->userID ?? null,
         ]);
 
         $this->saved();
@@ -126,7 +132,7 @@ final class CharacterSearchForm extends AbstractFormBuilderForm
             'CharacterList',
             [
                 'application' => 'rp',
-                'id' => $search->searchID,
+                'id' => $this->searchObj->searchID,
             ],
             'sortField=' . \rawurlencode($this->sortField) . '&sortOrder=' . \rawurlencode($this->sortOrder)
         ));

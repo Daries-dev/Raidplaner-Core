@@ -29,7 +29,7 @@
 </header>
 
 {if $errorField == 'search'}
-	<woltlab-core-notice type="error">{lang}rp.acp.character.search.error.noMatches{/lang}</woltlab-core-notice>
+	<woltlab-core-notice type="error">{lang}rp.character.search.error.noMatches{/lang}</woltlab-core-notice>
 {else}
 	{include file='shared_formError'}
 {/if}

@@ -16,6 +16,15 @@
                 <title>Charaktere</title>
             </content>
         </page>
+        <page identifier="dev.daries.rp.Character">
+            <pageType>system</pageType>
+            <controller>rp\page\CharacterPage</controller>
+            <name language="de">Charakterprofil</name>
+            <name language="en">Character Profile</name>
+            <handler>rp\system\page\handler\CharacterPageHandler</handler>
+            <parent>dev.daries.rp.CharactersList</parent>
+            <requireObjectID>1</requireObjectID>
+        </page>
         <page identifier="dev.daries.rp.CharacterAdd">
             <pageType>system</pageType>
             <controller>rp\form\CharacterAddForm</controller>
@@ -44,14 +53,19 @@
                 <title>Charakter bearbeiten</title>
             </content>
         </page>
-        <page identifier="dev.daries.rp.Character">
+        <page identifier="dev.daries.rp.CharacterSearch">
             <pageType>system</pageType>
-            <controller>rp\page\CharacterPage</controller>
-            <name language="de">Charakterprofil</name>
-            <name language="en">Character Profile</name>
-            <handler>rp\system\page\handler\CharacterPageHandler</handler>
+            <controller>rp\form\CharacterSearchForm</controller>
+            <name language="de">Charakter suchen</name>
+            <name language="en">Search Characters</name>
             <parent>dev.daries.rp.CharactersList</parent>
-            <requireObjectID>1</requireObjectID>
+            <permissions>user.rp.canViewCharactersList</permissions>
+            <content language="en">
+                <title>Search Characters</title>
+            </content>
+            <content language="de">
+                <title>Charakter suchen</title>
+            </content>
         </page>
     </import>
 </data>

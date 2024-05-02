@@ -8,5 +8,11 @@
 			<title language="en">Characters</title>
 			<page>dev.daries.rp.CharactersList</page>
 		</item>
+		<item identifier="dev.daries.rp.CharacterSearch">
+			<parent>dev.daries.rp.CharactersList</parent>
+			<title language="de">Charaktersuche</title>
+			<title language="en">Search Characters</title>
+			<page>dev.daries.rp.CharacterSearch</page>
+		</item>
     </import>
 </data>

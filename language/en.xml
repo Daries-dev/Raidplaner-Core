@@ -44,6 +44,7 @@
             <item name="rp.character.profile.about.noData"><![CDATA[{if $userID == $__wcf->getUser()->userID}You have not provided any details yet.{else}There are no details visible to you.{/if}]]></item>
             <item name="rp.character.profile.menu.about"><![CDATA[About Character]]></item>
             <item name="rp.character.search"><![CDATA[Search Characters]]></item>
+            <item name="rp.character.search.error.noMatches"><![CDATA[No characters matched your criteria.]]></item>
             <item name="rp.character.search.results"><![CDATA[Search Results]]></item>
             <item name="rp.character.sort.letters"><![CDATA[First Letter]]></item>
             <item name="rp.character.sort.letters.all"><![CDATA[All]]></item>
