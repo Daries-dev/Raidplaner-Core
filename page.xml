@@ -44,6 +44,15 @@
                 <title>Charakter bearbeiten</title>
             </content>
         </page>
+        <page identifier="dev.daries.rp.Character">
+            <pageType>system</pageType>
+            <controller>rp\page\CharacterPage</controller>
+            <name language="de">Charakterprofil</name>
+            <name language="en">Character Profile</name>
+            <handler>rp\system\page\handler\CharacterPageHandler</handler>
+            <parent>dev.daries.rp.CharactersList</parent>
+            <requireObjectID>1</requireObjectID>
+        </page>
     </import>
 </data>
         
