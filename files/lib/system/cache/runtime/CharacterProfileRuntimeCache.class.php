@@ -2,6 +2,7 @@
 
 namespace rp\system\cache\runtime;
 
+use rp\data\character\CharacterProfile;
 use rp\data\character\CharacterProfileList;
 use wcf\system\cache\runtime\AbstractRuntimeCache;
 

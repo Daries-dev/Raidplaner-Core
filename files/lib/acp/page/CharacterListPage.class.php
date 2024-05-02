@@ -2,6 +2,7 @@
 
 namespace rp\acp\page;
 
+use CuyZ\Valinor\Mapper\MappingError;
 use rp\data\character\CharacterProfileList;
 use wcf\http\Helper;
 use wcf\page\SortablePage;
