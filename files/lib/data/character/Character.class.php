@@ -38,6 +38,26 @@ final class Character extends DatabaseObject implements IRouteController
     protected static $databaseTableName = 'member';
 
     /**
+     * Returns true if the active user can delete this character.
+     */
+    public function canDelete(): bool
+    {
+        if (WCF::getSession()->getPermission('admin.rp.canDeleteCharacter')) {
+            return true;
+        }
+
+        if ($this->userID == WCF::getUser()->userID && WCF::getSession()->getPermission('user.rp.canDeleteOwnCharacter')) {
+            $characters = self::getAllCharactersByUserID($this->userID);
+            if (\count($characters) == 1) return true;
+            elseif (!$this->isPrimary) return true;
+
+            return false;
+        }
+
+        return false;
+    }
+
+    /**
      * Returns true if the active user can edit this character.
      */
     public function canEdit(): bool
@@ -51,6 +71,34 @@ final class Character extends DatabaseObject implements IRouteController
         }
 
         return false;
+    }
+
+    /**
+     * Returns all characters by user id.
+     * 
+     * @return CharacterProfile[]
+     */
+    public static function getAllCharactersByUserID(int $userID): array
+    {
+        $sql = "SELECT  *
+                FROM    rp1_member
+                WHERE   userID = ?
+                    AND gameID = ?
+                    AND isDisabled = ?";
+        $statement = WCF::getDB()->prepare($sql);
+        $statement->execute([
+            $userID,
+            RP_CURRENT_GAME_ID,
+            0,
+        ]);
+        $characters = $statement->fetchObject(Character::class);
+
+        $characterProfile = [];
+        foreach ($characters as $character) {
+            $characterProfile[$character->characterID] = new CharacterProfile($character);
+        }
+
+        return $characterProfile;
     }
 
     /**

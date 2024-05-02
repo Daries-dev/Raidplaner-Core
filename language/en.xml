@@ -28,14 +28,25 @@
             <item name="rp.character.avatar"><![CDATA[Avatar]]></item>
             <item name="rp.character.avatar.description"><![CDATA[You may use the following file extensions “{"\n"|str_replace:', ':$__wcf->session->getPermission('user.rp.characterAvatarAllowedFileExtensions')}” for avatar with a maximum file size of {@$__wcf->session->getPermission('user.rp.characterAvatarMaxSize')|filesize}. The minimum dimensions are 128×128 pixels.]]></item>
             <item name="rp.character.category.character"><![CDATA[Character]]></item>
-            <item name="rp.character.characterName"><![CDATA[Charactername]]></item>
             <item name="rp.character.characterID"><![CDATA[Character ID]]></item>
+            <item name="rp.character.characterName"><![CDATA[Charactername]]></item>
             <item name="rp.character.characterName.error.notUnique"><![CDATA[This charactername is already in use.]]></item>
+            <item name="rp.character.charactersList.created"><![CDATA[Added at {@$character->created|date}]]></item>
             <item name="rp.character.created"><![CDATA[Created]]></item>
             <item name="rp.character.edit"><![CDATA[Edit Character]]></item>
+            <item name="rp.character.filter"><![CDATA[Filter Characters]]></item>
             <item name="rp.character.guildName"><![CDATA[Guild]]></item>
             <item name="rp.character.list"><![CDATA[Characters]]></item>
+            <item name="rp.character.noCharacters"><![CDATA[No characters matched your criteria. <a href="{link application='rp' controller='CharactersList'}{/link}">Reset the applied filters.</a>]]></item>
             <item name="rp.character.notes"><![CDATA[Notes]]></item>
+            <item name="rp.character.primary"><![CDATA[Main]]></item>
+            <item name="rp.character.search"><![CDATA[Search Characters]]></item>
+            <item name="rp.character.search.results"><![CDATA[Search Results]]></item>
+            <item name="rp.character.sort.letters"><![CDATA[First Letter]]></item>
+            <item name="rp.character.sort.letters.all"><![CDATA[All]]></item>
+            <item name="rp.character.sort.ownCharacters"><![CDATA[Show own characters]]></item>
+            <item name="rp.character.sortField.characterName"><![CDATA[Charctername]]></item>
+            <item name="rp.character.sortField.created"><![CDATA[Created]]></item>
         </category>
 
         <category name="rp.classification">
@@ -76,6 +87,7 @@
             <item name="wcf.acp.group.option.user.rp.canDeleteOwnCharacter"><![CDATA[Can delete their characters]]></item>
             <item name="wcf.acp.group.option.user.rp.canEditOwnCharacter"><![CDATA[Can edit own characters]]></item>
             <item name="wcf.acp.group.option.user.rp.canUploadCharacterAvatar"><![CDATA[Can upload own avatar]]></item>
+            <item name="wcf.acp.group.option.user.rp.canViewCharacterProfile"><![CDATA[Can view character profiles]]></item>
             <item name="wcf.acp.group.option.user.rp.canViewCharactersList"><![CDATA[Can view characters list]]></item>
             <item name="wcf.acp.group.option.user.rp.characterAvatarAllowedFileExtensions"><![CDATA[Allowed file extensions]]></item>
             <item name="wcf.acp.group.option.user.rp.characterAvatarMaxSize"><![CDATA[Maximum file size]]></item>

@@ -93,6 +93,11 @@
                 <optiontype>boolean</optiontype>
                 <defaultvalue>1</defaultvalue>
             </option>
+            <option name="user.rp.canViewCharacterProfile">
+                <categoryname>user.rp.character</categoryname>
+                <optiontype>boolean</optiontype>
+                <defaultvalue>1</defaultvalue>
+            </option>
             <option name="user.rp.canUploadCharacterAvatar">
                 <categoryname>user.rp.character</categoryname>
                 <optiontype>boolean</optiontype>
