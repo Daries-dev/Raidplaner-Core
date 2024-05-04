@@ -99,6 +99,12 @@
             <item name="rp.race.title"><![CDATA[Rasse]]></item>
         </category>
 
+        <category name="rp.raid.event">
+            <item name="rp.raid.event.pointAccount"><![CDATA[Punktekonto]]></item>
+            <item name="rp.raid.event.points"><![CDATA[Punkte]]></item>
+            <item name="rp.raid.event.title"><![CDATA[Ereignis]]></item>
+        </category>
+
         <category name="rp.role">
             <item name="rp.role.title"><![CDATA[Rolle]]></item>
         </category>

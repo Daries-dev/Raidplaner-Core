@@ -99,6 +99,12 @@
             <item name="rp.race.title"><![CDATA[Race]]></item>
         </category>
 
+        <category name="rp.raid.event">
+            <item name="rp.raid.event.pointAccount"><![CDATA[Point Account]]></item>
+            <item name="rp.raid.event.points"><![CDATA[Points]]></item>
+            <item name="rp.raid.event.title"><![CDATA[Event]]></item>
+        </category>
+
         <category name="rp.role">
             <item name="rp.role.title"><![CDATA[Role]]></item>
         </category>
@@ -184,7 +190,7 @@
             <item name="wcf.clipboard.item.dev.daries.rp.character.disable"><![CDATA[Disable ({#$count})]]></item>
             <item name="wcf.clipboard.item.dev.daries.rp.character.enable"><![CDATA[Enable ({#$count})]]></item>
         </category>
-        
+
         <category name="wcf.page">
             <item name="wcf.page.onlineLocation.dev.daries.rp.Character"><![CDATA[Character profile of <a href="{link application='rp' controller='Character' object=$character}{/link}" class="rpCharacterLink" data-character-id="{@$character->characterID}">{$character->getTitle()}</a>]]></item>
         </category>
