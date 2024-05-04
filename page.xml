@@ -3,6 +3,15 @@
     xsi:schemaLocation="http://www.woltlab.com http://www.woltlab.com/XSD/6.0/page.xsd">
     <import>
         <!-- dynamic -->
+        <page identifier="dev.daries.rp.Calendar">
+            <pageType>system</pageType>
+            <controller>rp\page\CalendarPage</controller>
+            <name language="de">Kalender</name>
+            <name language="en">Calendar</name>
+            <handler>rp\system\page\handler\CalendarPageHandler</handler>
+            <allowSpidersToIndex>1</allowSpidersToIndex>
+        </page>
+
         <page identifier="dev.daries.rp.CharactersList">
             <pageType>system</pageType>
             <controller>rp\page\CharactersListPage</controller>

@@ -1,0 +1,40 @@
+.rp-calendar {
+	border: 1px solid var(--wcfContentBorder);
+	margin-top: 20px;
+	padding: 15px;
+}
+
+.rp-calendar-month {
+	color: var(--wcfHeaderText);
+	font-size: var(--wcfFontSizeTitle);
+	font-weight: 600;
+	margin-bottom: 10px;
+}
+
+.rp-calendar-weekdays,
+.rp-calendar-days {
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+}
+
+.rp-calendar-weekdays {
+	font-weight: 400;
+}
+
+.rp-calendar-weekday {
+	text-align: center;
+}
+
+.rp-calendar-days {
+	margin-top: 10px;
+}
+
+.rp-calendar-day {
+	border: 1px solid var(--wcfContentBorderInner);
+	min-height: 150px;
+	padding: 5px;
+
+	&.rp-calendar-day-empty {
+		background-color: var(--wcfButtonDisabledBackground);
+	}
+}
