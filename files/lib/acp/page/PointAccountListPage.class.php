@@ -11,6 +11,8 @@ use wcf\page\MultipleLinkPage;
  * @author  Marco Daries
  * @copyright   2023-2024 Daries.dev
  * @license Raidplaner is licensed under Creative Commons Attribution-ShareAlike 4.0 International 
+ *
+ * @property    I18nPointAccountList    $objectList
  */
 final class PointAccountListPage extends MultipleLinkPage
 {
@@ -41,4 +43,14 @@ final class PointAccountListPage extends MultipleLinkPage
      * @inheritDoc
      */
     public $sqlOrderBy = 'titleI18n ASC';
+
+    /**
+     * @inheritDoc
+     */
+    protected function initObjectList(): void
+    {
+        parent::initObjectList();
+
+        $this->objectList->getConditionBuilder()->add('gameID = ?', [RP_CURRENT_GAME_ID]);
+    }
 }

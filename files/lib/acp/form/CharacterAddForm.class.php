@@ -39,16 +39,6 @@ class CharacterAddForm extends AbstractFormBuilderForm
     public $activeMenuItem = 'rp.acp.menu.link.character.add';
 
     /**
-     * @inheritDoc
-     */
-    public $objectEditLinkApplication = 'rp';
-
-    /**
-     * @inheritDoc
-     */
-    public $objectEditLinkController = CharacterEditForm::class;
-
-    /**
      * ids of the fields containing object data
      * @var string[]
      */
@@ -68,6 +58,16 @@ class CharacterAddForm extends AbstractFormBuilderForm
      * @inheritDoc
      */
     public $objectActionClass = CharacterAction::class;
+
+    /**
+     * @inheritDoc
+     */
+    public $objectEditLinkApplication = 'rp';
+
+    /**
+     * @inheritDoc
+     */
+    public $objectEditLinkController = CharacterEditForm::class;
 
     /**
      * @inheritDoc

@@ -53,5 +53,7 @@ class RaidEventListPage extends MultipleLinkPage
         }
         $this->objectList->sqlSelects .= 'point_account.title as pointAccountName';
         $this->objectList->sqlJoins .= " LEFT JOIN rp" . WCF_N . "_point_account point_account ON (point_account.accountID = raid_event.pointAccountID)";
+
+        $this->objectList->getConditionBuilder()->add('raid_event.gameID = ?', [RP_CURRENT_GAME_ID]);
     }
 }

@@ -43,6 +43,16 @@ class PointAccountAddForm extends AbstractFormBuilderForm
     /**
      * @inheritDoc
      */
+    public $objectEditLinkApplication = 'rp';
+
+    /**
+     * @inheritDoc
+     */
+    public $objectEditLinkController = PointAccountEditForm::class;
+
+    /**
+     * @inheritDoc
+     */
     protected function createForm(): void
     {
         parent::createForm();

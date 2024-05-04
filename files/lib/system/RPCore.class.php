@@ -2,6 +2,7 @@
 
 namespace rp\system;
 
+use rp\page\CalendarPage;
 use wcf\system\application\AbstractApplication;
 
 // define current raidplaner version
@@ -16,4 +17,13 @@ use wcf\system\application\AbstractApplication;
  */
 final class RPCore extends AbstractApplication
 {
+    /**
+     * @inheritDoc
+     */
+    protected $abbreviation = 'rp';
+
+    /**
+     * @inheritDoc
+     */
+    protected $primaryController = CalendarPage::class;
 }

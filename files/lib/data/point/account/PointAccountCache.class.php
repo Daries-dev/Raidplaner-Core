@@ -23,7 +23,7 @@ final class PointAccountCache extends SingletonFactory
     /**
      * Returns the point account with the given account id or `null` if no such point account exists.
      */
-    public function getPointAccountByID(int $accountID): ?PointAccount
+    public function getAccountByID(int $accountID): ?PointAccount
     {
         return $this->cachedPointAccounts[$accountID] ?? null;
     }
@@ -33,7 +33,7 @@ final class PointAccountCache extends SingletonFactory
      * 
      * @return  PointAccount[]
      */
-    public function getPointAccounts(): array
+    public function getAccounts(): array
     {
         return $this->cachedPointAccounts;
     }
@@ -43,7 +43,7 @@ final class PointAccountCache extends SingletonFactory
      * 
      * @return	PointAccount[]
      */
-    public function getPointAccountsByIDs(array $accountIDs): array
+    public function getAccountsByIDs(array $accountIDs): array
     {
         return \array_filter(
             \array_map(fn ($accountID) => $this->getEventByID($accountID), $accountIDs),
