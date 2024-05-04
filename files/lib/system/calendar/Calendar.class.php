@@ -127,7 +127,7 @@ final class Calendar
             }
         }
 
-        return WCF::getTPL()->fetch('shared_calendar', 'rp', [
+        return WCF::getTPL()->fetch('renderCalender', 'rp', [
             'days' => $days,
             'events' => $this->events,
             'monthName' => $this->monthName,
