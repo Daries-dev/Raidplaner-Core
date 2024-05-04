@@ -27,4 +27,14 @@ class I18nRaidEventList extends I18nDatabaseObjectList
      * @inheritDoc
      */
     public $className = RaidEvent::class;
+
+    /**
+     * @inheritDoc
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->conditionBuilder->add('raid_event.gameID = ?', [RP_CURRENT_GAME_ID]);
+    }
 }

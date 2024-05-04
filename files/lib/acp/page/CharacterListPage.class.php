@@ -88,8 +88,6 @@ final class CharacterListPage extends SortablePage
     {
         parent::initObjectList();
 
-        $this->conditions->add('member.gameID = ?', [RP_CURRENT_GAME_ID]);
-
         $this->objectList->sqlSelects = " user.username";
         $this->objectList->sqlJoins .= " LEFT JOIN wcf" . WCF_N . "_user user ON (user.userID = member.userID)";
 

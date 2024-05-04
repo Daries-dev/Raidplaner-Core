@@ -28,4 +28,14 @@ class I18nPointAccountList extends I18nDatabaseObjectList
      * @inheritDoc
      */
     public $className = PointAccount::class;
+
+    /**
+     * @inheritDoc
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->conditionBuilder->add('point_account.gameID = ?', [RP_CURRENT_GAME_ID]);
+    }
 }

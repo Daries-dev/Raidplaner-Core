@@ -89,7 +89,6 @@ final class RPServerPackageInstallationPlugin extends AbstractXMLPackageInstalla
 
                         $serverList = new ServerList();
                         $serverList->getConditionBuilder()->add('identifier = ?', [$formField->getValue()]);
-                        $serverList->getConditionBuilder()->add('gameID = ?', [$gameID]);
 
                         if ($serverList->countObjects() > 0) {
                             $formField->addValidationError(

@@ -22,4 +22,14 @@ class ServerList extends DatabaseObjectList
      * @inheritDoc
      */
     public $className = Server::class;
+
+    /**
+     * @inheritDoc
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->conditionBuilder->add('server.gameID = ?', [RP_CURRENT_GAME_ID]);
+    }
 }

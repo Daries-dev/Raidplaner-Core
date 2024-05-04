@@ -66,7 +66,6 @@ class CharacterAction extends AbstractDatabaseObjectAction implements ISearchAct
             if (RequestHandler::getInstance()->isACPRequest()) {
                 $characterList = new CharacterList();
                 $characterList->getConditionBuilder()->add('userID = ?', [$this->parameters['data']['userID']]);
-                $characterList->getConditionBuilder()->add('gameID = ?', [RP_CURRENT_GAME_ID]);
                 $characterList->getConditionBuilder()->add('isPrimary = ?', [1]);
                 $this->parameters['data']['isPrimary'] = \intval($characterList->countObjects() === 0);
             } else {

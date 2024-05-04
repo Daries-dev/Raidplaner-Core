@@ -22,4 +22,14 @@ class RoleList extends DatabaseObjectList
      * @inheritDoc
      */
     public $className = Role::class;
+
+    /**
+     * @inheritDoc
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->conditionBuilder->add('role.gameID = ?', [RP_CURRENT_GAME_ID]);
+    }
 }

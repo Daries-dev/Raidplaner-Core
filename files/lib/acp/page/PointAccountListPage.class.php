@@ -43,14 +43,4 @@ final class PointAccountListPage extends MultipleLinkPage
      * @inheritDoc
      */
     public $sqlOrderBy = 'titleI18n ASC';
-
-    /**
-     * @inheritDoc
-     */
-    protected function initObjectList(): void
-    {
-        parent::initObjectList();
-
-        $this->objectList->getConditionBuilder()->add('gameID = ?', [RP_CURRENT_GAME_ID]);
-    }
 }

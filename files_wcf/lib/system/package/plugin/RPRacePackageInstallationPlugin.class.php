@@ -105,7 +105,6 @@ final class RPRacePackageInstallationPlugin extends AbstractXMLPackageInstallati
 
                         $raceList = new RaceList();
                         $raceList->getConditionBuilder()->add('identifier = ?', [$formField->getValue()]);
-                        $raceList->getConditionBuilder()->add('gameID = ?', [$gameID]);
 
                         if ($raceList->countObjects() > 0) {
                             $formField->addValidationError(

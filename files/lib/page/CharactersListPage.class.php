@@ -122,7 +122,6 @@ class CharactersListPage extends SortablePage
             $this->objectList->getConditionBuilder()->add('userID = ?', [WCF::getUser()->userID]);
         }
 
-        $this->objectList->getConditionBuilder()->add('gameID = ?', [RP_CURRENT_GAME_ID]);
         $this->objectList->getConditionBuilder()->add('isDisabled = ?', [0]);
     }
 

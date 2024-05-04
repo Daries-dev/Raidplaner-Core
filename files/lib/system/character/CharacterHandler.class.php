@@ -59,7 +59,6 @@ final class CharacterHandler extends SingletonFactory
         if (WCF::getUser()->userID) {
             $characterList = new CharacterProfileList();
             $characterList->getConditionBuilder()->add('userID = ?', [WCF::getUser()->userID]);
-            $characterList->getConditionBuilder()->add('gameID = ?', [RP_CURRENT_GAME_ID]);
             $characterList->getConditionBuilder()->add('isDisabled = ?', [0]);
             $characterList->readObjects();
             $this->characters = $characterList->getObjects();

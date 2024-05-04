@@ -117,7 +117,6 @@ final class RPClassificationPackageInstallationPlugin extends AbstractXMLPackage
 
                         $classificationList = new ClassificationList();
                         $classificationList->getConditionBuilder()->add('identifier = ?', [$formField->getValue()]);
-                        $classificationList->getConditionBuilder()->add('gameID = ?', [$gameID]);
 
                         if ($classificationList->countObjects() > 0) {
                             $formField->addValidationError(

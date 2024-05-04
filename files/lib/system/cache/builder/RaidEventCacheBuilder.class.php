@@ -20,7 +20,6 @@ final class RaidEventCacheBuilder extends AbstractCacheBuilder
     protected function rebuild(array $parameters): array
     {
         $list = new I18nRaidEventList();
-        $list->getConditionBuilder()->add('gameID = ?', [$parameters['gameID']]);
         $list->readObjects();
         return $list->getObjects();
     }

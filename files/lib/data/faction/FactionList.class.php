@@ -22,4 +22,14 @@ class FactionList extends DatabaseObjectList
      * @inheritDoc
      */
     public $className = Faction::class;
+
+    /**
+     * @inheritDoc
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->conditionBuilder->add('faction.gameID = ?', [RP_CURRENT_GAME_ID]);
+    }
 }

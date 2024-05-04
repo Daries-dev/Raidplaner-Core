@@ -89,7 +89,6 @@ final class RPFactionPackageInstallationPlugin extends AbstractXMLPackageInstall
 
                         $factionList = new FactionList();
                         $factionList->getConditionBuilder()->add('identifier = ?', [$formField->getValue()]);
-                        $factionList->getConditionBuilder()->add('gameID = ?', [$gameID]);
 
                         if ($factionList->countObjects() > 0) {
                             $formField->addValidationError(

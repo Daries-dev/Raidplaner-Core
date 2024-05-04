@@ -89,7 +89,6 @@ final class RPRolePackageInstallationPlugin extends AbstractXMLPackageInstallati
 
                         $roleList = new RoleList();
                         $roleList->getConditionBuilder()->add('identifier = ?', [$formField->getValue()]);
-                        $roleList->getConditionBuilder()->add('gameID = ?', [$gameID]);
 
                         if ($roleList->countObjects() > 0) {
                             $formField->addValidationError(

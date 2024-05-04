@@ -22,4 +22,14 @@ class CharacterList extends DatabaseObjectList
      * @inheritDoc
      */
     public $className = Character::class;
+
+    /**
+     * @inheritDoc
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->conditionBuilder->add('member.gameID = ?', [RP_CURRENT_GAME_ID]);
+    }
 }
