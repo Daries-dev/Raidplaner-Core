@@ -19,8 +19,17 @@
             <item name="rp.acp.menu.link.character"><![CDATA[Character]]></item>
             <item name="rp.acp.menu.link.character.add"><![CDATA[Add Character]]></item>
             <item name="rp.acp.menu.link.character.list"><![CDATA[Characters]]></item>
-            <item name="rp.acp.menu.link.rp"><![CDATA[Raidplaner]]></item>
             <item name="rp.acp.menu.link.character.search"><![CDATA[Search Characters]]></item>
+            <item name="rp.acp.menu.link.point.account.add"><![CDATA[Add Points Account]]></item>
+            <item name="rp.acp.menu.link.point.account.list"><![CDATA[Points Accounts]]></item>
+            <item name="rp.acp.menu.link.raid"><![CDATA[Raid]]></item>
+            <item name="rp.acp.menu.link.rp"><![CDATA[Raidplaner]]></item>
+        </category>
+
+        <category name="rp.acp.point">
+            <item name="rp.acp.point.account.add"><![CDATA[Add Points Account]]></item>
+            <item name="rp.acp.point.account.edit"><![CDATA[Edit Points Account]]></item>
+            <item name="rp.acp.point.account.list"><![CDATA[Points Accounts]]></item>
         </category>
 
         <category name="rp.character">
@@ -66,6 +75,10 @@
             <item name="rp.game.title"><![CDATA[Games]]></item>
         </category>
 
+        <category name="rp.point.account">
+            <item name="rp.point.account.noDatas"><![CDATA[No points matched your criteria. <a href="{link application='rp' controller='PointList'}{/link}">Reset the applied filters.</a>]]></item>
+        </category>
+
         <category name="rp.race">
             <item name="rp.race.title"><![CDATA[Race]]></item>
         </category>
@@ -83,9 +96,11 @@
             <item name="wcf.acp.group.option.admin.rp.canDeleteCharacter"><![CDATA[Can delete characters]]></item>
             <item name="wcf.acp.group.option.admin.rp.canEditCharacter"><![CDATA[Can edit characters]]></item>
             <item name="wcf.acp.group.option.admin.rp.canManageGame"><![CDATA[[Can manage game]]></item>
+            <item name="wcf.acp.group.option.admin.rp.canManagePointAccount"><![CDATA[Can manage points accounts]]></item>
             <item name="wcf.acp.group.option.admin.rp.canSearchCharacter"><![CDATA[Can search characters]]></item>
             <item name="wcf.acp.group.option.category.admin.rp"><![CDATA[Raidplaner]]></item>
             <item name="wcf.acp.group.option.category.admin.rp.character"><![CDATA[Character]]></item>
+            <item name="wcf.acp.group.option.category.admin.rp.raid"><![CDATA[Raid]]></item>
             <item name="wcf.acp.group.option.category.user.rp"><![CDATA[Raidplaner]]></item>
             <item name="wcf.acp.group.option.category.user.rp.character"><![CDATA[Character]]></item>
             <item name="wcf.acp.group.option.user.rp.canAddCharacter"><![CDATA[Can add characters]]></item>
@@ -103,6 +118,7 @@
             <item name="wcf.acp.option.category.rp.settings"><![CDATA[Settings]]></item>
             <item name="wcf.acp.option.category.rp.character"><![CDATA[Character]]></item>
             <item name="wcf.acp.option.category.rp.character.list"><![CDATA[Character List]]></item>
+            <item name="wcf.acp.option.category.rp.points"><![CDATA[Points]]></item>
             <item name="wcf.acp.option.rp_characters_list_default_sort_field"><![CDATA[Sort by]]></item>
             <item name="wcf.acp.option.rp_characters_list_default_sort_field.description"><![CDATA[Choose default sort option of character list.]]></item>
             <item name="wcf.acp.option.rp_characters_list_default_sort_order"><![CDATA[Sort Order]]></item>
@@ -110,6 +126,13 @@
             <item name="wcf.acp.option.rp_characters_list_per_page"><![CDATA[Characters per Page]]></item>
             <item name="wcf.acp.option.rp_current_game_id"><![CDATA[Current Game]]></item>
             <item name="wcf.acp.option.rp_current_game_id.description"><![CDATA[Set the current game for the Raidplaner.]]></item>
+            <item name="wcf.acp.option.rp_item_account_easymode_disabled"><![CDATA[Disable simple mode for points accounts]]></item>
+            <item name="wcf.acp.option.rp_item_account_easymode_disabled.description"><![CDATA[In simple mode, no item accounts can be created, and events can only ever be assigned to one point account.]]></item>
+            <item name="wcf.acp.option.rp_points_enabled"><![CDATA[Enable points]]></item>
+            <item name="wcf.acp.option.rp_points_enabled.desciption"><![CDATA[Raids could be given points.]]></item>
+            <item name="wcf.acp.option.rp_points_name"><![CDATA[Point name]]></item>
+            <item name="wcf.acp.option.rp_round_points"><![CDATA[Round points]]></item>
+            <item name="wcf.acp.option.rp_round_points_precision"><![CDATA[Decimal place]]></item>
             <item name="wcf.acp.option.rp_show_twinks"><![CDATA[Show Twinks]]></item>
             <item name="wcf.acp.option.rp_show_twinks.description"><![CDATA[With Twink display enabled, points for main characters and Twinks are counted separately. When disabled, all points are attributed to the main character.]]></item>
         </category>

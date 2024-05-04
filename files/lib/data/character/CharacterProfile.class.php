@@ -5,6 +5,7 @@ namespace rp\data\character;
 use rp\data\character\avatar\CharacterAvatar;
 use rp\data\character\avatar\CharacterAvatarDecorator;
 use rp\data\character\avatar\DefaultCharacterAvatar;
+use rp\data\game\GameCache;
 use wcf\data\DatabaseObjectDecorator;
 use wcf\data\ITitledLinkObject;
 use wcf\system\user\storage\UserStorageHandler;
@@ -84,6 +85,14 @@ final class CharacterProfile extends DatabaseObjectDecorator implements ITitledL
     {
         $character = Character::getCharacterByCharacterName($name);
         return new self($character);
+    }
+
+    /**
+     * Returns game object of this character.
+     */
+    public function getGame(): Game
+    {
+        return GameCache::getInstance()->getGameByID($this->gameID);
     }
 
     /**

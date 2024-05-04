@@ -60,14 +60,9 @@
     </woltlab-core-pagination>
 {/capture}
 
-
-{hascontent}
 <div class="paginationTop">
-    {content}
     {@$pagesLinks}
-    {/content}
 </div>
-{/hascontent}
 
 {if $objects|count}
     <div id="characterTableContainer" class="section tabularBox">
@@ -112,10 +107,10 @@
                         data-object-id="{@$character->getObjectID()}"
                         data-enabled="{if !$character->isDisabled}true{else}false{/if}">
                         <td class="columnMark">
-                            <input type="checkbox" class="jsClipboardItem" data-object-id="{@$character->characterID}">
+                            <input type="checkbox" class="jsClipboardItem" data-object-id="{@$character->getObjectID()}">
                         </td>
                         <td class="columnIcon">
-                            <div class="dropdown" id="characterListDropdown{@$character->characterID}">
+                            <div class="dropdown" id="characterListDropdown{@$character->getObjectID()}">
                                 <a href="#" class="dropdownToggle button small">
                                     {icon name='pencil'}
                                     <span>{lang}wcf.global.button.edit{/lang}</span>
@@ -145,7 +140,7 @@
                                     {if $__wcf->session->getPermission('admin.rp.canEditCharacter')}
                                         <li class="dropdownDivider"></li>
                                         <li>
-                                            <a href="{link controller='CharacterEdit' application='rp' id=$character->characterID}{/link}"
+                                            <a href="{link controller='CharacterEdit' application='rp' id=$character->getObjectID()}{/link}"
                                                 class="jsEditLink">
                                                 {lang}wcf.global.button.edit{/lang}
                                             </a>
@@ -154,11 +149,11 @@
                                 </ul>
                             </div>
                         </td>
-                        <td class="columnID columnCharacterID">{@$character->characterID}</td>
+                        <td class="columnID columnCharacterID">{@$character->getObjectID()}</td>
                         <td class="columnIcon">{@$character->getAvatar()->getImageTag(24)}</td>
                         <td class="columnText columnCharacterName">
                             <span class="characterName">
-                                <a href="{link application='rp' controller='CharacterEdit' id=$character->characterID}{/link}">
+                                <a href="{link application='rp' controller='CharacterEdit' id=$character->getObjectID()}{/link}">
                                     {$character->getTitle()}
                                 </a>
                             </span>
@@ -188,11 +183,9 @@
     </div>
 
     <footer class="contentFooter">
-        {hascontent}
         <div class="paginationBottom">
-            {content}{@$pagesLinks}{/content}
+            {@$pagesLinks}
         </div>
-        {/hascontent}
 
         {hascontent}
         <nav class="contentFooterNavigation">

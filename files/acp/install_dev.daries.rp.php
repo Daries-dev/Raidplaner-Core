@@ -52,3 +52,15 @@ $statement->execute([
     'rp_current_game_id',
 ]);
 OptionEditor::resetCache();
+
+
+// set default point account
+$sql = "INSERT INTO rp1_point_account
+                    (title, description, gameID)
+        VALUES      (?, ?, ?)";
+$statement = WCF::getDB()->prepare($sql);
+$statement->execute([
+    'Default',
+    'Default-Pool',
+    $gameID,
+]);

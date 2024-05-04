@@ -270,6 +270,25 @@ return [
                 ->onDelete('SET NULL'),
         ]),
 
+    DatabaseTable::create('rp1_point_account')
+        ->columns([
+            ObjectIdDatabaseTableColumn::create('accountID'),
+            NotNullVarchar255DatabaseTableColumn::create('title'),
+            NotNullVarchar255DatabaseTableColumn::create('description')
+                ->defaultValue(''),
+            NotNullInt10DatabaseTableColumn::create('gameID'),
+        ])
+        ->indices([
+            DatabaseTablePrimaryIndex::create()
+                ->columns(['accountID']),
+        ])
+        ->foreignKeys([
+            DatabaseTableForeignKey::create()
+                ->columns(['gameID'])
+                ->referencedTable('rp1_game')
+                ->referencedColumns(['gameID'])
+                ->onDelete('CASCADE'),
+        ]),
 
     DatabaseTable::create('rp1_race')
         ->columns([

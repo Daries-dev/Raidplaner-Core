@@ -9,6 +9,9 @@
             <category name="admin.rp.character">
                 <parent>admin.rp</parent>
             </category>
+            <category name="admin.rp.raid">
+                <parent>admin.rp</parent>
+            </category>
 
             <category name="user.rp">
                 <parent>user</parent>
@@ -65,6 +68,16 @@
                 <usersonly>1</usersonly>
             </option>
             <!-- /admin.rp.character -->
+
+            <!-- admin.rp.raid -->
+            <option name="admin.rp.canManagePointAccount">
+                <categoryname>admin.rp.raid</categoryname>
+                <optiontype>boolean</optiontype>
+                <defaultvalue>0</defaultvalue>
+                <admindefaultvalue>1</admindefaultvalue>
+                <usersonly>1</usersonly>
+            </option>
+            <!-- /admin.rp.raid -->
 
             <!-- user.rp.character -->
             <option name="user.rp.canAddCharacter">
