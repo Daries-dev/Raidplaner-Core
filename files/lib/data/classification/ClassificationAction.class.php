@@ -11,6 +11,7 @@ use wcf\data\AbstractDatabaseObjectAction;
  * @copyright   2023-2024 Daries.dev
  * @license Raidplaner is licensed under Creative Commons Attribution-ShareAlike 4.0 International 
  * 
+ * @method  ClassificationEditor        create()
  * @method  ClassificationEditor[]      getObjects()
  * @method  ClassificationEditor        getSingleObject()
  */

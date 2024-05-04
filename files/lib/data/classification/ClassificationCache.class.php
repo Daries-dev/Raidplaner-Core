@@ -59,13 +59,10 @@ final class ClassificationCache extends SingletonFactory
      */
     public function getClassificationsByIDs(array $classificationIDs): array
     {
-        $returnValues = [];
-
-        foreach ($classificationIDs as $classificationID) {
-            $returnValues[] = $this->getClassificationByID($classificationID);
-        }
-
-        return $returnValues;
+        return \array_filter(
+            \array_map(fn ($classificationID) => $this->getEventByID($classificationID), $classificationIDs),
+            fn ($classification) => $classification !== null
+        );
     }
 
     /**

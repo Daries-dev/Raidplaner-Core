@@ -59,13 +59,10 @@ final class RaceCache extends SingletonFactory
      */
     public function getRacesByIDs(array $raceIDs): array
     {
-        $returnValues = [];
-
-        foreach ($raceIDs as $raceID) {
-            $returnValues[] = $this->getRaceByID($raceID);
-        }
-
-        return $returnValues;
+        return \array_filter(
+            \array_map(fn ($raceID) => $this->getEventByID($raceID), $raceIDs),
+            fn ($race) => $race !== null
+        );
     }
 
     /**

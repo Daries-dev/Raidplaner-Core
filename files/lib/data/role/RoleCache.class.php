@@ -59,13 +59,10 @@ final class RoleCache extends SingletonFactory
      */
     public function getRolesByIDs(array $roleIDs): array
     {
-        $returnValues = [];
-
-        foreach ($roleIDs as $roleID) {
-            $returnValues[] = $this->getRoleByID($roleID);
-        }
-
-        return $returnValues;
+        return \array_filter(
+            \array_map(fn ($roleID) => $this->getEventByID($roleID), $roleIDs),
+            fn ($role) => $role !== null
+        );
     }
 
     /**

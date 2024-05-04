@@ -59,13 +59,10 @@ final class ServerCache extends SingletonFactory
      */
     public function getServersByIDs(array $serverIDs): array
     {
-        $returnValues = [];
-
-        foreach ($serverIDs as $serverID) {
-            $returnValues[] = $this->getServerByID($serverID);
-        }
-
-        return $returnValues;
+        return \array_filter(
+            \array_map(fn ($serverID) => $this->getEventByID($serverID), $serverIDs),
+            fn ($server) => $server !== null
+        );
     }
 
     /**

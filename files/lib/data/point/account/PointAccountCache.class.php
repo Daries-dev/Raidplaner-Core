@@ -12,7 +12,8 @@ use wcf\system\SingletonFactory;
  * @copyright   2023-2024 Daries.dev
  * @license Raidplaner is licensed under Creative Commons Attribution-ShareAlike 4.0 International 
  */
-final class PointAccountCache extends SingletonFactory {
+final class PointAccountCache extends SingletonFactory
+{
     /**
      * cached point accounts
      * @var PointAccount[]
@@ -44,13 +45,10 @@ final class PointAccountCache extends SingletonFactory {
      */
     public function getPointAccountsByIDs(array $accountIDs): array
     {
-        $accounts = [];
-
-        foreach ($accountIDs as $accountID) {
-            $accounts[] = $this->getPointAccountByID($accountID);
-        }
-
-        return $accounts;
+        return \array_filter(
+            \array_map(fn ($accountID) => $this->getEventByID($accountID), $accountIDs),
+            fn ($account) => $account !== null
+        );
     }
 
     /**

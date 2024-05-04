@@ -59,13 +59,10 @@ final class FactionCache extends SingletonFactory
      */
     public function getFactionsByIDs(array $factionIDs): array
     {
-        $returnValues = [];
-
-        foreach ($factionIDs as $factionID) {
-            $returnValues[] = $this->getFactionByID($factionID);
-        }
-
-        return $returnValues;
+        return \array_filter(
+            \array_map(fn ($factionID) => $this->getEventByID($factionID), $factionIDs),
+            fn ($faction) => $faction !== null
+        );
     }
 
     /**

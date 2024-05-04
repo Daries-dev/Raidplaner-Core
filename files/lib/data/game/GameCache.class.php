@@ -77,13 +77,10 @@ final class GameCache extends SingletonFactory
      */
     public function getGamesByID(array $gameIDs): array
     {
-        $games = [];
-
-        foreach ($gameIDs as $gameID) {
-            $games[] = $this->getGameByID($gameID);
-        }
-
-        return $games;
+        return \array_filter(
+            \array_map(fn ($gameID) => $this->getEventByID($gameID), $gameIDs),
+            fn ($game) => $game !== null
+        );
     }
 
     /**
