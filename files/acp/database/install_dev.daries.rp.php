@@ -7,6 +7,8 @@
  */
 
 use wcf\system\database\table\column\DefaultFalseBooleanDatabaseTableColumn;
+use wcf\system\database\table\column\DefaultTrueBooleanDatabaseTableColumn;
+use wcf\system\database\table\column\FloatDatabaseTableColumn;
 use wcf\system\database\table\column\IntDatabaseTableColumn;
 use wcf\system\database\table\column\MediumtextDatabaseTableColumn;
 use wcf\system\database\table\column\NotNullInt10DatabaseTableColumn;
@@ -350,6 +352,40 @@ return [
                 ->columns(['factionID'])
                 ->referencedTable('rp1_faction')
                 ->referencedColumns(['factionID'])
+                ->onDelete('CASCADE'),
+        ]),
+
+    DatabaseTable::create('rp1_raid_event')
+        ->columns([
+            ObjectIdDatabaseTableColumn::create('eventID'),
+            NotNullVarchar255DatabaseTableColumn::create('title')
+                ->defaultValue(''),
+            IntDatabaseTableColumn::create('pointAccountID')
+                ->length(10),
+            NotNullInt10DatabaseTableColumn::create('gameID'),
+            FloatDatabaseTableColumn::create('defaultPoints')
+                ->length(11)
+                ->decimals(2)
+                ->notNull()
+                ->defaultValue(0),
+            NotNullVarchar255DatabaseTableColumn::create('icon')
+                ->defaultValue(''),
+            DefaultTrueBooleanDatabaseTableColumn::create('showProfile'),
+        ])
+        ->indices([
+            DatabaseTablePrimaryIndex::create()
+                ->columns(['eventID']),
+        ])
+        ->foreignKeys([
+            DatabaseTableForeignKey::create()
+                ->columns(['pointAccountID'])
+                ->referencedTable('rp1_point_account')
+                ->referencedColumns(['accountID'])
+                ->onDelete('SET NULL'),
+            DatabaseTableForeignKey::create()
+                ->columns(['gameID'])
+                ->referencedTable('rp1_game')
+                ->referencedColumns(['gameID'])
                 ->onDelete('CASCADE'),
         ]),
 

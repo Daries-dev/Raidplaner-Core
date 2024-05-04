@@ -23,6 +23,8 @@
             <item name="rp.acp.menu.link.point.account.add"><![CDATA[Punktekonto hinzufügen]]></item>
             <item name="rp.acp.menu.link.point.account.list"><![CDATA[Punktekonten]]></item>
             <item name="rp.acp.menu.link.raid"><![CDATA[Raid]]></item>
+            <item name="rp.acp.menu.link.raid.event.add"><![CDATA[Raid Event hinzufügen]]></item>
+            <item name="rp.acp.menu.link.raid.event.list"><![CDATA[Raid Events]]></item>
             <item name="rp.acp.menu.link.rp"><![CDATA[Raidplaner]]></item>
         </category>
 
@@ -30,6 +32,20 @@
             <item name="rp.acp.point.account.add"><![CDATA[Punktekonto hinzufügen]]></item>
             <item name="rp.acp.point.account.edit"><![CDATA[Punktekonto bearbeiten]]></item>
             <item name="rp.acp.point.account.list"><![CDATA[Punktekonten]]></item>
+        </category>
+
+        <category name="rp.acp.raid">
+            <item name="rp.acp.raid.event.add"><![CDATA[Raid Termin hinzufügen]]></item>
+            <item name="rp.acp.raid.event.defaultPoints"><![CDATA[Wert]]></item>
+            <item name="rp.acp.raid.event.defaultPoints.description"><![CDATA[Standard-Wert des Event. Dient als Hilfe und ist nicht bindend.]]></item>
+            <item name="rp.acp.raid.event.edit"><![CDATA[Raid Event bearbeiten]]></item>
+            <item name="rp.acp.raid.event.image"><![CDATA[Icon]]></item>
+            <item name="rp.acp.raid.event.image.mode"><![CDATA[Auswahl]]></item>
+            <item name="rp.acp.raid.event.image.mode.select"><![CDATA[Icon auswählen]]></item>
+            <item name="rp.acp.raid.event.image.mode.upload"><![CDATA[Icon hochladen]]></item>
+            <item name="rp.acp.raid.event.list"><![CDATA[Raid Termine]]></item>
+            <item name="rp.acp.raid.event.point.account"><![CDATA[Punktekonto]]></item>
+            <item name="rp.acp.raid.event.showProfile"><![CDATA[Im Charakter-Profil anzeigen]]></item>
         </category>
 
         <category name="rp.character">
@@ -97,6 +113,7 @@
             <item name="wcf.acp.group.option.admin.rp.canEditCharacter"><![CDATA[Kann Charaktere bearbeiten]]></item>
             <item name="wcf.acp.group.option.admin.rp.canManageGame"><![CDATA[Kann Spiele verwalten]]></item>
             <item name="wcf.acp.group.option.admin.rp.canManagePointAccount"><![CDATA[Kann Punktekonten verwalten]]></item>
+            <item name="wcf.acp.group.option.admin.rp.canManageRaidEvent"><![CDATA[Kann Raid-Events verwalten]]></item>
             <item name="wcf.acp.group.option.admin.rp.canSearchCharacter"><![CDATA[Kann Charaktere suchen]]></item>
             <item name="wcf.acp.group.option.category.admin.rp"><![CDATA[Raidplaner]]></item>
             <item name="wcf.acp.group.option.category.admin.rp.character"><![CDATA[Charakter]]></item>
