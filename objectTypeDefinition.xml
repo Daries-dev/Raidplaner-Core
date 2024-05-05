@@ -6,5 +6,10 @@
             <name>dev.daries.rp.condition.characterSearch</name>
             <interfacename>rp\system\condition\ICondition</interfacename>
         </definition>
+
+        <definition>
+            <name>dev.daries.rp.event.controller</name>
+            <interfacename>rp\system\event\IEventController</interfacename>
+        </definition>
     </import>
 </data>

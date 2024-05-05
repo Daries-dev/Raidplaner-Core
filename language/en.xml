@@ -83,6 +83,26 @@
             <item name="rp.classification.title"><![CDATA[Classification]]></item>
         </category>
 
+        <category name="rp.event">
+            <item name="rp.event.add"><![CDATA[Create Event]]></item>
+            <item name="rp.event.edit"><![CDATA[Edit event]]></item>
+            <item name="rp.event.enableComments"><![CDATA[Enable comments]]></item>
+            <item name="rp.event.endTime"><![CDATA[End Time]]></item>
+            <item name="rp.event.endTime.error.invalid"><![CDATA[You have specified an invalid date for the end of the event. The end of the event must not be before the start.]]></item>
+            <item name="rp.event.endTime.error.tooLong"><![CDATA[The duration of the event is too long. The maximum allowed duration is {#RP_CALENDAR_MAX_EVENT_LENGTH} days.]]></item>
+            <item name="rp.event.isFullDay"><![CDATA[Full day event]]></item>
+            <item name="rp.event.moderation.info"><![CDATA[Newly created events will remain inaccessible until approved by a moderator.]]></item>
+            <item name="rp.event.moderation.redirect"><![CDATA[Your event has been created and will be displayed once approved.]]></item>
+            <item name="rp.event.notes"><![CDATA[Note]]></item>
+            <item name="rp.event.startTime"><![CDATA[Start time]]></item>
+            <item name="rp.event.startTime.error.invalid"><![CDATA[You have specified an invalid date for the start of the event.]]></item>
+            <item name="rp.event.type"><![CDATA[Event Type]]></item>
+        </category>
+
+        <category name="rp.event.controller">
+            <item name="rp.event.controller.dev.daries.rp.event.controller.default"><![CDATA[Default]]></item>
+        </category>
+
         <category name="rp.faction">
             <item name="rp.faction.title"><![CDATA[Faction]]></item>
         </category>
@@ -125,10 +145,14 @@
             <item name="wcf.acp.group.option.category.admin.rp.character"><![CDATA[Character]]></item>
             <item name="wcf.acp.group.option.category.admin.rp.raid"><![CDATA[Raid]]></item>
             <item name="wcf.acp.group.option.category.user.rp"><![CDATA[Raidplaner]]></item>
+            <item name="wcf.acp.group.option.category.user.rp.calendar"><![CDATA[Kalender]]></item>
             <item name="wcf.acp.group.option.category.user.rp.character"><![CDATA[Character]]></item>
             <item name="wcf.acp.group.option.user.rp.canAddCharacter"><![CDATA[Can add characters]]></item>
+            <item name="wcf.acp.group.option.user.rp.canCreateEvent"><![CDATA[Can create events]]></item>
+            <item name="wcf.acp.group.option.user.rp.canCreateEventWithoutModeration"><![CDATA[Can create events without approval]]></item>
             <item name="wcf.acp.group.option.user.rp.canDeleteOwnCharacter"><![CDATA[Can delete their characters]]></item>
             <item name="wcf.acp.group.option.user.rp.canEditOwnCharacter"><![CDATA[Can edit own characters]]></item>
+            <item name="wcf.acp.group.option.user.rp.canReadEvent"><![CDATA[Can view events]]></item>
             <item name="wcf.acp.group.option.user.rp.canUploadCharacterAvatar"><![CDATA[Can upload own avatar]]></item>
             <item name="wcf.acp.group.option.user.rp.canViewCharacterProfile"><![CDATA[Can view character profiles]]></item>
             <item name="wcf.acp.group.option.user.rp.canViewCharactersList"><![CDATA[Can view characters list]]></item>
@@ -138,10 +162,14 @@
 
         <category name="wcf.acp.option">
             <item name="wcf.acp.option.category.rp"><![CDATA[Raidplaner]]></item>
-            <item name="wcf.acp.option.category.rp.settings"><![CDATA[Settings]]></item>
+            <item name="wcf.acp.option.category.rp.calendar"><![CDATA[Calendar]]></item>
+            <item name="wcf.acp.option.category.rp.calendar.event"><![CDATA[Events]]></item>
             <item name="wcf.acp.option.category.rp.character"><![CDATA[Character]]></item>
             <item name="wcf.acp.option.category.rp.character.list"><![CDATA[Character List]]></item>
             <item name="wcf.acp.option.category.rp.points"><![CDATA[Points]]></item>
+            <item name="wcf.acp.option.category.rp.settings"><![CDATA[Settings]]></item>
+            <item name="wcf.acp.option.rp_calendar_max_event_length"><![CDATA[Maximum event length]]></item>
+            <item name="wcf.acp.option.rp_calendar_max_event_length.description"><![CDATA[Maximum time between start and end of an event.]]></item>
             <item name="wcf.acp.option.rp_characters_list_default_sort_field"><![CDATA[Sort by]]></item>
             <item name="wcf.acp.option.rp_characters_list_default_sort_field.description"><![CDATA[Choose default sort option of character list.]]></item>
             <item name="wcf.acp.option.rp_characters_list_default_sort_order"><![CDATA[Sort Order]]></item>
@@ -149,6 +177,7 @@
             <item name="wcf.acp.option.rp_characters_list_per_page"><![CDATA[Characters per Page]]></item>
             <item name="wcf.acp.option.rp_current_game_id"><![CDATA[Current Game]]></item>
             <item name="wcf.acp.option.rp_current_game_id.description"><![CDATA[Set the current game for the Raidplaner.]]></item>
+            <item name="wcf.acp.option.rp_default_event_controller"><![CDATA[Termin Type [Default]]]></item>
             <item name="wcf.acp.option.rp_item_account_easymode_disabled"><![CDATA[Disable simple mode for points accounts]]></item>
             <item name="wcf.acp.option.rp_item_account_easymode_disabled.description"><![CDATA[In simple mode, no item accounts can be created, and events can only ever be assigned to one point account.]]></item>
             <item name="wcf.acp.option.rp_points_enabled"><![CDATA[Enable points]]></item>

@@ -140,6 +140,53 @@ return [
                 ->onDelete('CASCADE'),
         ]),
 
+    DatabaseTable::create('rp1_event')
+        ->columns([
+            ObjectIdDatabaseTableColumn::create('eventID'),
+            NotNullInt10DatabaseTableColumn::create('objectTypeID'),
+            NotNullInt10DatabaseTableColumn::create('gameID'),
+            VarcharDatabaseTableColumn::create('title')
+                ->length(191),
+            IntDatabaseTableColumn::create('userID')
+                ->length(10),
+            NotNullVarchar255DatabaseTableColumn::create('username'),
+            NotNullInt10DatabaseTableColumn::create('created'),
+            NotNullInt10DatabaseTableColumn::create('startTime'),
+            NotNullInt10DatabaseTableColumn::create('endTime'),
+            DefaultFalseBooleanDatabaseTableColumn::create('isFullDay'),
+            MediumtextDatabaseTableColumn::create('notes'),
+            DefaultFalseBooleanDatabaseTableColumn::create('hasEmbeddedObjects'),
+            NotNullInt10DatabaseTableColumn::create('views')
+                ->defaultValue(0),
+            DefaultFalseBooleanDatabaseTableColumn::create('enableComments'),
+            NotNullInt10DatabaseTableColumn::create('comments')
+                ->defaultValue(0),
+            NotNullInt10DatabaseTableColumn::create('cumulativeLikes')
+                ->defaultValue(0),
+            TextDatabaseTableColumn::create('additionalData'),
+            NotNullInt10DatabaseTableColumn::create('deleteTime')
+                ->defaultValue(0),
+            DefaultFalseBooleanDatabaseTableColumn::create('isDeleted'),
+            DefaultFalseBooleanDatabaseTableColumn::create('isCanceled'),
+            DefaultFalseBooleanDatabaseTableColumn::create('isDisabled'),
+        ])
+        ->indices([
+            DatabaseTablePrimaryIndex::create()
+                ->columns(['eventID']),
+        ])
+        ->foreignKeys([
+            DatabaseTableForeignKey::create()
+                ->columns(['objectTypeID'])
+                ->referencedTable('wcf1_object_type')
+                ->referencedColumns(['objectTypeID'])
+                ->onDelete('CASCADE'),
+            DatabaseTableForeignKey::create()
+                ->columns(['userID'])
+                ->referencedTable('wcf1_user')
+                ->referencedColumns(['userID'])
+                ->onDelete('SET NULL'),
+        ]),
+
     DatabaseTable::create('rp1_game')
         ->columns([
             ObjectIdDatabaseTableColumn::create('gameID'),
@@ -163,6 +210,15 @@ return [
         ]),
 
     PartialDatabaseTable::create('rp1_classification')
+        ->foreignKeys([
+            DatabaseTableForeignKey::create()
+                ->columns(['gameID'])
+                ->referencedTable('rp1_game')
+                ->referencedColumns(['gameID'])
+                ->onDelete('CASCADE'),
+        ]),
+
+    PartialDatabaseTable::create('rp1_event')
         ->foreignKeys([
             DatabaseTableForeignKey::create()
                 ->columns(['gameID'])

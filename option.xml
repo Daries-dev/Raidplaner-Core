@@ -8,9 +8,16 @@
                 <parent>rp</parent>
                 <showorder>1</showorder>
             </category>
-            <category name="rp.character">
+            <category name="rp.calendar">
                 <parent>rp</parent>
                 <showorder>2</showorder>
+            </category>
+            <category name="rp.calendar.event">
+                <parent>rp.calendar</parent>
+            </category>
+            <category name="rp.character">
+                <parent>rp</parent>
+                <showorder>3</showorder>
             </category>
             <category name="rp.character.list">
                 <parent>rp.character</parent>
@@ -18,7 +25,7 @@
             </category>
             <category name="rp.points">
                 <parent>rp</parent>
-                <showorder>2</showorder>
+                <showorder>4</showorder>
             </category>
         </categories>
 
@@ -37,6 +44,21 @@
                 <optiontype>gameSelect</optiontype>
             </option>
             <!-- /rp.settings -->
+
+            <!-- rp.calendar.event -->
+            <option name="rp_default_event_controller">
+                <categoryname>rp.calendar.event</categoryname>
+                <optiontype>eventControllerSelect</optiontype>
+                <defaultvalue>dev.daries.rp.event.controller.default</defaultvalue>
+            </option>
+            <option name="rp_calendar_max_event_length">
+                <categoryname>rp.calendar.event</categoryname>
+                <optiontype>integer</optiontype>
+                <defaultvalue>1</defaultvalue>
+                <minvalue>1</minvalue>
+                <suffix>days</suffix>
+            </option>
+            <!-- /rp.calendar.event -->
 
             <!-- rp.character -->
             <option name="rp_show_twinks">

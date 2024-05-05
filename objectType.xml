@@ -32,5 +32,20 @@
             <listclassname>rp\data\character\CharacterList</listclassname>
         </type>
         <!-- /clipboard items -->
+
+        <!-- event controllers -->
+        <type>
+            <name>dev.daries.rp.event.controller.default</name>
+            <definitionname>dev.daries.rp.event.controller</definitionname>
+            <classname>rp\system\event\DefaultEventController</classname>
+        </type>
+        <!-- /event controllers -->
+
+        <!-- message -->
+        <type>
+            <name>dev.daries.rp.event.notes</name>
+            <definitionname>com.woltlab.wcf.message</definitionname>
+        </type>
+        <!-- /message -->
     </import>
 </data>

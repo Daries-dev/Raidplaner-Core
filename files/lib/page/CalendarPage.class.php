@@ -4,12 +4,14 @@ namespace rp\page;
 
 use CuyZ\Valinor\Mapper\MappingError;
 use rp\system\calendar\Calendar;
+use wcf\data\object\type\ObjectTypeCache;
 use wcf\http\Helper;
 use wcf\page\AbstractPage;
 use wcf\system\exception\IllegalLinkException;
 use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
 use wcf\util\DateUtil;
+use wcf\util\HeaderUtil;
 
 /**
  * Shows the calendar page.
@@ -35,9 +37,17 @@ final class CalendarPage extends AbstractPage
      */
     public function assignVariables(): void
     {
+        parent::assignVariables();
+
+        $eventControllers = \array_filter(
+            ObjectTypeCache::getInstance()->getObjectTypes('dev.daries.rp.event.controller'),
+            fn($controller) => $controller->getProcessor()->isAccessible()
+        );
+
         WCF::getTPL()->assign([
             'calendar' => $this->calendar->render(),
             'currentLink' => $this->currentLink,
+            'eventControllers' => $eventControllers,
             'lastMonthLink' => $this->calendar->getLastMonthLink(),
             'nextMonthLink' => $this->calendar->getNextMonthLink(),
         ]);
@@ -64,6 +74,28 @@ final class CalendarPage extends AbstractPage
         parent::readParameters();
 
         try {
+            $parameters = Helper::mapQueryParameters(
+                $_POST,
+                <<<'EOT'
+                    array {
+                        objectType?: string
+                    }
+                    EOT
+            );
+
+            if (isset($parameters['objectType'])) {
+                HeaderUtil::redirect(
+                    LinkHandler::getInstance()->getLink(
+                        'EventAdd',
+                        [
+                            'application' => 'rp',
+                            'type' => $parameters['objectType']
+                        ]
+                    )
+                );
+                exit;
+            }
+
             $queryParameters = Helper::mapQueryParameters(
                 $_GET,
                 <<<'EOT'
