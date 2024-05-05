@@ -34,7 +34,7 @@ class PointAccountEditForm extends PointAccountAddForm
         parent::readParameters();
 
         try {
-            $queryParameters = Helper::mapQueryParameters(
+            $parameters = Helper::mapQueryParameters(
                 $_GET,
                 <<<'EOT'
                     array {
@@ -42,7 +42,7 @@ class PointAccountEditForm extends PointAccountAddForm
                     }
                     EOT
             );
-            $this->formObject = new PointAccount($queryParameters['id']);
+            $this->formObject = new PointAccount($parameters['id']);
 
             if (!$this->formObject->getObjectID()) {
                 throw new IllegalLinkException();

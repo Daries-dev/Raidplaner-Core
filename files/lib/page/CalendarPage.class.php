@@ -96,7 +96,7 @@ final class CalendarPage extends AbstractPage
                 exit;
             }
 
-            $queryParameters = Helper::mapQueryParameters(
+            $parameters = Helper::mapQueryParameters(
                 $_GET,
                 <<<'EOT'
                     array {
@@ -106,8 +106,8 @@ final class CalendarPage extends AbstractPage
                     EOT
             );
 
-            $month = $queryParameters['month'] ?? DateUtil::format(DateUtil::getDateTimeByTimestamp(TIME_NOW), 'n');
-            $year = $queryParameters['year'] ?? DateUtil::format(DateUtil::getDateTimeByTimestamp(TIME_NOW), 'Y');
+            $month = $parameters['month'] ?? DateUtil::format(DateUtil::getDateTimeByTimestamp(TIME_NOW), 'n');
+            $year = $parameters['year'] ?? DateUtil::format(DateUtil::getDateTimeByTimestamp(TIME_NOW), 'Y');
 
             if ($month < 1 || $month > 12) throw new IllegalLinkException();
         } catch (MappingError) {

@@ -102,7 +102,7 @@ final class CharacterPage extends AbstractPage
     public function readParameters(): void
     {
         try {
-            $queryParameters = Helper::mapQueryParameters(
+            $parameters = Helper::mapQueryParameters(
                 $_GET,
                 <<<'EOT'
                 array {
@@ -110,7 +110,7 @@ final class CharacterPage extends AbstractPage
                 }
                 EOT
             );
-            $this->characterID = $queryParameters['id'] ?? 0;
+            $this->characterID = $parameters['id'] ?? 0;
         } catch (MappingError) {
             throw new IllegalLinkException();
         }

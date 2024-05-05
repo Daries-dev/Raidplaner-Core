@@ -34,7 +34,7 @@ class RaidEventEditForm extends RaidEventAddForm
         parent::readParameters();
 
         try {
-            $queryParameters = Helper::mapQueryParameters(
+            $parameters = Helper::mapQueryParameters(
                 $_GET,
                 <<<'EOT'
                     array {
@@ -42,7 +42,7 @@ class RaidEventEditForm extends RaidEventAddForm
                     }
                     EOT
             );
-            $this->formObject = new RaidEvent($queryParameters['id']);
+            $this->formObject = new RaidEvent($parameters['id']);
 
             if (!$this->formObject->getObjectID()) {
                 throw new IllegalLinkException();

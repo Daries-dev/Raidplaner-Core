@@ -28,7 +28,7 @@ class PointAccountEditor extends DatabaseObjectEditor implements IEditableCached
      */
     public static function resetCache(): void
     {
-        PointAccountCacheBuilder::getInstance()->reset(); //TODO
+        PointAccountCacheBuilder::getInstance()->reset();
         //CharacterPointCacheBuilder::getInstance()->reset(); //TODO
     }
 }

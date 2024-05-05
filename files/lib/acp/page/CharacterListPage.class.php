@@ -104,7 +104,7 @@ final class CharacterListPage extends SortablePage
         $this->conditions = new PreparedStatementConditionBuilder();
 
         try {
-            $queryParameters = Helper::mapQueryParameters(
+            $parameters = Helper::mapQueryParameters(
                 $_GET,
                 <<<'EOT'
                 array {
@@ -112,7 +112,9 @@ final class CharacterListPage extends SortablePage
                 }
                 EOT
             );
-            $this->searchID = $queryParameters['id'] ?? 0;
+
+            $this->searchID = $parameters['id'] ?? 0;
+
             if ($this->searchID) {
                 $this->readSearchResult();
 

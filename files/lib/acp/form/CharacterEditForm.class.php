@@ -42,7 +42,7 @@ class CharacterEditForm extends CharacterAddForm
         parent::readParameters();
 
         try {
-            $queryParameters = Helper::mapQueryParameters(
+            $parameters = Helper::mapQueryParameters(
                 $_GET,
                 <<<'EOT'
                     array {
@@ -50,7 +50,7 @@ class CharacterEditForm extends CharacterAddForm
                     }
                     EOT
             );
-            $this->formObject = new Character($queryParameters['id']);
+            $this->formObject = new Character($parameters['id']);
 
             if (!$this->formObject->getObjectID()) {
                 throw new IllegalLinkException();
