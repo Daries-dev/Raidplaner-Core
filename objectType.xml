@@ -47,5 +47,13 @@
             <definitionname>com.woltlab.wcf.message</definitionname>
         </type>
         <!-- /message -->
+
+        <!-- modification log -->
+		<type>
+			<name>dev.daries.rp.event</name>
+			<definitionname>com.woltlab.wcf.modifiableContent</definitionname>
+			<classname>rp\system\log\modification\EventModificationLogHandler</classname>
+		</type>
+        <!-- modification log -->
     </import>
 </data>
