@@ -55,5 +55,12 @@
 			<classname>rp\system\log\modification\EventModificationLogHandler</classname>
 		</type>
         <!-- modification log -->
+
+        <!-- visit tracker -->
+        <type>
+            <name>dev.daries.rp.event</name>
+            <definitionname>com.woltlab.wcf.visitTracker.objectType</definitionname>
+        </type>
+        <!-- /visit tracker -->
     </import>
 </data>
