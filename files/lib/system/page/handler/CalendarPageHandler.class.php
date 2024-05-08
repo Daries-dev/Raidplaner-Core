@@ -2,7 +2,9 @@
 
 namespace rp\system\page\handler;
 
+use rp\data\event\ViewableEvent;
 use wcf\system\page\handler\AbstractMenuPageHandler;
+use wcf\system\WCF;
 
 /**
  * Page handler implementation for the calendar.
@@ -18,7 +20,7 @@ final class CalendarPageHandler extends AbstractMenuPageHandler
      */
     public function getOutstandingItemCount($objectID = null): int
     {
-        return 0; // TODO
+        return ViewableEvent::getUnreadEvents();
     }
 
     /**
@@ -26,6 +28,6 @@ final class CalendarPageHandler extends AbstractMenuPageHandler
      */
     public function isVisible($objectID = null): bool
     {
-        return true; // TODO
+        return WCF::getSession()->getPermission('user.rp.canReadEvent');
     }
 }
