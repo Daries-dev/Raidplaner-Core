@@ -7,6 +7,7 @@ use wcf\data\IUserContent;
 use wcf\data\TUserContent;
 use wcf\system\request\IRouteController;
 use wcf\system\request\LinkHandler;
+use wcf\system\WCF;
 
 /**
  * Represents a event.
@@ -39,6 +40,52 @@ use wcf\system\request\LinkHandler;
 final class Event extends DatabaseObject implements IUserContent, IRouteController
 {
     use TUserContent;
+
+    /**
+     * formatted end time
+     */
+    private ?string $formattedEndTime = null;
+
+    /**
+     * formatted start time
+     */
+    private ?string $formattedStartTime = null;
+
+    /**
+     * Returns the formatted end time of the event.
+     */
+    public function getFormattedEndTime(): string
+    {
+        if ($this->formattedEndTime === null) {
+            $endDateTime = new \DateTimeImmutable('@' . $this->endTime, !$this->isFullDay ? WCF::getUser()->getTimeZone() : null);
+
+            if (WCF::getLanguage()->languageCode === "de") {
+                $this->formattedEndTime = $endDateTime->format("H:i");
+            } else {
+                $this->formattedEndTime = $endDateTime->format("h:ia");
+            }
+        }
+
+        return $this->formattedStartTime;
+    }
+
+    /**
+     * Returns the formatted start time of the event.
+     */
+    public function getFormattedStartTime(): string
+    {
+        if ($this->formattedStartTime === null) {
+            $startDateTime = new \DateTimeImmutable('@' . $this->startTime, !$this->isFullDay ? WCF::getUser()->getTimeZone() : null);
+
+            if (WCF::getLanguage()->languageCode === "de") {
+                $this->formattedStartTime = $startDateTime->format("H:i");
+            } else {
+                $this->formattedStartTime = $startDateTime->format("h:ia");
+            }
+        }
+
+        return $this->formattedStartTime;
+    }
 
     /**
      * @inheritDoc

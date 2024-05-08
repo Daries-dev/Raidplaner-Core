@@ -34,6 +34,11 @@ class ViewableEvent extends DatabaseObjectDecorator
     protected ?int $effectiveVisitTime = null;
 
     /**
+     * event days
+     */
+    protected ?array $eventDays = null;
+
+    /**
      * log entry
      */
     protected ?ViewableEventModificationLog $logEntry = null;
@@ -70,6 +75,37 @@ class ViewableEvent extends DatabaseObjectDecorator
         $list->readObjects();
 
         return $list->getSingleObject();
+    }
+
+    /**
+     * Returns an array of days in the specified month on what day the event occurs.
+     * 
+     * The returned array has the format:
+     * [
+     * month1 => [tag1, tag2, ...],
+     * month2 => [tag3, tag4, ...],
+     * ...
+     * ]
+     */
+    public function getEventDays(int $month): array
+    {
+        if ($this->eventDays === null) {
+            $this->eventDays = [];
+
+            $startDateTime = new \DateTimeImmutable('@' . $this->startTime, !$this->isFullDay ? WCF::getUser()->getTimeZone() : null);
+            $endDateTime = new \DateTimeImmutable('@' . $this->endTime, !$this->isFullDay ? WCF::getUser()->getTimeZone() : null);
+
+            for ($day = $startDateTime; $day <= $endDateTime; $day = $day->modify('+1 day')) {
+                $this->eventDays[$day->format('n')][] = $day->format('Y-m-d');
+            }
+
+            $this->eventDays[$endDateTime->format('n')] ??= [];
+            if (!\in_array($endDateTime->format('Y-m-d'), $this->eventDays[$endDateTime->format('n')])) {
+                $this->eventDays[$endDateTime->format('n')][] = $endDateTime->format('Y-m-d');
+            }
+        }
+
+        return $this->eventDays[$month] ?? [];
     }
 
     /**

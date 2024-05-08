@@ -3,6 +3,7 @@
 namespace rp\page;
 
 use CuyZ\Valinor\Mapper\MappingError;
+use rp\data\event\AccessibleEventList;
 use rp\system\calendar\Calendar;
 use wcf\data\object\type\ObjectTypeCache;
 use wcf\http\Helper;
@@ -41,11 +42,11 @@ final class CalendarPage extends AbstractPage
 
         $eventControllers = \array_filter(
             ObjectTypeCache::getInstance()->getObjectTypes('dev.daries.rp.event.controller'),
-            fn($controller) => $controller->getProcessor()->isAccessible()
+            fn ($controller) => $controller->getProcessor()->isAccessible()
         );
 
         WCF::getTPL()->assign([
-            'calendar' => $this->calendar->render(),
+            'calendar' => $this->calendar->getTemplate(),
             'currentLink' => $this->currentLink,
             'eventControllers' => $eventControllers,
             'lastMonthLink' => $this->calendar->getLastMonthLink(),
@@ -64,6 +65,13 @@ final class CalendarPage extends AbstractPage
             'month' => $currentDate->format('n'),
             'year' => $currentDate->format('Y'),
         ]);
+
+        $eventList = new AccessibleEventList(
+            $this->calendar->getStartTimestamp(),
+            $this->calendar->getEndTimestamp()
+        );
+        $eventList->readObjects();
+        $this->calendar->calculate($eventList);
     }
 
     /**

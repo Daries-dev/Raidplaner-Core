@@ -1,3 +1,8 @@
+:root {
+	--rpCalendarEventBackground: var(--wcfButtonBackground);
+	--rpCalendarEventBorder: var(--wcfContentBorderInner);
+}
+
 .rp-calendar {
 	border: 1px solid var(--wcfContentBorder);
 	margin-top: 20px;
@@ -36,5 +41,20 @@
 
 	&.rp-calendar-day-empty {
 		background-color: var(--wcfButtonDisabledBackground);
+	}
+}
+
+.rp-calendar-event {
+	align-items: center;
+	background-color: var(--rpCalendarEventBackground);
+	border: 1px solid var(--rpCalendarEventBorder);
+	display: block;
+	overflow: hidden;
+	padding: 2px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+
+	&:not(:first-child) {
+		margin-top: 5px;
 	}
 }

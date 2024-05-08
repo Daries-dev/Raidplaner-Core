@@ -2,6 +2,8 @@
 
 namespace rp\system\calendar;
 
+use rp\data\event\AccessibleEventList;
+use rp\data\event\ViewableEvent;
 use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
 use wcf\util\DateUtil;
@@ -17,27 +19,32 @@ use wcf\util\DateUtil;
 final class Calendar
 {
     /**
-     * Store events, indexed by day of the month
+     * calendar days
+     */
+    private array $calendarDays  = [];
+
+    /**
+     * events
      */
     private array $events = [];
 
     /**
-     * The first day of the last month
+     * the first day of the last month
      */
     private \DateTimeImmutable $firstDayOfLastMonth;
 
     /**
-     * The first day of the current month.
+     * the first day of the current month.
      */
     private \DateTimeImmutable $firstDayOfMonth;
 
     /**
-     * The first day of the next month.
+     * the first day of the next month.
      */
     private \DateTimeImmutable $firstDayOfNextMonth;
 
     /**
-     * The localized name of the month.
+     * the localized name of the month.
      */
     private string $monthName;
 
@@ -51,23 +58,86 @@ final class Calendar
         $this->firstDayOfMonth = new \DateTimeImmutable("{$year}-{$month}-01");
         $this->monthName = DateUtil::localizeDate($this->firstDayOfMonth->format('F'), 'F', WCF::getLanguage());
 
-        $this->firstDayOfLastMonth = (clone $this->firstDayOfMonth)->modify('-1 month');
-        $this->firstDayOfNextMonth = (clone $this->firstDayOfMonth)->modify('+1 month');
+        $this->firstDayOfLastMonth =  $this->firstDayOfMonth->modify('-1 month');
+        $this->firstDayOfNextMonth = $this->firstDayOfMonth->modify('+1 month');
+
+        $this->initEventDays();
     }
 
-    // TODO Adjust Add Event to the event that is actually transferred.
     /**
-     * Adds an event to the calendar.
+     * Assigns events to specific days in the calendar.
      */
-    public function addEvent($event): void
+    public function calculate(AccessibleEventList $eventList): void
     {
-        $day = DateUtil::getDateTimeByTimestamp($event->startTime)->format('j');
-        $this->events[$day][] = $event;
+        $events = $fullDayEvents = [];
 
-        // Sort the events for this day by start time
-        \usort($this->events[$day], static function ($a, $b) {
-            return $a->startTime <=> $b->startTime;
-        });
+        foreach ($eventList as $event) {
+            if ($event->isFullDay) {
+                $fullDayEvents[] = $event;
+            } else {
+                $events[] = $event;
+            }
+        }
+
+        $this->sortFullDayEvents($fullDayEvents);
+        $this->sortEvents($events);
+
+        foreach ([...$fullDayEvents, ...$events] as $event) {
+            $eventDays = $event->getEventDays($this->month);
+
+            foreach ($eventDays as $eventDay) {
+                if (!isset($this->calendarDays[$eventDay])) continue;
+                $day = $this->calendarDays[$eventDay];
+                $dayEvent = new DayEvent($day, $event);
+
+                if (\count($eventDays) > 1 && !$event->isFullDay) {
+                    if ($day->__toString() === \reset($eventDays)) {
+                        $dayEvent->setStatus(DayEvent::EVENT_STATUS_START);
+                    } else if ($day->__toString() === \end($eventDays)) {
+                        $dayEvent->setStatus(DayEvent::EVENT_STATUS_END);
+                    } else {
+                        $dayEvent->setStatus(DayEvent::EVENT_STATUS_MIDDLE);
+                    }
+                }
+                $day->addEvent($dayEvent);
+            }
+        }
+    }
+
+    public function calculateEvent(DayEvent $dayEvent, int &$index, array &$events): void
+    {
+        $day = $dayEvent->getDay()->__toString();
+
+        if ($index > 0) {
+            $i = 0;
+            do {
+                if (!isset($events[$day][$i])) {
+                    $events[$day][$i] = null;
+                }
+                $i++;
+            } while ($i < $index);
+        }
+
+        if (
+            !isset($events[$day][$index])
+            || $events[$day][$index] === null
+        ) {
+            $events[$day][$index] = $dayEvent;
+        } else {
+            ++$index;
+            $this->calculateEvent($dayEvent, $index, $events);
+        }
+    }
+
+    /**
+     * Returns the timestamp for the last day of the month.
+     */
+    public function getEndTimestamp(): int
+    {
+        $lastDay = $this->firstDayOfNextMonth
+            ->modify('-1 day')
+            ->setTime(23, 59, 59);
+        return $lastDay->getTimestamp();
     }
 
     /**
@@ -95,25 +165,40 @@ final class Calendar
     }
 
     /**
-     * Renders the calendar and returns this as HTML.
+     * Returns the timestamp for the first day of the month.
      */
-    public function render(): string
+    public function getStartTimestamp(): int
+    {
+        return $this->firstDayOfMonth->setTime(0, 0, 0)->getTimestamp();
+    }
+
+    public function getTemplate(): string
+    {
+        return WCF::getTPL()->fetch('renderCalendar', 'rp', [
+            'days' => $this->calendarDays,
+            'monthName' => $this->monthName,
+            'weekDays' => DateUtil::getWeekDays(),
+            'year' => $this->year,
+        ], true);
+    }
+
+    private function initEventDays(): void
     {
         $weekDays = DateUtil::getWeekDays();
         $firstDayOfWeek = (int)$this->firstDayOfMonth->format('N');
         $monthDays = $this->firstDayOfMonth->format('t');
 
-        $days = [];
         foreach ($weekDays as $key => $weekDay) {
             if ($key === $firstDayOfWeek) break;
-            $days[] = null;
+            $this->calendarDays[] = null;
         }
 
         for ($i = 1; $i <= $monthDays; $i++) {
-            $days[] = $i;
+            $day = new Day($this->year, $this->month, $i);
+            $this->calendarDays[$day->__toString()] = $day;
         }
 
-        $lastDayOfWeek = new \DateTimeImmutable("{$this->year}-{$this->month}-{$monthDays}");
+        $lastDayOfWeek = new \DateTimeImmutable("{$this->year}-{$this->month}-{$this->firstDayOfMonth->format('t')}");
         $lastDayOfWeek = (int)$lastDayOfWeek->format('N');
         $isLastDay = false;
         foreach ($weekDays as $key => $weekDay) {
@@ -123,16 +208,28 @@ final class Calendar
             }
 
             if ($isLastDay) {
-                $days[] = null;
+                $this->calendarDays[] = null;
             }
         }
+    }
 
-        return WCF::getTPL()->fetch('renderCalendar', 'rp', [
-            'days' => $days,
-            'events' => $this->events,
-            'monthName' => $this->monthName,
-            'weekDays' => $weekDays,
-            'year' => $this->year,
-        ], true);
+    /**
+     * Sort the events by start time
+     */
+    private function sortEvents(&$events): void
+    {
+        \usort($events, static function (ViewableEvent $a, ViewableEvent $b) {
+            return $a->startTime <=> $b->startTime;
+        });
+    }
+
+    /**
+     * Sort the full day events by title
+     */
+    private function sortFullDayEvents(&$fullDayEvents): void
+    {
+        \usort($fullDayEvents, static function (ViewableEvent $a, ViewableEvent $b) {
+            return $a->getTitle() <=> $b->getTitle();
+        });
     }
 }

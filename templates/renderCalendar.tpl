@@ -10,18 +10,30 @@
 
         <div class="rp-calendar-days">
             {foreach from=$days item=day}
-                <div class="rp-calendar-day{if $day|empty} rp-calendar-day-empty{/if}">
-                    {if !$day|empty}
-                        <div>{$day}</div>
-                        {if $events[$day]|isset}
-                            <ul class="rp-calendar->events">
-                                {foreach from=$events[$day] item=event}
-                                    <li class="rp-calendar-event">TODO</li>
+                {if $day|empty}
+                    <div class="rp-calendar-day rp-calendar-day-empty"></div>
+                {else}
+                    <div class="rp-calendar-day" data-day="{$day->__toString()}">
+                        <div>{$day->getDay()}</div>
+                        {if $day->getEvents()}
+                            <ul class="rp-calendar-events">
+                                {foreach from=$day->getEvents() item=event}
+                                    <li class="rp-calendar-event rpEventPopover{if $event->isFullDay} rp-calendar-event-full-day{/if}">
+                                        {if ($event->getStatus() === 1)}
+                                            {icon name='right-from-bracket'}
+                                            <span class="rp-calender-event-time">{$event->getFormattedStartTime()}</span>
+                                        {elseif $event->getStatus() === 2}
+                                            {icon name='left-right'}
+                                        {elseif $event->getStatus() === 3}
+                                            {icon name='right-to-bracket'}
+                                        {/if}
+                                        <span>{$event->getTitle()}</span>
+                                    </li>
                                 {/foreach}
                             </ul>
                         {/if}
-                    {/if}
-                </div>
+                    </div>
+                {/if}
             {/foreach}
         </div>
     </div>
