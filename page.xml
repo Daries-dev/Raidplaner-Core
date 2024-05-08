@@ -17,30 +17,30 @@
                 <title>Kalender</title>
             </content>
         </page>
-        <!-- TODO handler missing -->
         <page identifier="dev.daries.rp.Event">
-			<pageType>system</pageType>
-			<controller>rp\page\EventPage</controller>
-			<name language="de">Termin</name>
-			<name language="en">Event</name>
-			<parent>dev.daries.rp.Calendar</parent>
-			<allowSpidersToIndex>1</allowSpidersToIndex>
-			<requireObjectID>1</requireObjectID>
-		</page>
-		<page identifier="dev.daries.rp.EventAdd">
-			<pageType>system</pageType>
-			<controller>rp\form\EventAddForm</controller>
-			<name language="de">Termin hinzufügen</name>
-			<name language="en">Add Event</name>
-			<parent>dev.daries.rp.Calendar</parent>
-			<permissions>user.rp.canCreateEvent</permissions>
-			<content language="en">
-				<title>Add Event</title>
-			</content>
-			<content language="de">
-				<title>Termin hinzufügen</title>
-			</content>
-		</page>
+            <pageType>system</pageType>
+            <controller>rp\page\EventPage</controller>
+            <name language="de">Termin</name>
+            <name language="en">Event</name>
+            <handler>rp\system\page\handler\EventPageHandler</handler>
+            <parent>dev.daries.rp.Calendar</parent>
+            <allowSpidersToIndex>1</allowSpidersToIndex>
+            <requireObjectID>1</requireObjectID>
+        </page>
+        <page identifier="dev.daries.rp.EventAdd">
+            <pageType>system</pageType>
+            <controller>rp\form\EventAddForm</controller>
+            <name language="de">Termin hinzufügen</name>
+            <name language="en">Add Event</name>
+            <parent>dev.daries.rp.Calendar</parent>
+            <permissions>user.rp.canCreateEvent</permissions>
+            <content language="en">
+                <title>Add Event</title>
+            </content>
+            <content language="de">
+                <title>Termin hinzufügen</title>
+            </content>
+        </page>
 
         <page identifier="dev.daries.rp.CharactersList">
             <pageType>system</pageType>
