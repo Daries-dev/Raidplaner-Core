@@ -3,6 +3,7 @@
 namespace rp\system\event;
 
 use rp\data\event\Event;
+use rp\event\event\EventCreateForm;
 use wcf\data\object\type\ObjectTypeCache;
 use wcf\system\event\EventHandler;
 use wcf\system\exception\PermissionDeniedException;
