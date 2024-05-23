@@ -97,6 +97,7 @@
             <item name="rp.event.startTime"><![CDATA[Start time]]></item>
             <item name="rp.event.startTime.error.invalid"><![CDATA[You have specified an invalid date for the start of the event.]]></item>
             <item name="rp.event.type"><![CDATA[Event Type]]></item>
+            <item name="rp.event.views"><![CDATA[{#$event->views} View{if $event->views != 1}s{/if}]]></item>
         </category>
 
         <category name="rp.event.controller">

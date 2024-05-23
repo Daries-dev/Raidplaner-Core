@@ -5,6 +5,7 @@ namespace rp\system\event;
 use wcf\system\form\builder\container\FormContainer;
 use wcf\system\form\builder\field\TitleFormField;
 use wcf\system\form\builder\IFormDocument;
+use wcf\system\WCF;
 
 /**
  * Default event implementation for event controllers.

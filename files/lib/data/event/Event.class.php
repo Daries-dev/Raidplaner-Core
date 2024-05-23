@@ -2,12 +2,17 @@
 
 namespace rp\data\event;
 
+use rp\system\event\IEventController;
 use wcf\data\DatabaseObject;
-use wcf\data\IUserContent;
+use wcf\data\IMessage;
+use wcf\data\object\type\ObjectTypeCache;
 use wcf\data\TUserContent;
+use wcf\data\user\UserProfile;
+use wcf\system\html\output\HtmlOutputProcessor;
 use wcf\system\request\IRouteController;
 use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
+use wcf\util\StringUtil;
 
 /**
  * Represents a event.
@@ -37,9 +42,14 @@ use wcf\system\WCF;
  * @property-read   int $isCanceled     is `1` if the even is canceled, otherwise `0`
  * @property-read   int $isDisabled     is `1` if the even is disabled, otherwise `0`
  */
-final class Event extends DatabaseObject implements IUserContent, IRouteController
+final class Event extends DatabaseObject implements IRouteController, IMessage
 {
     use TUserContent;
+
+    /**
+     * event controller
+     */
+    protected ?IEventController $controller = null;
 
     /**
      * formatted end time
@@ -50,6 +60,58 @@ final class Event extends DatabaseObject implements IUserContent, IRouteControll
      * formatted start time
      */
     private ?string $formattedStartTime = null;
+
+    /**
+     * Returns true if the given user has access to this event. If the given $user is null,
+     * the function uses the current user.
+     */
+    public function canRead(?UserProfile $user = null): bool
+    {
+        if ($user === null) {
+            $user = new UserProfile(WCF::getUser());
+        }
+
+        if ($this->isDeleted) {
+            if (!$user->getPermission('mod.rp.canViewDeletedEvent')) {
+                return false;
+            }
+        }
+
+        if ($this->isDisabled) {
+            if (!$user->getPermission('mod.rp.canModerateEvent')) {
+                return false;
+            }
+        }
+
+        if (!$user->getPermission('user.rp.canReadEvent')) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Returns the event controller.
+     */
+    public function getController(): IEventController
+    {
+        if ($this->controller === null) {
+            $className = ObjectTypeCache::getInstance()->getObjectType($this->objectTypeID)->className;
+
+            $this->controller = new $className();
+            $this->controller->setEvent($this);
+        }
+
+        return $this->controller;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getExcerpt($maxLength = 255): string
+    {
+        return StringUtil::truncateHTML($this->getSimplifiedFormattedNotes(), $maxLength);
+    }
 
     /**
      * Returns the formatted end time of the event.
@@ -67,6 +129,18 @@ final class Event extends DatabaseObject implements IUserContent, IRouteControll
         }
 
         return $this->formattedStartTime;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getFormattedMessage(): string
+    {
+        $processor = new HtmlOutputProcessor();
+        $processor->enableUgc = false;
+        $processor->process($this->notes, 'dev.daries.rp.event.notes', $this->eventID, false);
+
+        return $processor->getHtml();
     }
 
     /**
@@ -88,6 +162,14 @@ final class Event extends DatabaseObject implements IUserContent, IRouteControll
     }
 
     /**
+     * Returns the html code to display the icon.
+     */
+    public function getIcon(int $size = 16): string
+    {
+        return $this->getController()->getIcon($size);
+    }
+
+    /**
      * @inheritDoc
      */
     public function getLink(): string
@@ -97,6 +179,26 @@ final class Event extends DatabaseObject implements IUserContent, IRouteControll
             'object' => $this,
             'forceFrontend' => true
         ]);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getMessage(): string
+    {
+        return $this->notes;
+    }
+
+    /**
+     * Returns a simplified version of the formatted notes.
+     */
+    public function getSimplifiedFormattedNotes(): string
+    {
+        $processor = new HtmlOutputProcessor();
+        $processor->setOutputType('text/simplified-html');
+        $processor->process($this->notes, 'dev.daries.rp.event.notes', $this->eventID);
+
+        return $processor->getHtml();
     }
 
     /**
@@ -126,6 +228,17 @@ final class Event extends DatabaseObject implements IUserContent, IRouteControll
         $this->data['additionalData'] = (empty($data['additionalData']) ? [] : @\unserialize($data['additionalData']));
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function isVisible(): bool
+    {
+        return $this->canRead();
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function __get($name): mixed
     {
         $value = parent::__get($name);
@@ -134,5 +247,13 @@ final class Event extends DatabaseObject implements IUserContent, IRouteControll
         $value ??= $this->data['additionalData'][$name] ?? null;
 
         return $value;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function __toString(): string
+    {
+        return $this->getFormattedMessage();
     }
 }

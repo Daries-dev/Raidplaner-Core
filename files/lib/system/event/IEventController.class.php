@@ -2,6 +2,7 @@
 
 namespace rp\system\event;
 
+use rp\data\event\Event;
 use wcf\system\form\builder\IFormDocument;
 
 /**
@@ -14,6 +15,11 @@ use wcf\system\form\builder\IFormDocument;
 interface IEventController
 {
     /**
+     * Checks the permissions of this event controller.
+     */
+    public function checkPermissions(): void;
+
+    /**
      * Creates the form object.
      * 
      * This is the method that is intended to be overwritten by child classes
@@ -22,12 +28,32 @@ interface IEventController
     public function createForm(IFormDocument $form): void;
 
     /**
+     * Returns the database object of this event.
+     */
+    public function getEvent(): ?Event;
+
+    /**
+     * Returns the html code to display the icon.
+     */
+    public function getIcon(int $size = 16): string;
+
+    /**
      * Returns true if the current user can use this event provider.
      */
     public function isAccessible(): bool;
 
     /**
+     * Checks whether time for this event is expired
+     */
+    public function isExpired(): bool;
+
+    /**
      * Returns the data of the form which should be saved.
      */
     public function saveForm(array $formData): array;
+
+    /**
+     * Sets the database object of this event.
+     */
+    public function setEvent(Event $event): void;
 }

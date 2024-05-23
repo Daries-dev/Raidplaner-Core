@@ -5,6 +5,7 @@ namespace rp\data\event;
 use wcf\data\AbstractDatabaseObjectAction;
 use wcf\system\message\embedded\object\MessageEmbeddedObjectManager;
 use wcf\system\user\storage\UserStorageHandler;
+use wcf\system\visitTracker\VisitTracker;
 use wcf\system\WCF;
 
 /**
@@ -69,6 +70,31 @@ class EventAction extends AbstractDatabaseObjectAction
     }
 
     /**
+     * Marks events as read.
+     */
+    public function markAsRead(): void
+    {
+        $this->parameters['visitTime'] ??= TIME_NOW;
+
+        if (empty($this->objects)) {
+            $this->readObjects();
+        }
+
+        foreach ($this->getObjects() as $event) {
+            VisitTracker::getInstance()->trackObjectVisit(
+                'dev.daries.rp.event',
+                $event->eventID,
+                $this->parameters['visitTime']
+            );
+        }
+
+        // reset storage
+        if (WCF::getUser()->userID) {
+            UserStorageHandler::getInstance()->reset([WCF::getUser()->userID], 'rpUnreadEvents');
+        }
+    }
+
+    /**
      * @inheritDoc
      */
     public function update(): void
@@ -89,5 +115,13 @@ class EventAction extends AbstractDatabaseObjectAction
                 }
             }
         }
+    }
+
+    /**
+     * Validates the mark all as read action.
+     */
+    public function validateMarkAllAsRead(): void
+    {
+        // does nothing
     }
 }

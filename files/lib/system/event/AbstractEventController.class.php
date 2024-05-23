@@ -2,8 +2,10 @@
 
 namespace rp\system\event;
 
+use rp\data\event\Event;
 use wcf\data\object\type\ObjectTypeCache;
 use wcf\system\event\EventHandler;
+use wcf\system\exception\PermissionDeniedException;
 use wcf\system\form\builder\container\IFormContainer;
 use wcf\system\form\builder\data\processor\CustomFormDataProcessor;
 use wcf\system\form\builder\data\processor\VoidFormDataProcessor;
@@ -15,6 +17,7 @@ use wcf\system\form\builder\field\validation\FormFieldValidationError;
 use wcf\system\form\builder\field\validation\FormFieldValidator;
 use wcf\system\form\builder\field\wysiwyg\WysiwygFormField;
 use wcf\system\form\builder\IFormDocument;
+use wcf\system\style\FontAwesomeIcon;
 use wcf\system\WCF;
 
 /**
@@ -27,6 +30,11 @@ use wcf\system\WCF;
 abstract class AbstractEventController implements IEventController
 {
     /**
+     * database object of this event
+     */
+    protected ?Event $event = null;
+
+    /**
      * type name of this event controller
      */
     protected string $eventController = '';
@@ -35,6 +43,16 @@ abstract class AbstractEventController implements IEventController
      * ids of the fields containing object data
      */
     protected array $savedFields = [];
+
+    /**
+     * @inheritDoc
+     */
+    public function checkPermissions(): void
+    {
+        if (!$this->event->isVisible()) {
+            throw new PermissionDeniedException();
+        }
+    }
 
     /**
      * @inheritDoc
@@ -266,9 +284,34 @@ abstract class AbstractEventController implements IEventController
     /**
      * @inheritDoc
      */
+    public function getEvent(): ?Event
+    {
+        return $this->event;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getIcon(int $size = 16): string
+    {
+        $fa = FontAwesomeIcon::fromValues('calendar-days', true);
+        return $fa->toHtml($size);
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function isAccessible(): bool
     {
         return WCF::getSession()->getPermission('user.rp.canCreateEvent');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isExpired(): bool
+    {
+        return false;
     }
 
     /**
@@ -291,5 +334,13 @@ abstract class AbstractEventController implements IEventController
             $formData,
             ['data' => $data]
         );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setEvent(Event $event): void
+    {
+        $this->event = $event;
     }
 }
