@@ -4,7 +4,7 @@ namespace rp\acp\form;
 
 use CuyZ\Valinor\Mapper\MappingError;
 use rp\data\character\Character;
-use rp\system\character\event\CharacterEditData;
+use rp\event\character\CharacterEditData;
 use wcf\http\Helper;
 use wcf\system\event\EventHandler;
 use wcf\system\exception\IllegalLinkException;

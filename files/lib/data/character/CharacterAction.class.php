@@ -4,8 +4,8 @@ namespace rp\data\character;
 
 use rp\data\character\avatar\CharacterAvatar;
 use rp\data\character\avatar\CharacterAvatarAction;
+use rp\event\character\BeforeFindCharacters;
 use rp\system\character\CharacterHandler;
-use rp\system\character\event\BeforeFindCharacters;
 use wcf\data\AbstractDatabaseObjectAction;
 use wcf\data\ISearchAction;
 use wcf\system\clipboard\ClipboardHandler;

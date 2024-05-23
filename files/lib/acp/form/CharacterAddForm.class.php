@@ -4,7 +4,7 @@ namespace rp\acp\form;
 
 use rp\data\character\Character;
 use rp\data\character\CharacterAction;
-use rp\system\character\event\CharacterAddCreateForm;
+use rp\event\character\CharacterAddCreateForm;
 use wcf\form\AbstractForm;
 use wcf\form\AbstractFormBuilderForm;
 use wcf\system\event\EventHandler;

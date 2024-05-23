@@ -1,7 +1,7 @@
 <?php
 
+use rp\event\character\profile\menu\CharacterProfileMenuCollecting;
 use rp\system\character\profile\menu\AboutCharacterProfileMenu;
-use rp\system\character\profile\menu\event\CharacterProfileMenuCollecting;
 use wcf\system\event\EventHandler;
 
 /**
