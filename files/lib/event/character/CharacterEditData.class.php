@@ -1,21 +1,21 @@
 <?php
 
-namespace rp\system\character\event;
+namespace rp\event\character;
 
-use wcf\system\event\IEvent;
+use wcf\data\IStorableObject;
+use wcf\event\IPsr14Event;
 use wcf\system\form\builder\IFormDocument;
 
 /**
- * Add extra fields in character add form 
- * 
  * @author  Marco Daries
  * @copyright   2023-2024 Daries.dev
  * @license Raidplaner is licensed under Creative Commons Attribution-ShareAlike 4.0 International 
  */
-final class CharacterAddCreateForm implements IEvent
+final class CharacterEditData implements IPsr14Event
 {
     public function __construct(
-        public readonly IFormDocument $form
+        public readonly IFormDocument $form,
+        public readonly IStorableObject $formObject,
     ) {
     }
 }

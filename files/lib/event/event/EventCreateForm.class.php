@@ -1,8 +1,8 @@
 <?php
 
-namespace rp\system\event;
+namespace rp\event\event;
 
-use wcf\system\event\IEvent;
+use wcf\event\IPsr14Event;
 use wcf\system\form\builder\IFormDocument;
 
 /**
@@ -12,7 +12,7 @@ use wcf\system\form\builder\IFormDocument;
  * @copyright   2023-2024 Daries.dev
  * @license Raidplaner is licensed under Creative Commons Attribution-ShareAlike 4.0 International 
  */
-final class EventCreateForm implements IEvent
+final class EventCreateForm implements IPsr14Event
 {
     public function __construct(
         public readonly IFormDocument $form,

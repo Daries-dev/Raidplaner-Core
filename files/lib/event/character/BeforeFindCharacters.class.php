@@ -1,15 +1,15 @@
 <?php
 
-namespace rp\system\character\event;
+namespace rp\event\character;
 
-use wcf\system\event\IEvent;
+use wcf\event\IPsr14Event;
 
 /**
  * @author  Marco Daries
  * @copyright   2023-2024 Daries.dev
  * @license Raidplaner is licensed under Creative Commons Attribution-ShareAlike 4.0 International 
  */
-final class BeforeFindCharacters implements IEvent
+final class BeforeFindCharacters implements IPsr14Event
 {
     public function __construct(
         private readonly string $searchString

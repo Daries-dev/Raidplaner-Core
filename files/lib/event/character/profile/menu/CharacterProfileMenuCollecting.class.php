@@ -1,9 +1,9 @@
 <?php
 
-namespace rp\system\character\profile\menu\event;
+namespace rp\event\character\profile\menu;
 
 use rp\system\character\profile\menu\RegisteredCharacterProfileMenu;
-use wcf\system\event\IEvent;
+use wcf\event\IPsr14Event;
 
 /**
  * Requests the collecting of menus that should be included in the list of character menus.
@@ -12,7 +12,7 @@ use wcf\system\event\IEvent;
  * @copyright   2023-2024 Daries.dev
  * @license Raidplaner is licensed under Creative Commons Attribution-ShareAlike 4.0 International 
  */
-final class CharacterProfileMenuCollecting implements IEvent
+final class CharacterProfileMenuCollecting implements IPsr14Event
 {
     private \SplPriorityQueue $queue;
 
