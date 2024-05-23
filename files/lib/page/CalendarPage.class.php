@@ -5,6 +5,7 @@ namespace rp\page;
 use CuyZ\Valinor\Mapper\MappingError;
 use rp\data\event\AccessibleEventList;
 use rp\system\calendar\Calendar;
+use wcf\data\object\type\ObjectType;
 use wcf\data\object\type\ObjectTypeCache;
 use wcf\http\Helper;
 use wcf\page\AbstractPage;
@@ -44,6 +45,13 @@ final class CalendarPage extends AbstractPage
             ObjectTypeCache::getInstance()->getObjectTypes('dev.daries.rp.event.controller'),
             fn ($controller) => $controller->getProcessor()->isAccessible()
         );
+
+        \uasort($eventControllers, function (ObjectType $a, ObjectType $b) {
+            return \strcmp(
+                WCF::getLanguage()->get('rp.event.controller.' . $a->objectType),
+                WCF::getLanguage()->get('rp.event.controller.' . $b->objectType)
+            );
+        });
 
         WCF::getTPL()->assign([
             'calendar' => $this->calendar->getTemplate(),
