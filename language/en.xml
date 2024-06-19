@@ -84,16 +84,21 @@
         </category>
 
         <category name="rp.event">
+            <item name="rp.event.accepted"><![CDATA[Accepted]]></item>
             <item name="rp.event.add"><![CDATA[Create Event]]></item>
+            <item name="rp.event.canceled"><![CDATA[Canceled]]></item>
             <item name="rp.event.edit"><![CDATA[Edit event]]></item>
             <item name="rp.event.enableComments"><![CDATA[Enable comments]]></item>
             <item name="rp.event.endTime"><![CDATA[End Time]]></item>
             <item name="rp.event.endTime.error.invalid"><![CDATA[You have specified an invalid date for the end of the event. The end of the event must not be before the start.]]></item>
             <item name="rp.event.endTime.error.tooLong"><![CDATA[The duration of the event is too long. The maximum allowed duration is {#RP_CALENDAR_MAX_EVENT_LENGTH} days.]]></item>
+            <item name="rp.event.expired"><![CDATA[The registration deadline for this event has already passed.]]></item>
             <item name="rp.event.isFullDay"><![CDATA[Full day event]]></item>
+            <item name="rp.event.maybe"><![CDATA[Maybe]]></item>
             <item name="rp.event.moderation.info"><![CDATA[Newly created events will remain inaccessible until approved by a moderator.]]></item>
             <item name="rp.event.moderation.redirect"><![CDATA[Your event has been created and will be displayed once approved.]]></item>
             <item name="rp.event.notes"><![CDATA[Note]]></item>
+            <item name="rp.event.participation"><![CDATA[Participation]]></item>
             <item name="rp.event.startTime"><![CDATA[Start time]]></item>
             <item name="rp.event.startTime.error.invalid"><![CDATA[You have specified an invalid date for the start of the event.]]></item>
             <item name="rp.event.type"><![CDATA[Event Type]]></item>
@@ -101,6 +106,7 @@
         </category>
 
         <category name="rp.event.controller">
+            <item name="rp.event.controller.dev.daries.rp.event.controller.appointment"><![CDATA[Appointment with registration]]></item>
             <item name="rp.event.controller.dev.daries.rp.event.controller.default"><![CDATA[Default]]></item>
         </category>
 

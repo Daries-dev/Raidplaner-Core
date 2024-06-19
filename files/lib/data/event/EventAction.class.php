@@ -2,7 +2,13 @@
 
 namespace rp\data\event;
 
+use rp\system\cache\runtime\EventRuntimeCache;
 use wcf\data\AbstractDatabaseObjectAction;
+use wcf\data\object\type\ObjectTypeCache;
+use wcf\data\user\UserProfile;
+use wcf\system\cache\runtime\UserProfileRuntimeCache;
+use wcf\system\exception\PermissionDeniedException;
+use wcf\system\exception\UserInputException;
 use wcf\system\message\embedded\object\MessageEmbeddedObjectManager;
 use wcf\system\user\storage\UserStorageHandler;
 use wcf\system\visitTracker\VisitTracker;
@@ -20,6 +26,40 @@ use wcf\system\WCF;
  */
 class EventAction extends AbstractDatabaseObjectAction
 {
+    /**
+     * event object
+     */
+    protected ?Event $event = null;
+
+    public function appointmentSetStatus(): array
+    {
+        $additionalData = $this->event->additionalData;
+        $appointments = $additionalData['appointments'] ?? ['accepted' => [], 'canceled' => [], 'maybe' => []];
+
+        $appointments = \array_map(
+            fn ($users) => \array_filter($users, fn ($userID) => $userID !== WCF::getUser()->userID),
+            $appointments
+        );
+
+        $appointments[$this->parameters['status']][] = WCF::getUser()->userID;
+        $additionalData['appointments'] = $appointments;
+
+        $action = new self([$this->event], 'update', ['data' => [
+            'additionalData' => \serialize($additionalData)
+        ]]);
+        $action->executeAction();
+
+        return [
+            'template' => WCF::getTPL()->fetch(
+                'userListItem',
+                'rp',
+                [
+                    'user' => new UserProfile(WCF::getUser()),
+                ]
+            ),
+        ];
+    }
+
     /**
      * @inheritDoc
      */
@@ -114,6 +154,25 @@ class EventAction extends AbstractDatabaseObjectAction
                     $event->update(['hasEmbeddedObjects' => $event->hasEmbeddedObjects ? 0 : 1]);
                 }
             }
+        }
+    }
+
+    public function validateAppointmentSetStatus(): void
+    {
+        $this->readInteger('eventID');
+        $this->readString('status');
+
+        $this->event = EventRuntimeCache::getInstance()->getObject($this->parameters['eventID']);
+        if ($this->event === null) {
+            throw new UserInputException('eventID');
+        }
+
+        if ($this->event->objectTypeID !== ObjectTypeCache::getInstance()->getObjectTypeIDByName('dev.daries.rp.event.controller', 'dev.daries.rp.event.controller.appointment')) {
+            throw new PermissionDeniedException();
+        }
+
+        if (!$this->event->canRead()) {
+            throw new PermissionDeniedException();
         }
     }
 

@@ -35,6 +35,11 @@
 
         <!-- event controllers -->
         <type>
+            <name>dev.daries.rp.event.controller.appointment</name>
+            <definitionname>dev.daries.rp.event.controller</definitionname>
+            <classname>rp\system\event\AppointmentEventController</classname>
+        </type>
+        <type>
             <name>dev.daries.rp.event.controller.default</name>
             <definitionname>dev.daries.rp.event.controller</definitionname>
             <classname>rp\system\event\DefaultEventController</classname>
