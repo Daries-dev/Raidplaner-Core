@@ -260,6 +260,14 @@ abstract class AbstractEventController implements IEventController
     /**
      * @inheritDoc
      */
+    public function getContentHeaderNavigation(): string
+    {
+        return '';
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getEvent(): ?Event
     {
         return $this->event;

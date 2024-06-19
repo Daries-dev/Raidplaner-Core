@@ -37,6 +37,16 @@
                 </li>
             </ul>
         </div>
+
+        {hascontent}
+        <nav class="contentHeaderNavigation">
+            <ul>
+                {content}
+                {@$event->getController()->getContentHeaderNavigation()}
+                {/content}
+            </ul>
+        </nav>
+        {/hascontent}
     </header>
 {/capture}
 

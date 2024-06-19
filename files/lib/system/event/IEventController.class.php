@@ -28,6 +28,11 @@ interface IEventController
     public function createForm(IFormDocument $form): void;
 
     /**
+     * Returns the header navigation.
+     */
+    public function getContentHeaderNavigation(): string;
+
+    /**
      * Returns the database object of this event.
      */
     public function getEvent(): ?Event;
