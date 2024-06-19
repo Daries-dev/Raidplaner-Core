@@ -21,11 +21,16 @@
                                     <li class="rp-calendar-event rpEventPopover{if $event->isFullDay} rp-calendar-event-full-day{/if}">
                                         {if ($event->getStatus() === 1)}
                                             {icon name='right-from-bracket'}
-                                            <span class="rp-calender-event-time">{$event->getFormattedStartTime()}</span>
+                                            <span class="rp-calender-event-time">{$event->getFormattedStartTime(true)}</span>
                                         {elseif $event->getStatus() === 2}
                                             {icon name='left-right'}
                                         {elseif $event->getStatus() === 3}
                                             {icon name='right-to-bracket'}
+                                            <span class="rp-calender-event-time">{$event->getFormattedEndTime(true)}</span>
+                                        {else}
+                                            {if !$event->isFullDay}
+                                                <span class="rp-calender-event-time">{$event->getFormattedStartTime(true)}</span>
+                                            {/if}
                                         {/if}
                                         <span>{$event->getTitle()}</span>
                                     </li>

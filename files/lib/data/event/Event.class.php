@@ -12,6 +12,7 @@ use wcf\system\html\output\HtmlOutputProcessor;
 use wcf\system\request\IRouteController;
 use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
+use wcf\util\DateUtil;
 use wcf\util\StringUtil;
 
 /**
@@ -52,14 +53,25 @@ final class Event extends DatabaseObject implements IRouteController, IMessage
     protected ?IEventController $controller = null;
 
     /**
-     * formatted end time
+     * end time object
      */
-    private ?string $formattedEndTime = null;
+    private \DateTime $endTimeObj;
 
     /**
-     * formatted start time
+     * start time object
      */
-    private ?string $formattedStartTime = null;
+    private \DateTime $startTimeObj;
+
+    public function __construct($id, ?array $row = null, ?self $object = null)
+    {
+        parent::__construct($id, $row, $object);
+
+        $this->startTimeObj = new \DateTime('@' . $this->startTime);
+        $this->startTimeObj->setTimezone(WCF::getUser()->getTimeZone());
+
+        $this->endTimeObj = new \DateTime('@' . $this->endTime);
+        $this->endTimeObj->setTimezone(WCF::getUser()->getTimeZone());
+    }
 
     /**
      * Returns true if the given user has access to this event. If the given $user is null,
@@ -116,19 +128,16 @@ final class Event extends DatabaseObject implements IRouteController, IMessage
     /**
      * Returns the formatted end time of the event.
      */
-    public function getFormattedEndTime(): string
+    public function getFormattedEndTime(bool $short = false): string
     {
-        if ($this->formattedEndTime === null) {
-            $endDateTime = new \DateTimeImmutable('@' . $this->endTime, !$this->isFullDay ? WCF::getUser()->getTimeZone() : null);
+        $language = WCF::getLanguage();
+        $format = $language->get(DateUtil::TIME_FORMAT);
 
-            if (WCF::getLanguage()->languageCode === "de") {
-                $this->formattedEndTime = $endDateTime->format("H:i");
-            } else {
-                $this->formattedEndTime = $endDateTime->format("h:ia");
-            }
+        if (!$short && !$this->isSelfDay()) {
+            $format = $language->get(DateUtil::DATE_FORMAT) . ' ' . $format;
         }
 
-        return $this->formattedStartTime;
+        return DateUtil::format($this->endTimeObj, $format);
     }
 
     /**
@@ -146,19 +155,16 @@ final class Event extends DatabaseObject implements IRouteController, IMessage
     /**
      * Returns the formatted start time of the event.
      */
-    public function getFormattedStartTime(): string
+    public function getFormattedStartTime(bool $short = false): string
     {
-        if ($this->formattedStartTime === null) {
-            $startDateTime = new \DateTimeImmutable('@' . $this->startTime, !$this->isFullDay ? WCF::getUser()->getTimeZone() : null);
+        $language = WCF::getLanguage();
+        $format = $language->get(DateUtil::TIME_FORMAT);
 
-            if (WCF::getLanguage()->languageCode === "de") {
-                $this->formattedStartTime = $startDateTime->format("H:i");
-            } else {
-                $this->formattedStartTime = $startDateTime->format("h:ia");
-            }
+        if (!$short && !$this->isSelfDay()) {
+            $format = $language->get(DateUtil::DATE_FORMAT) . ' ' . $format;
         }
 
-        return $this->formattedStartTime;
+        return DateUtil::format($this->startTimeObj, $format);
     }
 
     /**
@@ -226,6 +232,11 @@ final class Event extends DatabaseObject implements IRouteController, IMessage
 
         // unserialize additional data
         $this->data['additionalData'] = (empty($data['additionalData']) ? [] : @\unserialize($data['additionalData']));
+    }
+
+    protected function isSelfDay(): bool
+    {
+        return $this->startTimeObj->format('Y-m-d') === $this->endTimeObj->format('Y-m-d');
     }
 
     /**

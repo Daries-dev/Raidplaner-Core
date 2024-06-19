@@ -230,39 +230,9 @@ abstract class AbstractEventController implements IEventController
                     /** @var DateFormField $endTime */
                     $endTime = $document->getNodeById($fullDay->getSaveValue() ? 'fEndTime' : 'endTime');
 
-                    $st = $et = null;
-
-                    if ($fullDay->getSaveValue()) {
-                        $st = \DateTimeImmutable::createFromFormat(
-                            DateFormField::DATE_FORMAT,
-                            $startTime->getValue(),
-                            new \DateTimeZone('UTC')
-                        );
-                        $st->setTime(0, 0);
-
-                        $et = \DateTimeImmutable::createFromFormat(
-                            DateFormField::DATE_FORMAT,
-                            $endTime->getValue(),
-                            new \DateTimeZone('UTC')
-                        );
-                        $et->setTime(23, 59);
-                    } else {
-                        $st = \DateTimeImmutable::createFromFormat(
-                            DateFormField::TIME_FORMAT,
-                            $startTime->getValue(),
-                            WCF::getUser()->getTimeZone()
-                        );
-
-                        $et = \DateTimeImmutable::createFromFormat(
-                            DateFormField::TIME_FORMAT,
-                            $endTime->getValue(),
-                            WCF::getUser()->getTimeZone()
-                        );
-                    }
-
-                    $parameters['data']['startTime'] = $st->getTimestamp();
-                    $parameters['data']['endTime'] = $et->getTimestamp();
-                    $parameters['data']['timezone'] = $fullDay->getSaveValue() ? 'UTC' : WCF::getUser()->getTimeZone()->getName();
+                    $parameters['data']['startTime'] = $startTime->getSaveValue();
+                    $parameters['data']['endTime'] = $endTime->getSaveValue();
+                    $parameters['data']['timezone'] =  'UTC';
 
                     return $parameters;
                 }
