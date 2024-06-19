@@ -1,7 +1,8 @@
 {capture assign='pageTitle'}{$event->getTitle()}{/capture}
 
 {capture assign='contentHeader'}
-    <header class="contentHeader">
+    <header class="contentHeader rpEventHeader" data-object-id="{@$event->eventID}" data-is-deleted="{@$event->isDeleted}"
+        data-is-disabled="{@$event->isDisabled}">
         <div class="contentHeaderIcon">
             {@$event->getIcon(64)}
         </div>
@@ -78,26 +79,26 @@
 {include file='header'}
 
 {if $event->getController()->showEventNodes('center')}
-{hascontent}
-<section class="section">
-    <h2 class="sectionTitle">{lang}rp.event.notes{/lang}</h2>
+    {hascontent}
+    <section class="section">
+        <h2 class="sectionTitle">{lang}rp.event.notes{/lang}</h2>
 
-    <dl>
-        <dt></dt>
-        <dd>
-            <div class="htmlContent">
-                {content}
+        <dl>
+            <dt></dt>
+            <dd>
+                <div class="htmlContent">
+                    {content}
                     {@$event->getFormattedNotes()}
-                {/content}
-            </div>
-        </dd>
-    </dl>
-</section>
-{/hascontent}
+                    {/content}
+                </div>
+            </dd>
+        </dl>
+    </section>
+    {/hascontent}
 {/if}
 
 {if !$event->isDeleted && $event->getController()->isExpired()}
-    <p class="error">{lang}rp.event.expired{/lang}</p>
+    <woltlab-core-notice type="error">{lang}rp.event.expired{/lang}</woltlab-core-notice>
 {/if}
 
 {if $event->getDeleteNote()}
