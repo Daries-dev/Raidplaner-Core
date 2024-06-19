@@ -106,6 +106,8 @@
     </div>
 {/if}
 
+{@$event->getController()->getContent()}
+
 <footer class="contentFooter">
     {hascontent}
     <nav class="contentFooterNavigation">

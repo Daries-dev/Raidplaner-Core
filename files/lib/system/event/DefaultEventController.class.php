@@ -60,4 +60,12 @@ class DefaultEventController extends AbstractEventController
 
         parent::createForm($form);
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function getContent(): string
+    {
+        return '';
+    }
 }

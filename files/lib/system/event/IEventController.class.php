@@ -28,6 +28,11 @@ interface IEventController
     public function createForm(IFormDocument $form): void;
 
     /**
+     * Returns the template in the main section of the event.
+     */
+    public function getContent(): string;
+
+    /**
      * Returns the header navigation.
      */
     public function getContentHeaderNavigation(): string;
