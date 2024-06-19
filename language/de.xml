@@ -108,6 +108,7 @@
         <category name="rp.event.controller">
             <item name="rp.event.controller.dev.daries.rp.event.controller.appointment"><![CDATA[Termin mit Anmeldung]]></item>
             <item name="rp.event.controller.dev.daries.rp.event.controller.default"><![CDATA[Standard]]></item>
+            <item name="rp.event.controller.dev.daries.rp.event.controller.raid"><![CDATA[Raid]]></item>
         </category>
 
         <category name="rp.faction">
