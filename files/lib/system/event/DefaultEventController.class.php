@@ -22,6 +22,11 @@ class DefaultEventController extends AbstractEventController
     protected string $eventController = 'dev.daries.rp.event.controller.default';
 
     /**
+     * event nodes position
+     */
+    protected string $eventNodesPosition = 'center';
+
+    /**
      * @inheritDoc
      */
     protected array $savedFields = [

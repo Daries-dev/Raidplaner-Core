@@ -56,4 +56,10 @@ interface IEventController
      * Sets the database object of this event.
      */
     public function setEvent(Event $event): void;
+
+    /**
+     * Returns `true` if the position matches the event nodes position present in 
+     * the controller, otherwise `false`.
+     */
+    public function showEventNodes(string $position): bool;
 }

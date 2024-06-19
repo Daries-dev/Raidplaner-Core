@@ -48,8 +48,26 @@
     </button>
 {/capture}
 
+{if $event->getController()->showEventNodes('right')}
+    {hascontent}
+    {capture append='sidebarRight'}
+        <section class="box" data-static-box-identifier="dev.daries.rp.notes">
+            <h2 class="boxTitle">{lang}rp.event.notes{/lang}</h2>
+
+            <div class="boxContent htmlContent">
+                {content}
+                {@$event->getSimplifiedFormattedNotes()}
+                {/content}
+            </div>
+        </section>
+    {/capture}
+    {/hascontent}
+{/if}
+
+
 {include file='header'}
 
+{if $event->getController()->showEventNodes('center')}
 {hascontent}
 <section class="section">
     <h2 class="sectionTitle">{lang}rp.event.notes{/lang}</h2>
@@ -59,13 +77,14 @@
         <dd>
             <div class="htmlContent">
                 {content}
-                {@$event->getFormattedMessage()}
+                    {@$event->getFormattedNotes()}
                 {/content}
             </div>
         </dd>
     </dl>
 </section>
 {/hascontent}
+{/if}
 
 {if !$event->isDeleted && $event->getController()->isExpired()}
     <p class="error">{lang}rp.event.expired{/lang}</p>

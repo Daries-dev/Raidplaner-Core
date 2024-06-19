@@ -41,6 +41,11 @@ abstract class AbstractEventController implements IEventController
     protected string $eventController = '';
 
     /**
+     * Position where Notes should be displayed in this event.
+     */
+    protected string $eventNodesPosition = '';
+
+    /**
      * ids of the fields containing object data
      */
     protected array $savedFields = [];
@@ -313,5 +318,13 @@ abstract class AbstractEventController implements IEventController
     public function setEvent(Event $event): void
     {
         $this->event = $event;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function showEventNodes(string $position): bool
+    {
+        return ($this->eventNodesPosition === $position);
     }
 }
