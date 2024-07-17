@@ -48,6 +48,11 @@ interface IEventController
     public function getIcon(int $size = 16): string;
 
     /**
+     * Returns the title of the event.
+     */
+    public function getTitle(): string;
+
+    /**
      * Returns true if the current user can use this event provider.
      */
     public function isAccessible(): bool;

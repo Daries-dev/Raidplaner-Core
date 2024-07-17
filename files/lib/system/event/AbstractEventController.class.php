@@ -285,6 +285,14 @@ abstract class AbstractEventController implements IEventController
     /**
      * @inheritDoc
      */
+    public function getTitle(): string
+    {
+        return $this->getEvent()->title;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function isAccessible(): bool
     {
         return WCF::getSession()->getPermission('user.rp.canCreateEvent');
