@@ -111,6 +111,29 @@
             <item name="rp.event.controller.dev.daries.rp.event.controller.raid"><![CDATA[Raid]]></item>
         </category>
 
+        <category name="rp.event.raid">
+            <item name="rp.event.raid.attendee.noCharacters"><![CDATA[{if LANGUAGE_USE_INFORMAL_VARIANT}Du hast{else}Sie haben{/if} bisher keine Charaktere erstellt oder keiner der Charaktere besitzt die benötigten Voraussetzung(en) für dieses Raid.]]></item>
+            <item name="rp.event.raid.canceled"><![CDATA[Der Raid wurde von einem Raidleiter abgesagt.]]></item>
+            <item name="rp.event.raid.condition"><![CDATA[Voraussetzung]]></item>
+            <item name="rp.event.raid.condition.description"><![CDATA[Hier {if LANGUAGE_USE_INFORMAL_VARIANT}kannst Du{else}können Sie{/if} angeben, welche Voraussetzungen für dieses Raid mindestens besteht.]]></item>
+            <item name="rp.event.raid.container.confirmed"><![CDATA[Bestätigt]]></item>
+            <item name="rp.event.raid.container.login"><![CDATA[Angemeldet]]></item>
+            <item name="rp.event.raid.container.logout"><![CDATA[Abgemeldet]]></item>
+            <item name="rp.event.raid.container.reserve"><![CDATA[Ersatzbank]]></item>
+            <item name="rp.event.raid.deadline"><![CDATA[Anmeldeschluss]]></item>
+            <item name="rp.event.raid.deadline.description"><![CDATA[Anzahl an Stunde(n), für Anmeldeschluss vor Raidbeginn. [Maximal 24 Stunden]]]></item>
+            <item name="rp.event.raid.distribution"><![CDATA[Modus]]></item>
+            <item name="rp.event.raid.distribution.class"><![CDATA[Klassenverteilung]]></item>
+            <item name="rp.event.raid.distribution.none"><![CDATA[keine Verteilung]]></item>
+            <item name="rp.event.raid.distribution.role"><![CDATA[Rollenverteilung]]></item>
+            <item name="rp.event.raid.leader"><![CDATA[Raidleiter]]></item>
+            <item name="rp.event.raid.leaders"><![CDATA[Raidleiters]]></item>
+            <item name="rp.event.raid.participants"><![CDATA[Teilnehmer]]></item>
+            <item name="rp.event.raid.participate"><![CDATA[Teilnehmen]]></item>
+            <item name="rp.event.raid.points"><![CDATA[Punkte]]></item>
+            <item name="rp.event.raid.points.description"><![CDATA[Punkte für diesen Raid]]></item>
+        </category>
+
         <category name="rp.faction">
             <item name="rp.faction.title"><![CDATA[Fraktion]]></item>
         </category>

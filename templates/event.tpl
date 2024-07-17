@@ -75,7 +75,6 @@
     {/hascontent}
 {/if}
 
-
 {include file='header'}
 
 {if $event->getController()->showEventNodes('center')}
