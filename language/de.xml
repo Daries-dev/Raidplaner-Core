@@ -155,11 +155,13 @@
             <item name="wcf.acp.group.option.category.user.rp"><![CDATA[Raidplaner]]></item>
             <item name="wcf.acp.group.option.category.user.rp.calendar"><![CDATA[Kalender]]></item>
             <item name="wcf.acp.group.option.category.user.rp.character"><![CDATA[Charakter]]></item>
+            <item name="wcf.acp.group.option.category.user.rp.raid"><![CDATA[Raids]]></item>
             <item name="wcf.acp.group.option.user.rp.canAddCharacter"><![CDATA[Kann Charaktere hinzufügen]]></item>
             <item name="wcf.acp.group.option.user.rp.canCreateEvent"><![CDATA[Kann Termine erstellen]]></item>
             <item name="wcf.acp.group.option.user.rp.canCreateEventWithoutModeration"><![CDATA[Kann Termine ohne Moderation erstellen]]></item>
             <item name="wcf.acp.group.option.user.rp.canDeleteOwnCharacter"><![CDATA[Kann eigende Charaktere löschen]]></item>
             <item name="wcf.acp.group.option.user.rp.canEditOwnCharacter"><![CDATA[Kann eigene Charaktere bearbeiten]]></item>
+            <item name="wcf.acp.group.option.user.rp.canParticipate"><![CDATA[Kann an Raids teilnehmen]]></item>
             <item name="wcf.acp.group.option.user.rp.canReadEvent"><![CDATA[Kann Termine sehen]]></item>
             <item name="wcf.acp.group.option.user.rp.canUploadCharacterAvatar"><![CDATA[Kann eigenen Avatar hochladen]]></item>
             <item name="wcf.acp.group.option.user.rp.canViewCharacterProfile"><![CDATA[Kann Charakter Profile sehen]]></item>
