@@ -3,10 +3,12 @@
 namespace rp\form;
 
 use CuyZ\Valinor\Mapper\MappingError;
+use rp\data\event\Event;
 use rp\data\event\EventAction;
 use wcf\data\AbstractDatabaseObjectAction;
 use wcf\data\object\type\ObjectType;
 use wcf\data\object\type\ObjectTypeCache;
+use wcf\form\AbstractForm;
 use wcf\form\AbstractFormBuilderForm;
 use wcf\http\Helper;
 use wcf\system\exception\IllegalLinkException;
@@ -77,6 +79,8 @@ class EventAddForm extends AbstractFormBuilderForm
 
     public function save(): void
     {
+        AbstractForm::save();
+
         $action = $this->formAction;
         if ($this->objectActionName) {
             $action = $this->objectActionName;
@@ -95,6 +99,26 @@ class EventAddForm extends AbstractFormBuilderForm
             $this->eventController->getProcessor()->saveForm($formData)
         );
         $event = $this->objectAction->executeAction()['returnValues'];
+
+        if ($event->isDisabled) {
+            HeaderUtil::delayedRedirect(LinkHandler::getInstance()->getLink('Calendar', [
+                'application' => 'rp'
+            ]), WCF::getLanguage()->getDynamicVariable('rp.event.moderation.redirect'), 30);
+        } else {
+            HeaderUtil::redirect($event->getLink());
+        }
+        exit;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function saved(): void
+    {
+        AbstractForm::saved();
+
+        /** @var Event $event */
+        $event = $this->objectAction->getReturnValues()['returnValues'];
 
         if ($event->isDisabled) {
             HeaderUtil::delayedRedirect(LinkHandler::getInstance()->getLink('Calendar', [
