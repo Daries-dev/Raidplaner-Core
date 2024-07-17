@@ -220,7 +220,7 @@ final class Event extends DatabaseObject implements IRouteController, IMessage
      */
     public function getTitle(): string
     {
-        return $this->title ?? $this->getController()->getTitle();
+        return $this->getController()->getTitle();
     }
 
     /**
