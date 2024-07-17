@@ -31,6 +31,11 @@
             <definitionname>com.woltlab.wcf.clipboardItem</definitionname>
             <listclassname>rp\data\character\CharacterList</listclassname>
         </type>
+        <type>
+            <name>dev.daries.rp.raid.attendee</name>
+            <definitionname>com.woltlab.wcf.clipboardItem</definitionname>
+            <listclassname>rp\data\event\raid\attendee\EventRaidAttendeeList</listclassname>
+        </type>
         <!-- /clipboard items -->
 
         <!-- event controllers -->
