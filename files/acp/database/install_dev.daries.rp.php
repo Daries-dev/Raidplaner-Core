@@ -6,6 +6,7 @@
  * @license Raidplaner is licensed under Creative Commons Attribution-ShareAlike 4.0 International 
  */
 
+use wcf\system\database\table\column\CharDatabaseTableColumn;
 use wcf\system\database\table\column\DefaultFalseBooleanDatabaseTableColumn;
 use wcf\system\database\table\column\DefaultTrueBooleanDatabaseTableColumn;
 use wcf\system\database\table\column\FloatDatabaseTableColumn;
@@ -187,6 +188,48 @@ return [
                 ->onDelete('SET NULL'),
         ]),
 
+    DatabaseTable::create('rp1_event_raid_attendee')
+        ->columns([
+            ObjectIdDatabaseTableColumn::create('attendeeID'),
+            NotNullInt10DatabaseTableColumn::create('eventID'),
+            IntDatabaseTableColumn::create('characterID')
+                ->length(10),
+            NotNullVarchar255DatabaseTableColumn::create('characterName')
+                ->defaultValue(''),
+            NotNullVarchar255DatabaseTableColumn::create('email')
+                ->defaultValue(''),
+            CharDatabaseTableColumn::create('internID')
+                ->length(5)
+                ->notNull()
+                ->defaultValue(''),
+            IntDatabaseTableColumn::create('classificationID')
+                ->length(10),
+            IntDatabaseTableColumn::create('roleID')
+                ->length(10),
+            NotNullVarchar255DatabaseTableColumn::create('notes')
+                ->defaultValue(''),
+            NotNullInt10DatabaseTableColumn::create('created')
+                ->defaultValue(0),
+            DefaultFalseBooleanDatabaseTableColumn::create('addByLeader'),
+            DefaultFalseBooleanDatabaseTableColumn::create('status'),
+        ])
+        ->indices([
+            DatabaseTablePrimaryIndex::create()
+                ->columns(['attendeeID']),
+        ])
+        ->foreignKeys([
+            DatabaseTableForeignKey::create()
+                ->columns(['eventID'])
+                ->referencedTable('rp1_event')
+                ->referencedColumns(['eventID'])
+                ->onDelete('CASCADE'),
+            DatabaseTableForeignKey::create()
+                ->columns(['classificationID'])
+                ->referencedTable('rp1_classification')
+                ->referencedColumns(['classificationID'])
+                ->onDelete('SET NULL'),
+        ]),
+
     DatabaseTable::create('rp1_game')
         ->columns([
             ObjectIdDatabaseTableColumn::create('gameID'),
@@ -280,6 +323,15 @@ return [
                 ->referencedTable('rp1_game')
                 ->referencedColumns(['gameID'])
                 ->onDelete('CASCADE'),
+        ]),
+
+    PartialDatabaseTable::create('rp1_event_raid_attendee')
+        ->foreignKeys([
+            DatabaseTableForeignKey::create()
+                ->columns(['characterID'])
+                ->referencedTable('rp1_member')
+                ->referencedColumns(['characterID'])
+                ->onDelete('SET NULL'),
         ]),
 
     DatabaseTable::create('rp1_member_avatar')
@@ -483,6 +535,15 @@ return [
                 ->referencedTable('rp1_role')
                 ->referencedColumns(['roleID'])
                 ->onDelete('CASCADE'),
+        ]),
+
+    PartialDatabaseTable::create('rp1_event_raid_attendee')
+        ->foreignKeys([
+            DatabaseTableForeignKey::create()
+                ->columns(['roleID'])
+                ->referencedTable('rp1_role')
+                ->referencedColumns(['roleID'])
+                ->onDelete('SET NULL'),
         ]),
 
     DatabaseTable::create('rp1_server')

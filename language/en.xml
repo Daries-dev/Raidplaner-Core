@@ -108,6 +108,30 @@
         <category name="rp.event.controller">
             <item name="rp.event.controller.dev.daries.rp.event.controller.appointment"><![CDATA[Appointment with registration]]></item>
             <item name="rp.event.controller.dev.daries.rp.event.controller.default"><![CDATA[Default]]></item>
+            <item name="rp.event.controller.dev.daries.rp.event.controller.raid"><![CDATA[Raid]]></item>
+        </category>
+
+        <category name="rp.event.raid">
+            <item name="rp.event.raid.attendee.noCharacters"><![CDATA[You have not created characters or none characters have the required conditions for this raid.]]></item>
+            <item name="rp.event.raid.canceled"><![CDATA[The raid was cancelled by a raid leader.]]></item>
+            <item name="rp.event.raid.condition"><![CDATA[Condition]]></item>
+            <item name="rp.event.raid.condition.description"><![CDATA[Here you can specify which are the minimum conditions for this raid.]]></item>
+            <item name="rp.event.raid.container.confirmed"><![CDATA[Confirmed]]></item>
+            <item name="rp.event.raid.container.login"><![CDATA[Login]]></item>
+            <item name="rp.event.raid.container.logout"><![CDATA[Logout]]></item>
+            <item name="rp.event.raid.container.reserve"><![CDATA[Reserve]]></item>
+            <item name="rp.event.raid.deadline"><![CDATA[Registration deadline]]></item>
+            <item name="rp.event.raid.deadline.description"><![CDATA[Number of hours, for registration deadline before the start of raid. [24 hours maximum]]]></item>
+            <item name="rp.event.raid.distribution"><![CDATA[Mode]]></item>
+            <item name="rp.event.raid.distribution.class"><![CDATA[Class distribution]]></item>
+            <item name="rp.event.raid.distribution.none"><![CDATA[No distribution]]></item>
+            <item name="rp.event.raid.distribution.role"><![CDATA[Role distribution]]></item>
+            <item name="rp.event.raid.leader"><![CDATA[Raid leader]]></item>
+            <item name="rp.event.raid.leaders"><![CDATA[Raidleaders]]></item>
+            <item name="rp.event.raid.participants"><![CDATA[Participant]]></item>
+            <item name="rp.event.raid.participate"><![CDATA[Participate]]></item>
+            <item name="rp.event.raid.points"><![CDATA[Points]]></item>
+            <item name="rp.event.raid.points.description"><![CDATA[Points for this raid]]></item>
         </category>
 
         <category name="rp.faction">
@@ -154,11 +178,13 @@
             <item name="wcf.acp.group.option.category.user.rp"><![CDATA[Raidplaner]]></item>
             <item name="wcf.acp.group.option.category.user.rp.calendar"><![CDATA[Kalender]]></item>
             <item name="wcf.acp.group.option.category.user.rp.character"><![CDATA[Character]]></item>
+            <item name="wcf.acp.group.option.category.user.rp.raid"><![CDATA[Raids]]></item>
             <item name="wcf.acp.group.option.user.rp.canAddCharacter"><![CDATA[Can add characters]]></item>
             <item name="wcf.acp.group.option.user.rp.canCreateEvent"><![CDATA[Can create events]]></item>
             <item name="wcf.acp.group.option.user.rp.canCreateEventWithoutModeration"><![CDATA[Can create events without approval]]></item>
             <item name="wcf.acp.group.option.user.rp.canDeleteOwnCharacter"><![CDATA[Can delete their characters]]></item>
             <item name="wcf.acp.group.option.user.rp.canEditOwnCharacter"><![CDATA[Can edit own characters]]></item>
+            <item name="wcf.acp.group.option.user.rp.canParticipate"><![CDATA[Can participate in raids]]></item>
             <item name="wcf.acp.group.option.user.rp.canReadEvent"><![CDATA[Can view events]]></item>
             <item name="wcf.acp.group.option.user.rp.canUploadCharacterAvatar"><![CDATA[Can upload own avatar]]></item>
             <item name="wcf.acp.group.option.user.rp.canViewCharacterProfile"><![CDATA[Can view character profiles]]></item>

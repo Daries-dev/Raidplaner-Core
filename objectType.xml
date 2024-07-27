@@ -31,6 +31,11 @@
             <definitionname>com.woltlab.wcf.clipboardItem</definitionname>
             <listclassname>rp\data\character\CharacterList</listclassname>
         </type>
+        <type>
+            <name>dev.daries.rp.raid.attendee</name>
+            <definitionname>com.woltlab.wcf.clipboardItem</definitionname>
+            <listclassname>rp\data\event\raid\attendee\EventRaidAttendeeList</listclassname>
+        </type>
         <!-- /clipboard items -->
 
         <!-- event controllers -->
@@ -43,6 +48,11 @@
             <name>dev.daries.rp.event.controller.default</name>
             <definitionname>dev.daries.rp.event.controller</definitionname>
             <classname>rp\system\event\DefaultEventController</classname>
+        </type>
+        <type>
+            <name>dev.daries.rp.event.controller.raid</name>
+            <definitionname>dev.daries.rp.event.controller</definitionname>
+            <classname>rp\system\event\RaidEventController</classname>
         </type>
         <!-- /event controllers -->
 
