@@ -2,7 +2,7 @@
     data-object-id="{@$attendee->attendeeID}" data-character-id="{@$attendee->characterID}"
     data-user-id="{@$attendee->getCharacter()->userID}" data-distribution-id="{$__availableDistributionID}"
     {if $event->canEdit()}draggable="true" {/if}
-    data-droppable-to="{implode from=$attendee->possibleDistribution() item=distributionID}distribution{@$distributionID}{/implode}">
+    data-droppable-to="{implode from=$attendee->getPossibleDistribution() item=distributionID}distribution{@$distributionID}{/implode}">
     <div class="box24">
         {if !$event->isCanceled && $event->canEdit()}
             <div class="columnMark">
