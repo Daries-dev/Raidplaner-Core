@@ -160,10 +160,6 @@ final class AddParticipantAction implements RequestHandlerInterface
 
         $form->build();
 
-        if (!WCF::getUser()->userID) {
-            $form->getButton('submitButton')->label('rp.event.raid.attendee.button.guest');
-        }
-
         return $form;
     }
 
