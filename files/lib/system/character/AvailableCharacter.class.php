@@ -60,4 +60,9 @@ final class AvailableCharacter
     {
         return $this->roleID;
     }
+
+    public function __toString(): string
+    {
+        return $this->getName();
+    }
 }
