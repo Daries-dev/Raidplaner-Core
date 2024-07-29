@@ -112,7 +112,12 @@
         </category>
 
         <category name="rp.event.raid">
+            <item name="rp.event.raid.attendee.add"><![CDATA[Anmeldung]]></item>
+            <item name="rp.event.raid.attendee.button.guest"><![CDATA[Als Gastteilnehmer bewerben]]></item>
+            <item name="rp.event.raid.attendee.character"><![CDATA[Charakter]]></item>
+            <item name="rp.event.raid.attendee.email"><![CDATA[E-Mail-Addresse]]></item>
             <item name="rp.event.raid.attendee.noCharacters"><![CDATA[{if LANGUAGE_USE_INFORMAL_VARIANT}Du hast{else}Sie haben{/if} bisher keine Charaktere erstellt oder keiner der Charaktere besitzt die benötigten Voraussetzung(en) für dieses Raid.]]></item>
+            <item name="rp.event.raid.attendee.notes"><![CDATA[Notiz]]></item>
             <item name="rp.event.raid.canceled"><![CDATA[Der Raid wurde von einem Raidleiter abgesagt.]]></item>
             <item name="rp.event.raid.condition"><![CDATA[Voraussetzung]]></item>
             <item name="rp.event.raid.condition.description"><![CDATA[Hier {if LANGUAGE_USE_INFORMAL_VARIANT}kannst Du{else}können Sie{/if} angeben, welche Voraussetzungen für dieses Raid mindestens besteht.]]></item>
