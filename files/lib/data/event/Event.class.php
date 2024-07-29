@@ -3,6 +3,7 @@
 namespace rp\data\event;
 
 use rp\system\event\IEventController;
+use rp\system\event\RaidEventController;
 use wcf\data\DatabaseObject;
 use wcf\data\IMessage;
 use wcf\data\object\type\ObjectTypeCache;
@@ -71,6 +72,33 @@ final class Event extends DatabaseObject implements IRouteController, IMessage
 
         $this->endTimeObj = new \DateTime('@' . $this->endTime);
         $this->endTimeObj->setTimezone(WCF::getUser()->getTimeZone());
+    }
+
+    /**
+     * Returns true if the current user can edit these event.
+     */
+    public function canEdit(): bool
+    {
+        // check mod permissions
+        if (WCF::getSession()->getPermission('mod.rp.canEditEvent')) {
+            return true;
+        }
+
+        if ($this->isRaidEvent()) {
+            if ($this->getController()->isLeader()) {
+                return true;
+            }
+        }
+
+        if (
+            $this->userID &&
+            $this->userID == WCF::getUser()->userID &&
+            WCF::getSession()->getPermission('user.rp.canEditEvent')
+        ) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -237,6 +265,15 @@ final class Event extends DatabaseObject implements IRouteController, IMessage
     protected function isSelfDay(): bool
     {
         return $this->startTimeObj->format('Y-m-d') === $this->endTimeObj->format('Y-m-d');
+    }
+
+    /**
+     * Returns `true` if this event is a raid event, otherwise `false`.
+     */
+    public function isRaidEvent(): bool
+    {
+        if ($this->getController() instanceof RaidEventController) return true;
+        return false;
     }
 
     /**
