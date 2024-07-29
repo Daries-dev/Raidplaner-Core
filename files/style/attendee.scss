@@ -1,0 +1,29 @@
+.attendeeList {
+	padding: 5px;
+
+	> li {
+		position: relative;
+
+		&:not(:first-child) {
+			margin-top: 5px;
+		}
+	}
+}
+
+.attendee {
+	.box24 {
+		align-items: center;
+		min-height: 20px;
+	}
+
+	.attendeeName {
+		flex: 1 auto !important;
+	}
+
+	.statusDisplay {
+		flex: 0 auto;
+
+		display: flex;
+		align-items: center;
+	}
+}
