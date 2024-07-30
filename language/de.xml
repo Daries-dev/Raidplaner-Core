@@ -113,11 +113,14 @@
 
         <category name="rp.event.raid">
             <item name="rp.event.raid.attendee.add"><![CDATA[Anmeldung]]></item>
+            <item name="rp.event.raid.attendee.addByLeader"><![CDATA[Angemeldet von einem Raidleiter]]></item>
             <item name="rp.event.raid.attendee.button.guest"><![CDATA[Als Gastteilnehmer bewerben]]></item>
             <item name="rp.event.raid.attendee.character"><![CDATA[Charakter]]></item>
             <item name="rp.event.raid.attendee.email"><![CDATA[E-Mail-Addresse]]></item>
+            <item name="rp.event.raid.attendee.guest"><![CDATA[Gast]]></item>
             <item name="rp.event.raid.attendee.noCharacters"><![CDATA[{if LANGUAGE_USE_INFORMAL_VARIANT}Du hast{else}Sie haben{/if} bisher keine Charaktere erstellt oder keiner der Charaktere besitzt die benötigten Voraussetzung(en) für dieses Raid.]]></item>
             <item name="rp.event.raid.attendee.notes"><![CDATA[Notiz]]></item>
+            <item name="rp.event.raid.attendee.remove.confirmMessage"><![CDATA[{if LANGUAGE_USE_INFORMAL_VARIANT}Willst du{else}Wollen Sie{/if} wirklich die Teilnahme absagen?]]></item>
             <item name="rp.event.raid.canceled"><![CDATA[Der Raid wurde von einem Raidleiter abgesagt.]]></item>
             <item name="rp.event.raid.condition"><![CDATA[Voraussetzung]]></item>
             <item name="rp.event.raid.condition.description"><![CDATA[Hier {if LANGUAGE_USE_INFORMAL_VARIANT}kannst Du{else}können Sie{/if} angeben, welche Voraussetzungen für dieses Raid mindestens besteht.]]></item>
@@ -137,6 +140,7 @@
             <item name="rp.event.raid.participate"><![CDATA[Teilnehmen]]></item>
             <item name="rp.event.raid.points"><![CDATA[Punkte]]></item>
             <item name="rp.event.raid.points.description"><![CDATA[Punkte für diesen Raid]]></item>
+            <item name="rp.event.raid.updateStatus"><![CDATA[Status aktualisieren]]></item>
         </category>
 
         <category name="rp.faction">
