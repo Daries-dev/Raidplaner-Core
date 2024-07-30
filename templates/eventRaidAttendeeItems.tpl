@@ -1,8 +1,9 @@
-<li id="attendee{@$attendee->attendeeID}" class="attendee jsClipboardObject{if $event->canEdit()} draggable{/if}"
-    data-object-id="{@$attendee->attendeeID}" data-character-id="{@$attendee->characterID}"
-    data-user-id="{@$attendee->getCharacter()->userID}" data-distribution-id="{$__availableDistributionID}"
-    {if $event->canEdit()}draggable="true" {/if}
-    data-droppable-to="{implode from=$attendee->getPossibleDistribution() item=distributionID}distribution{@$distributionID}{/implode}">
+<daries-rp-attendee-drag-and-drop-box-item id="attendee{@$attendee->attendeeID}"
+    class="attendee{if $event->getController()->isLeader()} draggable{/if}" attendee-id="{@$attendee->attendeeID}"
+    character-id="{@$attendee->characterID}" distribution-id="{$__availableDistributionID}"
+    {if $event->getController()->isLeader()}draggable="true" {/if}
+    droppable-to="{implode from=$attendee->getPossibleDistribution() item=distributionID}distribution{@$distributionID}{/implode}"
+    user-id="{@$attendee->getCharacter()->userID}">
     <div class="box24">
         <div class="attendeeName">
             {@$attendee->getCharacter()->getAvatar()->getImageTag(24)}
@@ -50,4 +51,4 @@
             {/if}
         </span>
     </div>
-</li>
+</daries-rp-attendee-drag-and-drop-box-item>

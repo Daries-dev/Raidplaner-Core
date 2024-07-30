@@ -93,7 +93,7 @@ final class Event extends DatabaseObject implements IRouteController, IMessage
         if (
             $this->userID &&
             $this->userID == WCF::getUser()->userID &&
-            WCF::getSession()->getPermission('user.rp.canEditEvent')
+            WCF::getSession()->getPermission('user.rp.canEditOwnEvent')
         ) {
             return true;
         }

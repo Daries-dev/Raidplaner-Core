@@ -1,7 +1,7 @@
 .attendeeList {
 	padding: 5px;
 
-	> li {
+	> .attendeeList__item {
 		position: relative;
 
 		&:not(:first-child) {
@@ -11,6 +11,17 @@
 }
 
 .attendee {
+	display: flex;
+	flex-direction: column;
+
+	&.draggable {
+		&:hover {
+			border: 1px solid var(--wcfContentBorder) !important;
+			background-color: var(--wcfTabularBoxBackgroundActive);
+			cursor: move;
+		}
+	}
+
 	.box24 {
 		align-items: center;
 		min-height: 20px;
