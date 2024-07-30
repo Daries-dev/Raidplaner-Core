@@ -4,11 +4,6 @@
     {if $event->canEdit()}draggable="true" {/if}
     data-droppable-to="{implode from=$attendee->getPossibleDistribution() item=distributionID}distribution{@$distributionID}{/implode}">
     <div class="box24">
-        {if !$event->isCanceled && $event->canEdit()}
-            <div class="columnMark">
-                <input type="checkbox" class="jsClipboardItem" data-object-id="{@$attendee->attendeeID}">
-            </div>
-        {/if}
         <div class="attendeeName">
             {@$attendee->getCharacter()->getAvatar()->getImageTag(24)}
             <span>
