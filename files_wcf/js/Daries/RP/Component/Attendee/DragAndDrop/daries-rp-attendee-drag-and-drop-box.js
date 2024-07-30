@@ -3,7 +3,7 @@
  * @copyright   2023-2024 Daries.dev
  * @license Raidplaner is licensed under Creative Commons Attribution-ShareAlike 4.0 International
  */
-define(["require", "exports", "tslib", "../../../Ui/Event/Raid/Participant/DragAndDrop/Autobind", "@woltlab/d.ts/WoltLabSuite/Core/Component/Dialog", "../../../Api/Attendee/UpdateAttendee", "WoltLabSuite/Core/Ui/Notification"], function (require, exports, tslib_1, Autobind_1, Dialog_1, UpdateAttendee_1, Notification_1) {
+define(["require", "exports", "tslib", "../../../Ui/Event/Raid/Participant/DragAndDrop/Autobind", "WoltLabSuite/Core/Component/Dialog", "../../../Api/Attendee/UpdateAttendee", "WoltLabSuite/Core/Ui/Notification"], function (require, exports, tslib_1, Autobind_1, Dialog_1, UpdateAttendee_1, Notification_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.DariesRPAttendeeDragAndDropBoxElement = void 0;
@@ -40,10 +40,10 @@ define(["require", "exports", "tslib", "../../../Ui/Event/Raid/Participant/DragA
             const distributionId = this.distributionId;
             const status = this.status;
             if (status === event.dataTransfer.getData("currentStatus") &&
-                distributionId === parseInt(event.dataTransfer.getData("distributionID"))) {
+                distributionId === parseInt(event.dataTransfer.getData("distributionId"))) {
                 return;
             }
-            const attendeeId = parseInt(event.dataTransfer.getData("attendeeID"));
+            const attendeeId = parseInt(event.dataTransfer.getData("attendeeId"));
             const response = await (0, UpdateAttendee_1.updateAttendee)(attendeeId, this.distributionId, this.status);
             if (!response.ok) {
                 const validationError = response.error.getValidationError();

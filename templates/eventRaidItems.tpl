@@ -1,4 +1,4 @@
-<daries-rp-attendee-drag-and-drop-box class="contenItem attendeeBox" distribution-id="{$__availableDistributionID}"
+<daries-rp-attendee-drag-and-drop-box class="contentItem attendeeBox" distribution-id="{$__availableDistributionID}"
     droppable="distribution{$__availableDistributionID}" status="{$__status}">
     <div class="contentItemLink">
         {if $availableDistribution|isset}
