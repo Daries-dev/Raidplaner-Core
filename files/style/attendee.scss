@@ -11,6 +11,9 @@
 }
 
 .attendee {
+	display: flex;
+	flex-direction: column;
+
 	.box24 {
 		align-items: center;
 		min-height: 20px;

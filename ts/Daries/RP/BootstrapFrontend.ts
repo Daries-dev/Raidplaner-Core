@@ -12,4 +12,7 @@ export function setup(): void {
     whenFirstSeen("daries-rp-attendee-drag-and-drop-box", () => {
         void import("./Component/Attendee/DragAndDrop/daries-rp-attendee-drag-and-drop-box");
     });
+    whenFirstSeen("daries-rp-attendee-drag-and-drop-item", () => {
+        void import("./Component/Attendee/DragAndDrop/daries-rp-attendee-drag-and-drop-item");
+    });
 }

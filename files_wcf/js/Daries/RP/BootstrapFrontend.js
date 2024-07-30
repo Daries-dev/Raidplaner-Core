@@ -36,6 +36,9 @@ define(["require", "exports", "WoltLabSuite/Core/LazyLoader"], function (require
         (0, LazyLoader_1.whenFirstSeen)("daries-rp-attendee-drag-and-drop-box", () => {
             void new Promise((resolve_1, reject_1) => { require(["./Component/Attendee/DragAndDrop/daries-rp-attendee-drag-and-drop-box"], resolve_1, reject_1); }).then(__importStar);
         });
+        (0, LazyLoader_1.whenFirstSeen)("daries-rp-attendee-drag-and-drop-item", () => {
+            void new Promise((resolve_2, reject_2) => { require(["./Component/Attendee/DragAndDrop/daries-rp-attendee-drag-and-drop-item"], resolve_2, reject_2); }).then(__importStar);
+        });
     }
     exports.setup = setup;
 });
