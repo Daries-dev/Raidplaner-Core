@@ -193,6 +193,7 @@
             <item name="wcf.acp.group.option.user.rp.canCreateEventWithoutModeration"><![CDATA[Can create events without approval]]></item>
             <item name="wcf.acp.group.option.user.rp.canDeleteOwnCharacter"><![CDATA[Can delete their characters]]></item>
             <item name="wcf.acp.group.option.user.rp.canEditOwnCharacter"><![CDATA[Can edit own characters]]></item>
+            <item name="wcf.acp.group.option.user.rp.canEditOwnEvent"><![CDATA[Can edit own events]]></item>
             <item name="wcf.acp.group.option.user.rp.canParticipate"><![CDATA[Can participate in raids]]></item>
             <item name="wcf.acp.group.option.user.rp.canReadEvent"><![CDATA[Can view events]]></item>
             <item name="wcf.acp.group.option.user.rp.canUploadCharacterAvatar"><![CDATA[Can upload own avatar]]></item>

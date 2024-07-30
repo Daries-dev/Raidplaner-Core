@@ -1,7 +1,7 @@
 <daries-rp-attendee-drag-and-drop-box-item id="attendee{@$attendee->attendeeID}"
-    class="attendee{if $event->canEdit()} draggable{/if}" attendee-id="{@$attendee->attendeeID}"
+    class="attendee{if $event->getController()->isLeader()} draggable{/if}" attendee-id="{@$attendee->attendeeID}"
     character-id="{@$attendee->characterID}" distribution-id="{$__availableDistributionID}"
-    {if $event->canEdit()}draggable="true" {/if}
+    {if $event->getController()->isLeader()}draggable="true" {/if}
     droppable-to="{implode from=$attendee->getPossibleDistribution() item=distributionID}distribution{@$distributionID}{/implode}"
     user-id="{@$attendee->getCharacter()->userID}">
     <div class="box24">
