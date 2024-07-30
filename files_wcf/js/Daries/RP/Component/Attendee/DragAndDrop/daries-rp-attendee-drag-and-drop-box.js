@@ -3,11 +3,11 @@
  * @copyright   2023-2024 Daries.dev
  * @license Raidplaner is licensed under Creative Commons Attribution-ShareAlike 4.0 International
  */
-define(["require", "exports", "tslib", "../../Ui/Event/Raid/Participant/DragAndDrop/Autobind", "@woltlab/d.ts/WoltLabSuite/Core/Component/Dialog", "../../Api/Attendee/UpdateAttendee", "WoltLabSuite/Core/Ui/Notification"], function (require, exports, tslib_1, Autobind_1, Dialog_1, UpdateAttendee_1, Notification_1) {
+define(["require", "exports", "tslib", "../../../Ui/Event/Raid/Participant/DragAndDrop/Autobind", "@woltlab/d.ts/WoltLabSuite/Core/Component/Dialog", "../../../Api/Attendee/UpdateAttendee", "WoltLabSuite/Core/Ui/Notification"], function (require, exports, tslib_1, Autobind_1, Dialog_1, UpdateAttendee_1, Notification_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.DariesRPDragAndDropBoxElement = void 0;
-    class DariesRPDragAndDropBoxElement extends HTMLElement {
+    exports.DariesRPAttendeeDragAndDropBoxElement = void 0;
+    class DariesRPAttendeeDragAndDropBoxElement extends HTMLElement {
         connectedCallback() {
             this.addEventListener("dragover", (event) => {
                 this.dragOverHandler(event);
@@ -74,25 +74,25 @@ define(["require", "exports", "tslib", "../../Ui/Event/Raid/Participant/DragAndD
             return this.getAttribute("status");
         }
     }
-    exports.DariesRPDragAndDropBoxElement = DariesRPDragAndDropBoxElement;
+    exports.DariesRPAttendeeDragAndDropBoxElement = DariesRPAttendeeDragAndDropBoxElement;
     tslib_1.__decorate([
         Autobind_1.Autobind,
         tslib_1.__metadata("design:type", Function),
         tslib_1.__metadata("design:paramtypes", [DragEvent]),
         tslib_1.__metadata("design:returntype", void 0)
-    ], DariesRPDragAndDropBoxElement.prototype, "dragOverHandler", null);
+    ], DariesRPAttendeeDragAndDropBoxElement.prototype, "dragOverHandler", null);
     tslib_1.__decorate([
         Autobind_1.Autobind,
         tslib_1.__metadata("design:type", Function),
         tslib_1.__metadata("design:paramtypes", [DragEvent]),
         tslib_1.__metadata("design:returntype", Promise)
-    ], DariesRPDragAndDropBoxElement.prototype, "dropHandler", null);
+    ], DariesRPAttendeeDragAndDropBoxElement.prototype, "dropHandler", null);
     tslib_1.__decorate([
         Autobind_1.Autobind,
         tslib_1.__metadata("design:type", Function),
         tslib_1.__metadata("design:paramtypes", [DragEvent]),
         tslib_1.__metadata("design:returntype", void 0)
-    ], DariesRPDragAndDropBoxElement.prototype, "dragLeaveHandler", null);
-    window.customElements.define("daries-rp-drag-and-drop-box", DariesRPDragAndDropBoxElement);
-    exports.default = DariesRPDragAndDropBoxElement;
+    ], DariesRPAttendeeDragAndDropBoxElement.prototype, "dragLeaveHandler", null);
+    window.customElements.define("daries-rp-attendee-drag-and-drop-box", DariesRPAttendeeDragAndDropBoxElement);
+    exports.default = DariesRPAttendeeDragAndDropBoxElement;
 });

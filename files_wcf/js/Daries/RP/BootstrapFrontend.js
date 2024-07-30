@@ -33,8 +33,8 @@ define(["require", "exports", "WoltLabSuite/Core/LazyLoader"], function (require
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.setup = void 0;
     function setup() {
-        (0, LazyLoader_1.whenFirstSeen)("daries-rp-drag-and-drop-box", () => {
-            void new Promise((resolve_1, reject_1) => { require(["./Component/DragAndDrop/daries-rp-drag-and-drop-box"], resolve_1, reject_1); }).then(__importStar);
+        (0, LazyLoader_1.whenFirstSeen)("daries-rp-attendee-drag-and-drop-box", () => {
+            void new Promise((resolve_1, reject_1) => { require(["./Component/Attendee/DragAndDrop/daries-rp-attendee-drag-and-drop-box"], resolve_1, reject_1); }).then(__importStar);
         });
     }
     exports.setup = setup;

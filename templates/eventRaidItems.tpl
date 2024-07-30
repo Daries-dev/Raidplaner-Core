@@ -1,4 +1,4 @@
-<daries-rp-drag-and-drop-box class="contenItem attendeeBox" distribution-id="{$__availableDistributionID}"
+<daries-rp-attendee-drag-and-drop-box class="contenItem attendeeBox" distribution-id="{$__availableDistributionID}"
     droppable="distribution{$__availableDistributionID}" status="{$__status}">
     <div class="contentItemLink">
         {if $availableDistribution|isset}
@@ -18,7 +18,7 @@
             {/foreach}
         {/if}
     </div>
-</daries-rp-drag-and-drop-box>
+</daries-rp-attendee-drag-and-drop-box>
 
 <script data-relocate="true">
     require(['Daries/RP/Component/Attendee/List'], ({ setup }) => {

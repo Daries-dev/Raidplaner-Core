@@ -9,7 +9,7 @@
 import { whenFirstSeen } from "WoltLabSuite/Core/LazyLoader";
 
 export function setup(): void {
-    whenFirstSeen("daries-rp-drag-and-drop-box", () => {
-        void import("./Component/DragAndDrop/daries-rp-drag-and-drop-box");
+    whenFirstSeen("daries-rp-attendee-drag-and-drop-box", () => {
+        void import("./Component/Attendee/DragAndDrop/daries-rp-attendee-drag-and-drop-box");
     });
 }

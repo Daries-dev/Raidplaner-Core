@@ -4,12 +4,12 @@
  * @license Raidplaner is licensed under Creative Commons Attribution-ShareAlike 4.0 International
  */
 
-import { Autobind } from "../../Ui/Event/Raid/Participant/DragAndDrop/Autobind";
+import { Autobind } from "../../../Ui/Event/Raid/Participant/DragAndDrop/Autobind";
 import { dialogFactory } from "@woltlab/d.ts/WoltLabSuite/Core/Component/Dialog";
-import { updateAttendee } from "../../Api/Attendee/UpdateAttendee";
+import { updateAttendee } from "../../../Api/Attendee/UpdateAttendee";
 import { show as showNotification } from "WoltLabSuite/Core/Ui/Notification";
 
-export class DariesRPDragAndDropBoxElement extends HTMLElement {
+export class DariesRPAttendeeDragAndDropBoxElement extends HTMLElement {
   connectedCallback() {
     this.addEventListener("dragover", (event) => {
       this.dragOverHandler(event);
@@ -95,6 +95,6 @@ export class DariesRPDragAndDropBoxElement extends HTMLElement {
   }
 }
 
-window.customElements.define("daries-rp-drag-and-drop-box", DariesRPDragAndDropBoxElement);
+window.customElements.define("daries-rp-attendee-drag-and-drop-box", DariesRPAttendeeDragAndDropBoxElement);
 
-export default DariesRPDragAndDropBoxElement;
+export default DariesRPAttendeeDragAndDropBoxElement;
