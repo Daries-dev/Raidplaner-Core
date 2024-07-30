@@ -40,6 +40,7 @@
 		<instruction type="acpMenu" />
 		<instruction type="page" />
 		<instruction type="menuItem" />
+		<instruction type="templateListener" />
 		<instruction type="script">acp/install_dev.daries.rp.php</instruction>
 	</instructions>
 </package>

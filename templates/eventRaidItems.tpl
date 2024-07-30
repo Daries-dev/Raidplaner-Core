@@ -19,9 +19,3 @@
         {/if}
     </div>
 </daries-rp-attendee-drag-and-drop-box>
-
-<script data-relocate="true">
-    require(['Daries/RP/Component/Attendee/List'], ({ setup }) => {
-        setup('{@$commentContainerID|encodeJS}');
-    });
-</script>
