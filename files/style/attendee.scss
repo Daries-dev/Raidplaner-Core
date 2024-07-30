@@ -1,7 +1,7 @@
 .attendeeList {
 	padding: 5px;
 
-	> li {
+	> .attendeeList__item {
 		position: relative;
 
 		&:not(:first-child) {

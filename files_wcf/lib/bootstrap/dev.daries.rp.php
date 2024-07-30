@@ -1,7 +1,5 @@
 <?php
 
-use rp\event\character\profile\menu\CharacterProfileMenuCollecting;
-use rp\system\character\profile\menu\AboutCharacterProfileMenu;
 use wcf\system\event\EventHandler;
 
 /**
@@ -13,7 +11,17 @@ use wcf\system\event\EventHandler;
 return static function (): void {
     $eventHandler = EventHandler::getInstance();
 
-    $eventHandler->register(CharacterProfileMenuCollecting::class, static function (CharacterProfileMenuCollecting $event) {
-        $event->register(AboutCharacterProfileMenu::class, -100);
-    });
+    $eventHandler->register(
+        \rp\event\character\profile\menu\CharacterProfileMenuCollecting::class,
+        static function (\rp\event\character\profile\menu\CharacterProfileMenuCollecting $event) {
+            $event->register(\rp\system\character\profile\menu\AboutCharacterProfileMenu::class, -100);
+        }
+    );
+
+    $eventHandler->register(
+        \wcf\event\endpoint\ControllerCollecting::class,
+        static function (\wcf\event\endpoint\ControllerCollecting $event) {
+            $event->register(new \rp\system\endpoint\controller\rp\attendees\UpdateAttendee);
+        }
+    );
 };
