@@ -398,15 +398,9 @@ final class RaidEventController extends AbstractEventController
     public function isLeader(): bool
     {
         $eventLeaders = $this->getEvent()->leaders;
-        $characters = CharacterHandler::getInstance()->getCharacters();
+        $characterIDs = \array_keys(CharacterHandler::getInstance()->getCharacters());
 
-        foreach ($characters as $character) {
-            if (\in_array($character->getObjectID(), $eventLeaders, true)) {
-                return true;
-            }
-        }
-
-        return false;
+        return !empty(\array_intersect($characterIDs, $eventLeaders));
     }
 
     /**

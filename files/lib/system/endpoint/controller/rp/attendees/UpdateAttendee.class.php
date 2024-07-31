@@ -60,7 +60,7 @@ final class UpdateAttendee implements IController
 final class UpdateAttendeeParameters
 {
     public function __construct(
-        /** @var non-empty-int */
+        /** @var positive-int */
         public readonly int $distributionId,
         /** @var non-empty-string */
         public readonly string $status,
