@@ -18,7 +18,8 @@
                         {if $day->getEvents()}
                             <ul class="rp-calendar-events">
                                 {foreach from=$day->getEvents() item=dayEvent}
-                                    <li class="rp-calendar-event rpEventPopover{if $dayEvent->isFullDay} rp-calendar-event-full-day{/if}">
+                                    <li class="rp-calendar-event rpEventPopover pointer{if $dayEvent->isFullDay} rp-calendar-event-full-day{/if}"
+                                        data-event-link="{$dayEvent->getEvent()->getLink()}">
                                         {if ($dayEvent->getStatus() === 1)}
                                             {icon name='right-from-bracket'}
                                             <span class="rp-calender-event-time">{$dayEvent->getFormattedStartTime(true)}</span>
