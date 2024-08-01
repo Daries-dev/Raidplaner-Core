@@ -69,6 +69,7 @@ export class DariesRPAttendeeDragAndDropBoxElement extends HTMLElement {
 
     const attendeeList = this.querySelector<HTMLElement>(".attendeeList");
     const attendee = document.getElementById(event.dataTransfer.getData("id"))!;
+    attendee.setAttribute("distribution-id", this.distributionId.toString());
     attendeeList?.insertAdjacentElement("beforeend", attendee);
 
     showNotification();
