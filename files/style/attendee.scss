@@ -12,7 +12,6 @@
 
 .attendee {
 	display: flex;
-	flex-direction: column;
 
 	&.draggable {
 		&:hover {
@@ -22,20 +21,17 @@
 		}
 	}
 
-	.box24 {
-		align-items: center;
-		min-height: 20px;
+	.attendee__avatar {
+		flex: 0 30px;
 	}
 
-	.attendeeName {
-		flex: 1 auto !important;
+	.attendee__name {
+		flex: 1 auto;
 	}
 
-	.statusDisplay {
+	.attendee__information,
+	.attendee__menu {
 		flex: 0 auto;
-
-		display: flex;
-		align-items: center;
 	}
 }
 
@@ -45,10 +41,10 @@
 	}
 
 	&.droppable {
-        border: 1px solid var(--wcfContentBorder);
+		border: 1px solid var(--wcfContentBorder);
 
-        &.selected {
-            background-color: var(--wcfTabularBoxBackgroundActive);
-        }
-    }
+		&.selected {
+			background-color: var(--wcfTabularBoxBackgroundActive);
+		}
+	}
 }
