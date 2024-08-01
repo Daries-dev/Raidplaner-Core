@@ -10,7 +10,7 @@ import { promiseMutex } from "WoltLabSuite/Core/Helper/PromiseMutex";
 import { show as showNotification } from "WoltLabSuite/Core/Ui/Notification";
 
 async function addParticipant(button: HTMLElement): Promise<void> {
-  const { ok, result } = await dialogFactory().usingFormBuilder().fromEndpoint<Test>(button.dataset.addParticipant!);
+  const { ok, result } = await dialogFactory().usingFormBuilder().fromEndpoint<Participant>(button.dataset.addParticipant!);
 
   if (ok) {
     document.querySelectorAll(".attendeeBox").forEach((attendeeBox: HTMLElement) => {
@@ -35,7 +35,7 @@ export function setup(button: HTMLElement): void {
   );
 }
 
-interface Test {
+interface Participant {
   attendeeId: number;
   distributionId: number;
   status: number;
