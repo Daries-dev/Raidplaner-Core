@@ -19,8 +19,8 @@ use wcf\system\WCF;
  * @copyright   2023-2024 Daries.dev
  * @license Raidplaner is licensed under Creative Commons Attribution-ShareAlike 4.0 International 
  */
-#[PostRequest('/rp/attendees/{id:\d+}')]
-final class UpdateAttendee implements IController
+#[PostRequest('/rp/attendees/{id:\d+}/update-status')]
+final class UpdateAttendeeStatus implements IController
 {
     #[\Override]
     public function __invoke(ServerRequestInterface $request, array $variables): ResponseInterface
@@ -29,9 +29,9 @@ final class UpdateAttendee implements IController
 
         $this->assertAttendeeIsEditable($attendee);
 
-        $parameters = Helper::mapApiParameters($request, UpdateAttendeeParameters::class);
+        $parameters = Helper::mapApiParameters($request, UpdateAttendeeStatusParameters::class);
 
-        (new \rp\system\attendee\command\UpdateAttendee(
+        (new \rp\system\attendee\command\UpdateAttendeeStatus(
             $attendee,
             $attendee->getEvent()->distributionMode === 'role' ? $parameters->distributionId : 0,
             $parameters->status
@@ -57,7 +57,7 @@ final class UpdateAttendee implements IController
 }
 
 /** @internal */
-final class UpdateAttendeeParameters
+final class UpdateAttendeeStatusParameters
 {
     public function __construct(
         /** @var positive-int */

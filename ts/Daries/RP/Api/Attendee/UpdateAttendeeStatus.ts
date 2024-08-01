@@ -9,13 +9,13 @@
 import { prepareRequest } from "WoltLabSuite/Core/Ajax/Backend";
 import { ApiResult, apiResultFromError, apiResultFromValue } from "WoltLabSuite/Core/Api/Result";
 
-export async function updateAttendee(
+export async function updateAttendeeStatus(
   attendeeId: number,
   distributionId: number,
   status: string,
 ): Promise<ApiResult<[]>> {
   try {
-    await prepareRequest(`${window.WSC_API_URL}index.php?api/rpc/rp/attendees/${attendeeId}`)
+    await prepareRequest(`${window.WSC_API_URL}index.php?api/rpc/rp/attendees/${attendeeId}/update-status`)
       .post({
         distributionId,
         status,

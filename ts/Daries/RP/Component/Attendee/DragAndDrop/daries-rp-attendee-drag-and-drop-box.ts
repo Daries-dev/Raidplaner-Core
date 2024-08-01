@@ -6,7 +6,7 @@
 
 import { Autobind } from "../../../Ui/Event/Raid/Participant/DragAndDrop/Autobind";
 import { dialogFactory } from "WoltLabSuite/Core/Component/Dialog";
-import { updateAttendee } from "../../../Api/Attendee/UpdateAttendee";
+import { updateAttendeeStatus } from "../../../Api/Attendee/UpdateAttendeeStatus";
 import { show as showNotification } from "WoltLabSuite/Core/Ui/Notification";
 
 export class DariesRPAttendeeDragAndDropBoxElement extends HTMLElement {
@@ -57,7 +57,7 @@ export class DariesRPAttendeeDragAndDropBoxElement extends HTMLElement {
 
     const attendeeId = parseInt(event.dataTransfer.getData("attendeeId"));
 
-    const response = await updateAttendee(attendeeId, this.distributionId, this.status);
+    const response = await updateAttendeeStatus(attendeeId, this.distributionId, this.status);
     if (!response.ok) {
       const validationError = response.error.getValidationError();
       if (validationError === undefined) {

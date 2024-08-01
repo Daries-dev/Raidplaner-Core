@@ -21,7 +21,7 @@ return static function (): void {
     $eventHandler->register(
         \wcf\event\endpoint\ControllerCollecting::class,
         static function (\wcf\event\endpoint\ControllerCollecting $event) {
-            $event->register(new \rp\system\endpoint\controller\rp\attendees\UpdateAttendee);
+            $event->register(new \rp\system\endpoint\controller\rp\attendees\UpdateAttendeeStatus);
         }
     );
 };
