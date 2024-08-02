@@ -6,7 +6,7 @@
 
 import { Autobind } from "../../../Ui/Event/Raid/Participant/DragAndDrop/Autobind";
 import { dialogFactory } from "WoltLabSuite/Core/Component/Dialog";
-import { updateAttendeeStatus } from "../../../Api/Attendee/UpdateAttendeeStatus";
+import { updateAttendeeStatus } from "../../../Api/Attendees/UpdateAttendeeStatus";
 import { show as showNotification } from "WoltLabSuite/Core/Ui/Notification";
 
 export class DariesRPAttendeeDragAndDropBoxElement extends HTMLElement {

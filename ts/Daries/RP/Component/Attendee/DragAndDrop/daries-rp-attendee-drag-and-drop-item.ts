@@ -7,7 +7,7 @@
 import { Autobind } from "../../../Ui/Event/Raid/Participant/DragAndDrop/Autobind";
 import { dialogFactory } from "WoltLabSuite/Core/Component/Dialog";
 import { getPhrase } from "WoltLabSuite/Core/Language";
-import { updateAttendeeStatus } from "../../../Api/Attendee/UpdateAttendeeStatus";
+import { updateAttendeeStatus } from "../../../Api/Attendees/UpdateAttendeeStatus";
 import UiDropdownSimple from "WoltLabSuite/Core/Ui/Dropdown/Simple";
 import WoltlabCoreDialogElement from "WoltLabSuite/Core/Element/woltlab-core-dialog";
 

@@ -3,7 +3,7 @@
  * @copyright   2023-2024 Daries.dev
  * @license Raidplaner is licensed under Creative Commons Attribution-ShareAlike 4.0 International
  */
-define(["require", "exports", "tslib", "../../../Ui/Event/Raid/Participant/DragAndDrop/Autobind", "WoltLabSuite/Core/Component/Dialog", "../../../Api/Attendee/UpdateAttendeeStatus", "WoltLabSuite/Core/Ui/Notification"], function (require, exports, tslib_1, Autobind_1, Dialog_1, UpdateAttendeeStatus_1, Notification_1) {
+define(["require", "exports", "tslib", "../../../Ui/Event/Raid/Participant/DragAndDrop/Autobind", "WoltLabSuite/Core/Component/Dialog", "../../../Api/Attendees/UpdateAttendeeStatus", "WoltLabSuite/Core/Ui/Notification"], function (require, exports, tslib_1, Autobind_1, Dialog_1, UpdateAttendeeStatus_1, Notification_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.DariesRPAttendeeDragAndDropBoxElement = void 0;
