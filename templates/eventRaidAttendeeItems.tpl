@@ -1,3 +1,4 @@
+
 <daries-rp-attendee-drag-and-drop-item id="attendee{@$attendee->attendeeID}"
     class="attendee{if $event->getController()->isLeader()} draggable{/if}" attendee-id="{@$attendee->attendeeID}"
     character-id="{@$attendee->characterID}" distribution-id="{$__availableDistributionID}"
