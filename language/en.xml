@@ -71,6 +71,7 @@
             <item name="rp.character.search"><![CDATA[Search Characters]]></item>
             <item name="rp.character.search.error.noMatches"><![CDATA[No characters matched your criteria.]]></item>
             <item name="rp.character.search.results"><![CDATA[Search Results]]></item>
+            <item name="rp.character.selection"><![CDATA[Charakter auswählen]]></item>
             <item name="rp.character.sort.letters"><![CDATA[First Letter]]></item>
             <item name="rp.character.sort.letters.all"><![CDATA[All]]></item>
             <item name="rp.character.sort.ownCharacters"><![CDATA[Show own characters]]></item>
@@ -113,11 +114,15 @@
 
         <category name="rp.event.raid">
             <item name="rp.event.raid.attendee.add"><![CDATA[Registration]]></item>
+            <item name="rp.event.raid.attendee.addByLeader"><![CDATA[Registered by a raid leader]]></item>
             <item name="rp.event.raid.attendee.button.guest"><![CDATA[Apply as a guest attendee]]></item>
             <item name="rp.event.raid.attendee.character"><![CDATA[Character]]></item>
+            <item name="rp.event.raid.attendee.character.switch"><![CDATA[Switch character]]></item>
             <item name="rp.event.raid.attendee.email"><![CDATA[E-mail address]]></item>
+            <item name="rp.event.raid.attendee.guest"><![CDATA[Guest]]></item>
             <item name="rp.event.raid.attendee.noCharacters"><![CDATA[You have not created characters or none characters have the required conditions for this raid.]]></item>
             <item name="rp.event.raid.attendee.notes"><![CDATA[Notes]]></item>
+            <item name="rp.event.raid.attendee.remove.confirmMessage"><![CDATA[Do you really want to cancel the attendance?]]></item>
             <item name="rp.event.raid.canceled"><![CDATA[The raid was cancelled by a raid leader.]]></item>
             <item name="rp.event.raid.condition"><![CDATA[Condition]]></item>
             <item name="rp.event.raid.condition.description"><![CDATA[Here you can specify which are the minimum conditions for this raid.]]></item>
@@ -133,10 +138,12 @@
             <item name="rp.event.raid.distribution.role"><![CDATA[Role distribution]]></item>
             <item name="rp.event.raid.leader"><![CDATA[Raid leader]]></item>
             <item name="rp.event.raid.leaders"><![CDATA[Raidleaders]]></item>
+            <item name="rp.event.raid.noAvailableCharacters"><![CDATA[No characters available.]]></item>
             <item name="rp.event.raid.participants"><![CDATA[Participant]]></item>
             <item name="rp.event.raid.participate"><![CDATA[Participate]]></item>
             <item name="rp.event.raid.points"><![CDATA[Points]]></item>
             <item name="rp.event.raid.points.description"><![CDATA[Points for this raid]]></item>
+            <item name="rp.event.raid.updateStatus"><![CDATA[Status update]]></item>
         </category>
 
         <category name="rp.faction">
@@ -189,6 +196,7 @@
             <item name="wcf.acp.group.option.user.rp.canCreateEventWithoutModeration"><![CDATA[Can create events without approval]]></item>
             <item name="wcf.acp.group.option.user.rp.canDeleteOwnCharacter"><![CDATA[Can delete their characters]]></item>
             <item name="wcf.acp.group.option.user.rp.canEditOwnCharacter"><![CDATA[Can edit own characters]]></item>
+            <item name="wcf.acp.group.option.user.rp.canEditOwnEvent"><![CDATA[Can edit own events]]></item>
             <item name="wcf.acp.group.option.user.rp.canParticipate"><![CDATA[Can participate in raids]]></item>
             <item name="wcf.acp.group.option.user.rp.canReadEvent"><![CDATA[Can view events]]></item>
             <item name="wcf.acp.group.option.user.rp.canUploadCharacterAvatar"><![CDATA[Can upload own avatar]]></item>

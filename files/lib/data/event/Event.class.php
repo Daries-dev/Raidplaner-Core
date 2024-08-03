@@ -6,6 +6,7 @@ use rp\system\event\IEventController;
 use rp\system\event\RaidEventController;
 use wcf\data\DatabaseObject;
 use wcf\data\IMessage;
+use wcf\data\ITitledLinkObject;
 use wcf\data\object\type\ObjectTypeCache;
 use wcf\data\TUserContent;
 use wcf\data\user\UserProfile;
@@ -44,7 +45,7 @@ use wcf\util\StringUtil;
  * @property-read   int $isCanceled     is `1` if the even is canceled, otherwise `0`
  * @property-read   int $isDisabled     is `1` if the even is disabled, otherwise `0`
  */
-final class Event extends DatabaseObject implements IRouteController, IMessage
+final class Event extends DatabaseObject implements ITitledLinkObject, IRouteController, IMessage
 {
     use TUserContent;
 
@@ -93,7 +94,7 @@ final class Event extends DatabaseObject implements IRouteController, IMessage
         if (
             $this->userID &&
             $this->userID == WCF::getUser()->userID &&
-            WCF::getSession()->getPermission('user.rp.canEditEvent')
+            WCF::getSession()->getPermission('user.rp.canEditOwnEvent')
         ) {
             return true;
         }

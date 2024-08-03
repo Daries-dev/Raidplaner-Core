@@ -71,7 +71,7 @@ final class AddParticipantAction implements RequestHandlerInterface
 
         if (WCF::getUser()->userID) {
             $availableCharacters = [
-            '' => WCF::getLanguage()->get('wcf.global.noSelection'),
+                '' => WCF::getLanguage()->get('wcf.global.noSelection'),
                 ...$this->event->getController()->getContentData('availableCharacters'),
             ];
 
@@ -91,6 +91,7 @@ final class AddParticipantAction implements RequestHandlerInterface
                         }
                     })),
                 SingleSelectionFormField::create('status')
+                    ->label('rp.event.raid.status')
                     ->required()
                     ->options($this->event->getController()->getContentData('raidStatus')),
             ]);
@@ -159,10 +160,6 @@ final class AddParticipantAction implements RequestHandlerInterface
         );
 
         $form->build();
-
-        if (!WCF::getUser()->userID) {
-            $form->getButton('submitButton')->label('rp.event.raid.attendee.button.guest');
-        }
 
         return $form;
     }

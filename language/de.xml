@@ -71,6 +71,7 @@
             <item name="rp.character.search"><![CDATA[Charaktersuche]]></item>
             <item name="rp.character.search.error.noMatches"><![CDATA[Zu den angegebenen Kriterien wurde kein Charakter gefunden.]]></item>
             <item name="rp.character.search.results"><![CDATA[Suchergebnisse]]></item>
+            <item name="rp.character.selection"><![CDATA[Charakter auswählen]]></item>
             <item name="rp.character.sort.letters"><![CDATA[Anfangsbuchstabe]]></item>
             <item name="rp.character.sort.letters.all"><![CDATA[Alle]]></item>
             <item name="rp.character.sort.ownCharacters"><![CDATA[Eigene Charaktere anzeigen]]></item>
@@ -113,11 +114,15 @@
 
         <category name="rp.event.raid">
             <item name="rp.event.raid.attendee.add"><![CDATA[Anmeldung]]></item>
+            <item name="rp.event.raid.attendee.addByLeader"><![CDATA[Angemeldet von einem Raidleiter]]></item>
             <item name="rp.event.raid.attendee.button.guest"><![CDATA[Als Gastteilnehmer bewerben]]></item>
             <item name="rp.event.raid.attendee.character"><![CDATA[Charakter]]></item>
+            <item name="rp.event.raid.attendee.character.switch"><![CDATA[Charakter wechseln]]></item>
             <item name="rp.event.raid.attendee.email"><![CDATA[E-Mail-Addresse]]></item>
+            <item name="rp.event.raid.attendee.guest"><![CDATA[Gast]]></item>
             <item name="rp.event.raid.attendee.noCharacters"><![CDATA[{if LANGUAGE_USE_INFORMAL_VARIANT}Du hast{else}Sie haben{/if} bisher keine Charaktere erstellt oder keiner der Charaktere besitzt die benötigten Voraussetzung(en) für dieses Raid.]]></item>
             <item name="rp.event.raid.attendee.notes"><![CDATA[Notiz]]></item>
+            <item name="rp.event.raid.attendee.remove.confirmMessage"><![CDATA[{if LANGUAGE_USE_INFORMAL_VARIANT}Willst du{else}Wollen Sie{/if} wirklich die Teilnahme absagen?]]></item>
             <item name="rp.event.raid.canceled"><![CDATA[Der Raid wurde von einem Raidleiter abgesagt.]]></item>
             <item name="rp.event.raid.condition"><![CDATA[Voraussetzung]]></item>
             <item name="rp.event.raid.condition.description"><![CDATA[Hier {if LANGUAGE_USE_INFORMAL_VARIANT}kannst Du{else}können Sie{/if} angeben, welche Voraussetzungen für dieses Raid mindestens besteht.]]></item>
@@ -133,10 +138,12 @@
             <item name="rp.event.raid.distribution.role"><![CDATA[Rollenverteilung]]></item>
             <item name="rp.event.raid.leader"><![CDATA[Raidleiter]]></item>
             <item name="rp.event.raid.leaders"><![CDATA[Raidleiters]]></item>
+            <item name="rp.event.raid.noAvailableCharacters"><![CDATA[Keine Charaktere verfügbar.]]></item>
             <item name="rp.event.raid.participants"><![CDATA[Teilnehmer]]></item>
             <item name="rp.event.raid.participate"><![CDATA[Teilnehmen]]></item>
             <item name="rp.event.raid.points"><![CDATA[Punkte]]></item>
             <item name="rp.event.raid.points.description"><![CDATA[Punkte für diesen Raid]]></item>
+            <item name="rp.event.raid.updateStatus"><![CDATA[Status aktualisieren]]></item>
         </category>
 
         <category name="rp.faction">
@@ -189,6 +196,7 @@
             <item name="wcf.acp.group.option.user.rp.canCreateEventWithoutModeration"><![CDATA[Kann Termine ohne Moderation erstellen]]></item>
             <item name="wcf.acp.group.option.user.rp.canDeleteOwnCharacter"><![CDATA[Kann eigende Charaktere löschen]]></item>
             <item name="wcf.acp.group.option.user.rp.canEditOwnCharacter"><![CDATA[Kann eigene Charaktere bearbeiten]]></item>
+            <item name="wcf.acp.group.option.user.rp.canEditOwnEvent"><![CDATA[Kann eigene Termine bearbeiten]]></item>
             <item name="wcf.acp.group.option.user.rp.canParticipate"><![CDATA[Kann an Raids teilnehmen]]></item>
             <item name="wcf.acp.group.option.user.rp.canReadEvent"><![CDATA[Kann Termine sehen]]></item>
             <item name="wcf.acp.group.option.user.rp.canUploadCharacterAvatar"><![CDATA[Kann eigenen Avatar hochladen]]></item>
