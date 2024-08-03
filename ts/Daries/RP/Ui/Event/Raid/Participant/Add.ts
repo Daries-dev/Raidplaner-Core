@@ -4,27 +4,33 @@
  * @license Raidplaner is licensed under Creative Commons Attribution-ShareAlike 4.0 International
  */
 
-import DomUtil from "WoltLabSuite/Core/Dom/Util";
 import { dialogFactory } from "WoltLabSuite/Core/Component/Dialog";
 import { promiseMutex } from "WoltLabSuite/Core/Helper/PromiseMutex";
 import { show as showNotification } from "WoltLabSuite/Core/Ui/Notification";
+import { renderAttendee } from "../../../../Api/Attendees/RenderAttendee";
+import DariesRPAttendeeDragAndDropBoxElement from "../../../../Component/Attendee/DragAndDrop/daries-rp-attendee-drag-and-drop-box";
 
 async function addParticipant(button: HTMLElement): Promise<void> {
   const { ok, result } = await dialogFactory().usingFormBuilder().fromEndpoint<Participant>(button.dataset.addParticipant!);
 
   if (ok) {
-    document.querySelectorAll(".attendeeBox").forEach((attendeeBox: HTMLElement) => {
-      if (
-        result.distributionId === ~~attendeeBox.dataset.objectId! &&
-        result.status === ~~attendeeBox.dataset.status!
-      ) {
-        const attendeeList = attendeeBox.querySelector<HTMLElement>(".attendeeList")!;
-        DomUtil.insertHtml(result.template, attendeeList, "append");
-
-        DomUtil.hide(button);
-        showNotification();
+    const response = await renderAttendee(result.attendeeId);
+    if (!response.ok) {
+      const validationError = response.error.getValidationError();
+      if (validationError === undefined) {
+        throw response.error;
       }
-    });
+      return;
+    }
+
+    const box = document.querySelector<DariesRPAttendeeDragAndDropBoxElement>(
+      `daries-rp-attendee-drag-and-drop-box[distribution-id="${response.value.distributionId}"][status="${result.status}"]`,
+    );
+    const attendeeList = box?.querySelector<HTMLElement>(".attendeeList");
+    attendeeList?.insertAdjacentHTML("beforeend", response.value.template);
+
+    button.hidden = true;
+    showNotification();
   }
 }
 
@@ -39,5 +45,4 @@ interface Participant {
   attendeeId: number;
   distributionId: number;
   status: number;
-  template: string;
 }

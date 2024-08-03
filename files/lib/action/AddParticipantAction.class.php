@@ -240,11 +240,6 @@ final class AddParticipantAction implements RequestHandlerInterface
                     'attendeeId' => $attendee->attendeeID,
                     'distributionId' => $distributionID,
                     'status' => $attendee->status,
-                    'template' => WCF::getTPL()->fetch('eventRaidAttendeeItems', 'rp', [
-                        'attendee' => $attendee,
-                        'event' => $this->event,
-                        '__availableDistributionID' => $distributionID,
-                    ])
                 ],
             ]);
         } else {
