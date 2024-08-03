@@ -3,7 +3,7 @@
  * @copyright   2023-2024 Daries.dev
  * @license Raidplaner is licensed under Creative Commons Attribution-ShareAlike 4.0 International
  */
-define(["require", "exports", "tslib", "../../../Ui/Event/Raid/Participant/DragAndDrop/Autobind", "WoltLabSuite/Core/Component/Dialog", "WoltLabSuite/Core/Language", "../../../Api/Attendees/UpdateAttendeeStatus", "WoltLabSuite/Core/Ui/Dropdown/Simple"], function (require, exports, tslib_1, Autobind_1, Dialog_1, Language_1, UpdateAttendeeStatus_1, Simple_1) {
+define(["require", "exports", "tslib", "WoltLabSuite/Core/Ui/Dropdown/Simple", "../../../Ui/Event/Raid/Participant/DragAndDrop/Autobind", "../../../Api/Events/AvailableCharacters", "../../../Api/Attendees/CreateAttendee", "WoltLabSuite/Core/Component/Dialog", "../../../Api/Attendees/DeleteAttendee", "WoltLabSuite/Core/Language", "../../../Api/Attendees/RenderAttendee", "WoltLabSuite/Core/Ui/Notification", "../../../Api/Attendees/UpdateAttendeeStatus"], function (require, exports, tslib_1, Simple_1, Autobind_1, AvailableCharacters_1, CreateAttendee_1, Dialog_1, DeleteAttendee_1, Language_1, RenderAttendee_1, Notification_1, UpdateAttendeeStatus_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.DariesRPAttendeeDragAndDropItemElement = void 0;
@@ -38,6 +38,11 @@ define(["require", "exports", "tslib", "../../../Ui/Event/Raid/Participant/DragA
                     event.preventDefault();
                     this.#updateStatus();
                 });
+                const switchCharacterButton = this.menu.querySelector(".attendee__option--character-switch");
+                switchCharacterButton?.addEventListener("click", (event) => {
+                    event.preventDefault();
+                    void this.#switchCharacter();
+                });
             }
         }
         dragEndHandler(_) {
@@ -61,6 +66,46 @@ define(["require", "exports", "tslib", "../../../Ui/Event/Raid/Participant/DragA
                     return;
                 attendeeBox.classList.add("droppable");
             });
+        }
+        async #loadSwitchCharacter(attendeeId) {
+            const response = await (0, RenderAttendee_1.renderAttendee)(attendeeId);
+            if (!response.ok) {
+                const validationError = response.error.getValidationError();
+                if (validationError === undefined) {
+                    throw response.error;
+                }
+                this.remove();
+                return;
+            }
+            const box = document.querySelector(`daries-rp-attendee-drag-and-drop-box[distribution-id="${response.value.distributionId}"][status="${this.status}"]`);
+            const attendeeList = box?.querySelector(".attendeeList");
+            attendeeList?.insertAdjacentHTML("beforeend", response.value.template);
+            (0, Notification_1.show)();
+            this.remove();
+        }
+        async #switchCharacter() {
+            const { template } = (await (0, AvailableCharacters_1.availableCharacters)(this.eventId)).unwrap();
+            console.log(template);
+            this.#showSwitchDialog(template);
+        }
+        #showSwitchDialog(template) {
+            const dialog = (0, Dialog_1.dialogFactory)().fromHtml(template).asPrompt();
+            const characterId = dialog.content.querySelector('select[name="characterID"]');
+            dialog.addEventListener("primary", async () => {
+                (await (0, DeleteAttendee_1.deleteAttendee)(this.attendeeId)).unwrap();
+                this.dispatchEvent(new CustomEvent("delete"));
+                const response = await (0, CreateAttendee_1.createAttendee)(this.eventId, characterId.value, this.status);
+                if (!response.ok) {
+                    const validationError = response.error.getValidationError();
+                    if (validationError === undefined) {
+                        throw response.error;
+                    }
+                    this.remove();
+                    return;
+                }
+                void this.#loadSwitchCharacter(response.value.attendeeId);
+            });
+            dialog.show((0, Language_1.getPhrase)("rp.character.selection"));
         }
         #updateStatus() {
             if (!this.#dialog) {
@@ -86,6 +131,9 @@ define(["require", "exports", "tslib", "../../../Ui/Event/Raid/Participant/DragA
         get attendeeId() {
             return parseInt(this.getAttribute("attendee-id"));
         }
+        get box() {
+            return this.closest("daries-rp-attendee-drag-and-drop-box");
+        }
         get distributionId() {
             return parseInt(this.getAttribute("distribution-id"));
         }
@@ -101,6 +149,9 @@ define(["require", "exports", "tslib", "../../../Ui/Event/Raid/Participant/DragA
                 menu = this.querySelector(".attendee__menu .dropdownMenu") || undefined;
             }
             return menu;
+        }
+        get status() {
+            return parseInt(this.box.getAttribute("status"));
         }
     }
     exports.DariesRPAttendeeDragAndDropItemElement = DariesRPAttendeeDragAndDropItemElement;

@@ -10,7 +10,8 @@
 
     <div class="attendee__name">
         <a href="{$attendee->getLink()}" class="rpEventRaidAttendeeLink"
-            data-object-id="{@$attendee->attendeeID}">{$attendee->getCharacter()->characterName}
+            data-object-id="{@$attendee->attendeeID}">
+            {$attendee->getCharacter()->characterName}
         </a>
     </div>
 
@@ -33,7 +34,7 @@
     </div>
 
     {if !$event->isCanceled && 
-        !$event->isClosed && 
+        !$event->isDeleted && 
         $event->startTime >= TIME_NOW &&
         $attendee->getCharacter()->userID == $__wcf->user->userID}
     <div id="attendeeOptions{@$attendee->attendeeID}" class="attendee__menu dropdown">
@@ -46,12 +47,13 @@
                     {lang}rp.event.raid.updateStatus{/lang}
                 </a>
             </li>
-            <li>
-                <a class="jsAttendeeRemove"
-                    data-confirm-message-html="{lang __encode=true}rp.event.raid.attendee.remove.confirmMessage{/lang}">
-                    {lang}rp.event.raid.attendee.remove{/lang}
-                </a>
-            </li>
+            {if $event->getController()->getContentData('availableCharacters')|count > 1}
+                <li>
+                    <a href="#" class="attendee__option attendee__option--character-switch">
+                        {lang}rp.event.raid.attendee.character.switch{/lang}
+                    </a>
+                </li>
+            {/if}
         </ul>
     </div>
     {/if}

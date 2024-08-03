@@ -19,7 +19,7 @@ use wcf\system\WCF;
  * @copyright   2023-2024 Daries.dev
  * @license Raidplaner is licensed under Creative Commons Attribution-ShareAlike 4.0 International 
  */
-#[PostRequest('/rp/attendees/{id:\d+}/update-status')]
+#[PostRequest('/rp/attendees/{id:\d+}/updateStatus')]
 final class UpdateAttendeeStatus implements IController
 {
     #[\Override]

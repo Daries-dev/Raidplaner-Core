@@ -4,12 +4,18 @@
  * @license Raidplaner is licensed under Creative Commons Attribution-ShareAlike 4.0 International
  */
 
-import { Autobind } from "../../../Ui/Event/Raid/Participant/DragAndDrop/Autobind";
-import { dialogFactory } from "WoltLabSuite/Core/Component/Dialog";
-import { getPhrase } from "WoltLabSuite/Core/Language";
-import { updateAttendeeStatus } from "../../../Api/Attendees/UpdateAttendeeStatus";
+import DariesRPAttendeeDragAndDropBoxElement from "./daries-rp-attendee-drag-and-drop-box";
 import UiDropdownSimple from "WoltLabSuite/Core/Ui/Dropdown/Simple";
 import WoltlabCoreDialogElement from "WoltLabSuite/Core/Element/woltlab-core-dialog";
+import { Autobind } from "../../../Ui/Event/Raid/Participant/DragAndDrop/Autobind";
+import { availableCharacters } from "../../../Api/Events/AvailableCharacters";
+import { createAttendee } from "../../../Api/Attendees/CreateAttendee";
+import { dialogFactory } from "WoltLabSuite/Core/Component/Dialog";
+import { deleteAttendee } from "../../../Api/Attendees/DeleteAttendee";
+import { getPhrase } from "WoltLabSuite/Core/Language";
+import { renderAttendee } from "../../../Api/Attendees/RenderAttendee";
+import { show as showNotification } from "WoltLabSuite/Core/Ui/Notification";
+import { updateAttendeeStatus } from "../../../Api/Attendees/UpdateAttendeeStatus";
 
 export class DariesRPAttendeeDragAndDropItemElement extends HTMLElement {
   #dialog: WoltlabCoreDialogElement;
@@ -45,6 +51,12 @@ export class DariesRPAttendeeDragAndDropItemElement extends HTMLElement {
         event.preventDefault();
         this.#updateStatus();
       });
+
+      const switchCharacterButton = this.menu.querySelector<HTMLElement>(".attendee__option--character-switch");
+      switchCharacterButton?.addEventListener("click", (event) => {
+        event.preventDefault();
+        void this.#switchCharacter();
+      });
     }
   }
 
@@ -74,6 +86,58 @@ export class DariesRPAttendeeDragAndDropItemElement extends HTMLElement {
 
       attendeeBox.classList.add("droppable");
     });
+  }
+
+  async #loadSwitchCharacter(attendeeId: number): Promise<void> {
+    const response = await renderAttendee(attendeeId);
+    if (!response.ok) {
+      const validationError = response.error.getValidationError();
+      if (validationError === undefined) {
+        throw response.error;
+      }
+
+      this.remove();
+      return;
+    }
+
+    const box = document.querySelector<DariesRPAttendeeDragAndDropBoxElement>(
+      `daries-rp-attendee-drag-and-drop-box[distribution-id="${response.value.distributionId}"][status="${this.status}"]`,
+    );
+    const attendeeList = box?.querySelector<HTMLElement>(".attendeeList");
+    attendeeList?.insertAdjacentHTML("beforeend", response.value.template);
+
+    showNotification();
+    this.remove();
+  }
+
+  async #switchCharacter(): Promise<void> {
+    const { template } = (await availableCharacters(this.eventId)).unwrap();
+    console.log(template);
+    this.#showSwitchDialog(template);
+  }
+
+  #showSwitchDialog(template: string): void {
+    const dialog = dialogFactory().fromHtml(template).asPrompt();
+    const characterId = dialog.content.querySelector<HTMLSelectElement>('select[name="characterID"]');
+    dialog.addEventListener("primary", async () => {
+      (await deleteAttendee(this.attendeeId)).unwrap();
+      this.dispatchEvent(new CustomEvent("delete"));
+
+      const response = await createAttendee(this.eventId, characterId!.value, this.status);
+      if (!response.ok) {
+        const validationError = response.error.getValidationError();
+        if (validationError === undefined) {
+          throw response.error;
+        }
+
+        this.remove();
+        return;
+      }
+
+      void this.#loadSwitchCharacter(response.value.attendeeId);
+    });
+
+    dialog.show(getPhrase("rp.character.selection"));
   }
 
   #updateStatus(): void {
@@ -106,6 +170,10 @@ export class DariesRPAttendeeDragAndDropItemElement extends HTMLElement {
     return parseInt(this.getAttribute("attendee-id")!);
   }
 
+  get box(): DariesRPAttendeeDragAndDropBoxElement {
+    return this.closest<DariesRPAttendeeDragAndDropBoxElement>("daries-rp-attendee-drag-and-drop-box")!;
+  }
+
   get distributionId(): number {
     return parseInt(this.getAttribute("distribution-id")!);
   }
@@ -126,6 +194,10 @@ export class DariesRPAttendeeDragAndDropItemElement extends HTMLElement {
     }
 
     return menu;
+  }
+
+  get status(): number {
+    return parseInt(this.box.getAttribute("status")!);
   }
 }
 

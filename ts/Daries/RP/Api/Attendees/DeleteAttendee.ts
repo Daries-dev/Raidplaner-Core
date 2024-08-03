@@ -1,5 +1,5 @@
 /**
- * Updates a attendee.
+ * Deletes a attendee.
  *
  * @author  Marco Daries
  * @copyright   2023-2024 Daries.dev
@@ -9,18 +9,11 @@
 import { prepareRequest } from "WoltLabSuite/Core/Ajax/Backend";
 import { ApiResult, apiResultFromError, apiResultFromValue } from "WoltLabSuite/Core/Api/Result";
 
-export async function updateAttendeeStatus(
-  attendeeId: number,
-  distributionId: number,
-  status: string,
-): Promise<ApiResult<[]>> {
+export async function deleteAttendee(attendeeId: number): Promise<ApiResult<[]>> {
+  const url = new URL(`${window.WSC_API_URL}index.php?api/rpc/rp/attendees/${attendeeId}`);
+
   try {
-    await prepareRequest(`${window.WSC_API_URL}index.php?api/rpc/rp/attendees/${attendeeId}/updateStatus`)
-      .post({
-        distributionId,
-        status,
-      })
-      .fetchAsJson();
+    await prepareRequest(url).delete().fetchAsJson();
   } catch (e) {
     return apiResultFromError(e);
   }

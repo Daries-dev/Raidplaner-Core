@@ -9,21 +9,19 @@
 import { prepareRequest } from "WoltLabSuite/Core/Ajax/Backend";
 import { ApiResult, apiResultFromError, apiResultFromValue } from "WoltLabSuite/Core/Api/Result";
 
-export async function updateAttendeeStatus(
-  attendeeId: number,
-  distributionId: number,
-  status: string,
-): Promise<ApiResult<[]>> {
+export async function availableCharacters(eventId: number): Promise<ApiResult<Response>> {
+  const url = new URL(`${window.WSC_API_URL}index.php?api/rpc/rp/events/${eventId}/availableCharacters`);
+
+  let response: Response;
   try {
-    await prepareRequest(`${window.WSC_API_URL}index.php?api/rpc/rp/attendees/${attendeeId}/updateStatus`)
-      .post({
-        distributionId,
-        status,
-      })
-      .fetchAsJson();
+    response = (await prepareRequest(url).get().fetchAsJson()) as Response;
   } catch (e) {
     return apiResultFromError(e);
   }
 
-  return apiResultFromValue([]);
+  return apiResultFromValue(response);
 }
+
+type Response = {
+  template: string;
+};
