@@ -368,15 +368,15 @@ final class RaidEventController extends AbstractEventController
      */
     public function getContentHeaderNavigation(): string
     {
-        if ($this->getEvent()->isCanceled || $this->isExpired()) {
-            return '';
-        }
+        $canParticipate = true;
+        if ($this->getEvent()->isCanceled || $this->isExpired() || !WCF::getSession()->getPermission('user.rp.canParticipate')) $canParticipate = false;
+        if (WCF::getUser()->userID && \count($this->getContentData('availableCharacters')) === 0) $canParticipate = false;
 
         return WCF::getTPL()->fetch(
             'eventRaidHeaderNavigation',
             'rp',
             [
-                'canParticipate' => (WCF::getSession()->getPermission('user.rp.canParticipate') && \count($this->getContentData('availableCharacters')) > 0),
+                'canParticipate' => $canParticipate,
                 'hasAttendee' => $this->getContentData('hasAttendee'),
                 'isExpired' => $this->isExpired(),
             ]
@@ -398,15 +398,9 @@ final class RaidEventController extends AbstractEventController
     public function isLeader(): bool
     {
         $eventLeaders = $this->getEvent()->leaders;
-        $characters = CharacterHandler::getInstance()->getCharacters();
+        $characterIDs = \array_keys(CharacterHandler::getInstance()->getCharacters());
 
-        foreach ($characters as $character) {
-            if (\in_array($character->getObjectID(), $eventLeaders, true)) {
-                return true;
-            }
-        }
-
-        return false;
+        return !empty(\array_intersect($characterIDs, $eventLeaders));
     }
 
     /**

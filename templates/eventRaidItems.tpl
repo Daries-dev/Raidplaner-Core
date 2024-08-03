@@ -1,6 +1,5 @@
-<div class="contentItem attendeeBox" data-status="{$__status}"
-    data-object-id="{$__availableDistributionID}" data-droppable="distribution{$__availableDistributionID}"
-    data-event-id="{@$event->eventID}">
+<daries-rp-attendee-drag-and-drop-box class="contentItem attendeeBox" distribution-id="{$__availableDistributionID}"
+    droppable="distribution{$__availableDistributionID}" status="{$__status}">
     <div class="contentItemLink">
         {if $availableDistribution|isset}
             <div class="contentItemImage">
@@ -12,11 +11,11 @@
             <h2 class="contentItemTitle">{$__title}</h2>
         </div>
     </div>
-    <ol class="attendeeList">
+    <div class="attendeeList">
         {if $attendees[$__status][$__availableDistributionID]|isset}
             {foreach from=$attendees[$__status][$__availableDistributionID] item=attendee}
                 {include application='rp' file='eventRaidAttendeeItems'}
             {/foreach}
         {/if}
-    </ol>
-</div>
+    </div>
+</daries-rp-attendee-drag-and-drop-box>

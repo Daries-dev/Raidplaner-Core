@@ -3,9 +3,9 @@
 namespace rp\data\event;
 
 use rp\system\event\IEventController;
-use rp\system\event\RaidEventController;
 use wcf\data\DatabaseObject;
 use wcf\data\IMessage;
+use wcf\data\ITitledLinkObject;
 use wcf\data\object\type\ObjectTypeCache;
 use wcf\data\TUserContent;
 use wcf\data\user\UserProfile;
@@ -44,7 +44,7 @@ use wcf\util\StringUtil;
  * @property-read   int $isCanceled     is `1` if the even is canceled, otherwise `0`
  * @property-read   int $isDisabled     is `1` if the even is disabled, otherwise `0`
  */
-final class Event extends DatabaseObject implements IRouteController, IMessage
+final class Event extends DatabaseObject implements ITitledLinkObject, IRouteController, IMessage
 {
     use TUserContent;
 
@@ -72,33 +72,6 @@ final class Event extends DatabaseObject implements IRouteController, IMessage
 
         $this->endTimeObj = new \DateTime('@' . $this->endTime);
         $this->endTimeObj->setTimezone(WCF::getUser()->getTimeZone());
-    }
-
-    /**
-     * Returns true if the current user can edit these event.
-     */
-    public function canEdit(): bool
-    {
-        // check mod permissions
-        if (WCF::getSession()->getPermission('mod.rp.canEditEvent')) {
-            return true;
-        }
-
-        if ($this->isRaidEvent()) {
-            if ($this->getController()->isLeader()) {
-                return true;
-            }
-        }
-
-        if (
-            $this->userID &&
-            $this->userID == WCF::getUser()->userID &&
-            WCF::getSession()->getPermission('user.rp.canEditEvent')
-        ) {
-            return true;
-        }
-
-        return false;
     }
 
     /**

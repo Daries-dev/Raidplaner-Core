@@ -17,22 +17,23 @@
                         <div>{$day->getDay()}</div>
                         {if $day->getEvents()}
                             <ul class="rp-calendar-events">
-                                {foreach from=$day->getEvents() item=event}
-                                    <li class="rp-calendar-event rpEventPopover{if $event->isFullDay} rp-calendar-event-full-day{/if}">
-                                        {if ($event->getStatus() === 1)}
+                                {foreach from=$day->getEvents() item=dayEvent}
+                                    <li class="rp-calendar-event rpEventPopover pointer{if $dayEvent->isFullDay} rp-calendar-event-full-day{/if}"
+                                        data-event-link="{$dayEvent->getEvent()->getLink()}">
+                                        {if ($dayEvent->getStatus() === 1)}
                                             {icon name='right-from-bracket'}
-                                            <span class="rp-calender-event-time">{$event->getFormattedStartTime(true)}</span>
-                                        {elseif $event->getStatus() === 2}
+                                            <span class="rp-calender-event-time">{$dayEvent->getFormattedStartTime(true)}</span>
+                                        {elseif $dayEvent->getStatus() === 2}
                                             {icon name='left-right'}
-                                        {elseif $event->getStatus() === 3}
+                                        {elseif $dayEvent->getStatus() === 3}
                                             {icon name='right-to-bracket'}
-                                            <span class="rp-calender-event-time">{$event->getFormattedEndTime(true)}</span>
+                                            <span class="rp-calender-event-time">{$dayEvent->getFormattedEndTime(true)}</span>
                                         {else}
-                                            {if !$event->isFullDay}
-                                                <span class="rp-calender-event-time">{$event->getFormattedStartTime(true)}</span>
+                                            {if !$dayEvent->isFullDay}
+                                                <span class="rp-calender-event-time">{$dayEvent->getFormattedStartTime(true)}</span>
                                             {/if}
                                         {/if}
-                                        <span>{$event->getTitle()}</span>
+                                        <span>{$dayEvent->getTitle()}</span>
                                     </li>
                                 {/foreach}
                             </ul>
@@ -43,3 +44,13 @@
         </div>
     </div>
 </div>
+
+<script data-relocate="true">
+    require(['WoltLabSuite/Core/Helper/Selector'], function({ wheneverSeen }) {
+        wheneverSeen("[data-event-link]", (element) => {
+            element.addEventListener("click", () => {
+                window.location = element.dataset.eventLink;
+            });
+        });
+    });
+</script>
