@@ -3,7 +3,6 @@
 namespace rp\data\event;
 
 use rp\system\event\IEventController;
-use rp\system\event\RaidEventController;
 use wcf\data\DatabaseObject;
 use wcf\data\IMessage;
 use wcf\data\ITitledLinkObject;
@@ -73,33 +72,6 @@ final class Event extends DatabaseObject implements ITitledLinkObject, IRouteCon
 
         $this->endTimeObj = new \DateTime('@' . $this->endTime);
         $this->endTimeObj->setTimezone(WCF::getUser()->getTimeZone());
-    }
-
-    /**
-     * Returns true if the current user can edit these event.
-     */
-    public function canEdit(): bool
-    {
-        // check mod permissions
-        if (WCF::getSession()->getPermission('mod.rp.canEditEvent')) {
-            return true;
-        }
-
-        if ($this->isRaidEvent()) {
-            if ($this->getController()->isLeader()) {
-                return true;
-            }
-        }
-
-        if (
-            $this->userID &&
-            $this->userID == WCF::getUser()->userID &&
-            WCF::getSession()->getPermission('user.rp.canEditOwnEvent')
-        ) {
-            return true;
-        }
-
-        return false;
     }
 
     /**
