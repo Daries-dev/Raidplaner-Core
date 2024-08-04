@@ -393,6 +393,15 @@ final class RaidEventController extends AbstractEventController
     }
 
     /**
+     * @inheritDoc
+     */
+    public function isExpired(): bool
+    {
+        $event = $this->getEvent();
+        return ($event->startTime - ($event->deadline * 3600)) < TIME_NOW;
+    }
+
+    /**
      * Returns is current user is leader of this raid event.
      */
     public function isLeader(): bool
