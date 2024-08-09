@@ -5,15 +5,18 @@
  */
 
 import UiDropdownSimple from "WoltLabSuite/Core/Ui/Dropdown/Simple";
-import { add as addHandler } from "WoltLabSuite/Core/Event/Handler";
-import { DisableAction } from "./Action/DisableAction";
 import { stringToBool } from "WoltLabSuite/Core/Core";
 import { getPhrase } from "WoltLabSuite/Core/Language";
-import { TrashAction } from "./Action/TrashAction";
-import { RestoreAction } from "./Action/RestoreAction";
+import { confirmationFactory } from "WoltLabSuite/Core/Component/Confirmation";
+import { show as showNotification } from "WoltLabSuite/Core/Ui/Notification";
+import { trashEvent } from "../../Api/Events/TrashEvent";
+import { dialogFactory } from "WoltLabSuite/Core/Component/Dialog";
+import { restoreEvent } from "../../Api/Events/RestoreEvent";
+import { enableDisableEvent } from "../../Api/Events/EnableDisableEvent";
 
 export class UiEventEditor {
   readonly #event: HTMLElement;
+  readonly #eventIcons: HTMLHeadingElement;
   readonly #eventId: number;
   #restoreButton: HTMLAnchorElement | null = null;
   #trashButton: HTMLAnchorElement | null = null;
@@ -23,10 +26,9 @@ export class UiEventEditor {
     if (!stringToBool(this.#event.dataset.canEdit!)) return;
 
     this.#eventId = parseInt(this.#event.dataset.eventId!);
+    this.#eventIcons = document.querySelector<HTMLHeadingElement>(".rpEventHeader .contentHeaderTitle .contentTitle")!;
 
     this.#initEvent();
-
-    addHandler("dev.daries.rp.event", "refresh", (data: RefreshEventData) => this.#refreshEvent(data));
   }
 
   #initEvent(): void {
@@ -42,26 +44,125 @@ export class UiEventEditor {
       });
     }
 
-    const enableEvent = dropdownMenu!.querySelector<HTMLAnchorElement>(".jsEnable");
-    if (enableEvent) {
-      new DisableAction(enableEvent, this.#event);
-    }
+    this.#initEnableButton(dropdownMenu!);
+    this.#initRestoreButton(dropdownMenu!);
+    this.#initTrashButton(dropdownMenu!);
+  }
 
+  #initEnableButton(dropdownMenu: HTMLElement): void {
+    const enableEvent = dropdownMenu.querySelector<HTMLAnchorElement>(".jsEnable");
+    if (enableEvent) {
+      enableEvent.addEventListener("click", async () => {
+        const isEnabled = stringToBool(this.#event.dataset.enabled!);
+
+        const response = await enableDisableEvent(this.#eventId, isEnabled);
+        if (!response.ok) {
+          const validationError = response.error.getValidationError();
+          if (validationError === undefined) {
+            throw response.error;
+          }
+          dialogFactory().fromHtml(`<p>${validationError.message}</p>`).asAlert();
+          return;
+        }
+
+        this.#event.dataset.enabled = isEnabled ? "false" : "true";
+
+        if (isEnabled) {
+          enableEvent.textContent = enableEvent.dataset.enableMessage!;
+        } else {
+          enableEvent.textContent = enableEvent.dataset.disableMessage!;
+        }
+
+        const isDisabled = !stringToBool(this.#event.dataset.enabled);
+        let iconIsDisabled = document.querySelector<HTMLElement>(".rpEventHeader .jsIsDisabled");
+        if (isDisabled && iconIsDisabled === null) {
+          iconIsDisabled = document.createElement("span");
+          iconIsDisabled.classList.add("badge", "label", "green", "jsIsDisabled");
+          iconIsDisabled.innerHTML = getPhrase("wcf.message.status.disabled");
+          this.#eventIcons.appendChild(iconIsDisabled);
+        } else if (!isDisabled && iconIsDisabled !== null) {
+          iconIsDisabled.remove();
+        }
+
+        showNotification();
+      });
+    }
+  }
+
+  #initRestoreButton(dropdownMenu: HTMLElement): void {
     if (stringToBool(this.#event.dataset.canRestore!)) {
-      this.#restoreButton = dropdownMenu!.querySelector<HTMLAnchorElement>(".jsRestore");
+      this.#restoreButton = dropdownMenu.querySelector<HTMLAnchorElement>(".jsRestore");
       if (this.#restoreButton) {
-        new RestoreAction(this.#restoreButton, this.#event);
+        this.#restoreButton.addEventListener("click", async () => {
+          const title = this.#event.dataset.title!;
+          const result = await confirmationFactory().restore(title);
+
+          if (result) {
+            const response = await restoreEvent(this.#eventId);
+            if (!response.ok) {
+              const validationError = response.error.getValidationError();
+              if (validationError === undefined) {
+                throw response.error;
+              }
+              dialogFactory().fromHtml(`<p>${validationError.message}</p>`).asAlert();
+              return;
+            }
+
+            const iconIsDeleted = document.querySelector<HTMLElement>(".rpEventHeader .jsIsDeleted");
+            if (iconIsDeleted !== null) {
+              iconIsDeleted.remove();
+            }
+
+            this.#event.dataset.deleted = "false";
+            this.#restoreButton!.parentElement!.hidden = true;
+            this.#trashButton!.parentElement!.hidden = false;
+
+            showNotification();
+          }
+        });
 
         if (stringToBool(this.#event.dataset.deleted!)) {
           this.#restoreButton.parentElement!.hidden = false;
         }
       }
     }
+  }
 
+  #initTrashButton(dropdownMenu: HTMLElement): void {
     if (stringToBool(this.#event.dataset.canDelete!)) {
-      this.#trashButton = dropdownMenu!.querySelector<HTMLAnchorElement>(".jsTrash");
+      this.#trashButton = dropdownMenu.querySelector<HTMLAnchorElement>(".jsTrash");
       if (this.#trashButton) {
-        new TrashAction(this.#trashButton, this.#event);
+        this.#trashButton.addEventListener("click", async () => {
+          const title = this.#event.dataset.title!;
+          const { result } = await confirmationFactory().softDelete(title);
+
+          if (result) {
+            const response = await trashEvent(this.#eventId);
+            if (!response.ok) {
+              const validationError = response.error.getValidationError();
+              if (validationError === undefined) {
+                throw response.error;
+              }
+              dialogFactory().fromHtml(`<p>${validationError.message}</p>`).asAlert();
+              return;
+            }
+
+            this.#event.dataset.deleted = "true";
+
+            let iconIsDeleted = document.querySelector<HTMLElement>(".rpEventHeader .jsIsDeleted");
+            if (iconIsDeleted === null) {
+              iconIsDeleted = document.createElement("span");
+              iconIsDeleted.classList.add("badge", "label", "red", "jsIsDeleted");
+              iconIsDeleted.innerHTML = getPhrase("wcf.message.status.deleted");
+              this.#eventIcons.appendChild(iconIsDeleted);
+            }
+
+            this.#restoreButton!.parentElement!.hidden = false;
+            this.#trashButton!.parentElement!.hidden = true;
+
+            showNotification();
+          }
+        });
 
         if (!stringToBool(this.#event.dataset.deleted!)) {
           this.#trashButton.parentElement!.hidden = false;
@@ -69,49 +170,6 @@ export class UiEventEditor {
       }
     }
   }
-
-  #refreshEvent(data: RefreshEventData): void {
-    if (this.#eventId != data.eventId) return;
-
-    const eventIcons = document.querySelector<HTMLHeadingElement>(".rpEventHeader .contentHeaderTitle .contentTitle");
-
-    if (data.action === "disabled") {
-      const isDisabled = !stringToBool(this.#event.dataset.enabled!);
-      let iconIsDisabled = document.querySelector<HTMLElement>(".rpEventHeader .jsIsDisabled");
-      if (isDisabled && iconIsDisabled === null) {
-        iconIsDisabled = document.createElement("span");
-        iconIsDisabled.classList.add("badge", "label", "green", "jsIsDisabled");
-        iconIsDisabled.innerHTML = getPhrase("wcf.message.status.disabled");
-        eventIcons?.appendChild(iconIsDisabled);
-      } else if (!isDisabled && iconIsDisabled !== null) {
-        iconIsDisabled.remove();
-      }
-    } else if (data.action === "restore") {
-      const iconIsDeleted = document.querySelector<HTMLElement>(".rpEventHeader .jsIsDeleted");
-      if (iconIsDeleted !== null) {
-        iconIsDeleted.remove();
-      }
-
-      this.#restoreButton!.parentElement!.hidden = true;
-      this.#trashButton!.parentElement!.hidden = false;
-    } else if (data.action === "trash") {
-      let iconIsDeleted = document.querySelector<HTMLElement>(".rpEventHeader .jsIsDeleted");
-      if (iconIsDeleted === null) {
-        iconIsDeleted = document.createElement("span");
-        iconIsDeleted.classList.add("badge", "label", "red", "jsIsDeleted");
-        iconIsDeleted.innerHTML = getPhrase("wcf.message.status.deleted");
-        eventIcons?.appendChild(iconIsDeleted);
-      }
-
-      this.#restoreButton!.parentElement!.hidden = false;
-      this.#trashButton!.parentElement!.hidden = true;
-    }
-  }
 }
 
 export default UiEventEditor;
-
-interface RefreshEventData {
-  action: string;
-  eventId: number;
-}

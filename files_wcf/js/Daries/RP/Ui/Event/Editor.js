@@ -3,13 +3,14 @@
  * @copyright   2023-2024 Daries.dev
  * @license Raidplaner is licensed under Creative Commons Attribution-ShareAlike 4.0 International
  */
-define(["require", "exports", "tslib", "WoltLabSuite/Core/Ui/Dropdown/Simple", "WoltLabSuite/Core/Event/Handler", "./Action/DisableAction", "WoltLabSuite/Core/Core", "WoltLabSuite/Core/Language", "./Action/TrashAction", "./Action/RestoreAction"], function (require, exports, tslib_1, Simple_1, Handler_1, DisableAction_1, Core_1, Language_1, TrashAction_1, RestoreAction_1) {
+define(["require", "exports", "tslib", "WoltLabSuite/Core/Ui/Dropdown/Simple", "WoltLabSuite/Core/Core", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/Component/Confirmation", "WoltLabSuite/Core/Ui/Notification", "../../Api/Events/TrashEvent", "WoltLabSuite/Core/Component/Dialog", "../../Api/Events/RestoreEvent", "../../Api/Events/EnableDisableEvent"], function (require, exports, tslib_1, Simple_1, Core_1, Language_1, Confirmation_1, Notification_1, TrashEvent_1, Dialog_1, RestoreEvent_1, EnableDisableEvent_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.UiEventEditor = void 0;
     Simple_1 = tslib_1.__importDefault(Simple_1);
     class UiEventEditor {
         #event;
+        #eventIcons;
         #eventId;
         #restoreButton = null;
         #trashButton = null;
@@ -18,8 +19,8 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Ui/Dropdown/Simple", "
             if (!(0, Core_1.stringToBool)(this.#event.dataset.canEdit))
                 return;
             this.#eventId = parseInt(this.#event.dataset.eventId);
+            this.#eventIcons = document.querySelector(".rpEventHeader .contentHeaderTitle .contentTitle");
             this.#initEvent();
-            (0, Handler_1.add)("dev.daries.rp.event", "refresh", (data) => this.#refreshEvent(data));
         }
         #initEvent() {
             const dropdownMenu = Simple_1.default.getDropdownMenu("eventDropdown");
@@ -31,64 +32,113 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Ui/Dropdown/Simple", "
                     editLink.click();
                 });
             }
+            this.#initEnableButton(dropdownMenu);
+            this.#initRestoreButton(dropdownMenu);
+            this.#initTrashButton(dropdownMenu);
+        }
+        #initEnableButton(dropdownMenu) {
             const enableEvent = dropdownMenu.querySelector(".jsEnable");
             if (enableEvent) {
-                new DisableAction_1.DisableAction(enableEvent, this.#event);
+                enableEvent.addEventListener("click", async () => {
+                    const isEnabled = (0, Core_1.stringToBool)(this.#event.dataset.enabled);
+                    const response = await (0, EnableDisableEvent_1.enableDisableEvent)(this.#eventId, isEnabled);
+                    if (!response.ok) {
+                        const validationError = response.error.getValidationError();
+                        if (validationError === undefined) {
+                            throw response.error;
+                        }
+                        (0, Dialog_1.dialogFactory)().fromHtml(`<p>${validationError.message}</p>`).asAlert();
+                        return;
+                    }
+                    this.#event.dataset.enabled = isEnabled ? "false" : "true";
+                    if (isEnabled) {
+                        enableEvent.textContent = enableEvent.dataset.enableMessage;
+                    }
+                    else {
+                        enableEvent.textContent = enableEvent.dataset.disableMessage;
+                    }
+                    const isDisabled = !(0, Core_1.stringToBool)(this.#event.dataset.enabled);
+                    let iconIsDisabled = document.querySelector(".rpEventHeader .jsIsDisabled");
+                    if (isDisabled && iconIsDisabled === null) {
+                        iconIsDisabled = document.createElement("span");
+                        iconIsDisabled.classList.add("badge", "label", "green", "jsIsDisabled");
+                        iconIsDisabled.innerHTML = (0, Language_1.getPhrase)("wcf.message.status.disabled");
+                        this.#eventIcons.appendChild(iconIsDisabled);
+                    }
+                    else if (!isDisabled && iconIsDisabled !== null) {
+                        iconIsDisabled.remove();
+                    }
+                    (0, Notification_1.show)();
+                });
             }
+        }
+        #initRestoreButton(dropdownMenu) {
             if ((0, Core_1.stringToBool)(this.#event.dataset.canRestore)) {
                 this.#restoreButton = dropdownMenu.querySelector(".jsRestore");
                 if (this.#restoreButton) {
-                    new RestoreAction_1.RestoreAction(this.#restoreButton, this.#event);
+                    this.#restoreButton.addEventListener("click", async () => {
+                        const title = this.#event.dataset.title;
+                        const result = await (0, Confirmation_1.confirmationFactory)().restore(title);
+                        if (result) {
+                            const response = await (0, RestoreEvent_1.restoreEvent)(this.#eventId);
+                            if (!response.ok) {
+                                const validationError = response.error.getValidationError();
+                                if (validationError === undefined) {
+                                    throw response.error;
+                                }
+                                (0, Dialog_1.dialogFactory)().fromHtml(`<p>${validationError.message}</p>`).asAlert();
+                                return;
+                            }
+                            const iconIsDeleted = document.querySelector(".rpEventHeader .jsIsDeleted");
+                            if (iconIsDeleted !== null) {
+                                iconIsDeleted.remove();
+                            }
+                            this.#event.dataset.deleted = "false";
+                            this.#restoreButton.parentElement.hidden = true;
+                            this.#trashButton.parentElement.hidden = false;
+                            (0, Notification_1.show)();
+                        }
+                    });
                     if ((0, Core_1.stringToBool)(this.#event.dataset.deleted)) {
                         this.#restoreButton.parentElement.hidden = false;
                     }
                 }
             }
+        }
+        #initTrashButton(dropdownMenu) {
             if ((0, Core_1.stringToBool)(this.#event.dataset.canDelete)) {
                 this.#trashButton = dropdownMenu.querySelector(".jsTrash");
                 if (this.#trashButton) {
-                    new TrashAction_1.TrashAction(this.#trashButton, this.#event);
+                    this.#trashButton.addEventListener("click", async () => {
+                        const title = this.#event.dataset.title;
+                        const { result } = await (0, Confirmation_1.confirmationFactory)().softDelete(title);
+                        if (result) {
+                            const response = await (0, TrashEvent_1.trashEvent)(this.#eventId);
+                            if (!response.ok) {
+                                const validationError = response.error.getValidationError();
+                                if (validationError === undefined) {
+                                    throw response.error;
+                                }
+                                (0, Dialog_1.dialogFactory)().fromHtml(`<p>${validationError.message}</p>`).asAlert();
+                                return;
+                            }
+                            this.#event.dataset.deleted = "true";
+                            let iconIsDeleted = document.querySelector(".rpEventHeader .jsIsDeleted");
+                            if (iconIsDeleted === null) {
+                                iconIsDeleted = document.createElement("span");
+                                iconIsDeleted.classList.add("badge", "label", "red", "jsIsDeleted");
+                                iconIsDeleted.innerHTML = (0, Language_1.getPhrase)("wcf.message.status.deleted");
+                                this.#eventIcons.appendChild(iconIsDeleted);
+                            }
+                            this.#restoreButton.parentElement.hidden = false;
+                            this.#trashButton.parentElement.hidden = true;
+                            (0, Notification_1.show)();
+                        }
+                    });
                     if (!(0, Core_1.stringToBool)(this.#event.dataset.deleted)) {
                         this.#trashButton.parentElement.hidden = false;
                     }
                 }
-            }
-        }
-        #refreshEvent(data) {
-            if (this.#eventId != data.eventId)
-                return;
-            const eventIcons = document.querySelector(".rpEventHeader .contentHeaderTitle .contentTitle");
-            if (data.action === "disabled") {
-                const isDisabled = !(0, Core_1.stringToBool)(this.#event.dataset.enabled);
-                let iconIsDisabled = document.querySelector(".rpEventHeader .jsIsDisabled");
-                if (isDisabled && iconIsDisabled === null) {
-                    iconIsDisabled = document.createElement("span");
-                    iconIsDisabled.classList.add("badge", "label", "green", "jsIsDisabled");
-                    iconIsDisabled.innerHTML = (0, Language_1.getPhrase)("wcf.message.status.disabled");
-                    eventIcons?.appendChild(iconIsDisabled);
-                }
-                else if (!isDisabled && iconIsDisabled !== null) {
-                    iconIsDisabled.remove();
-                }
-            }
-            else if (data.action === "restore") {
-                const iconIsDeleted = document.querySelector(".rpEventHeader .jsIsDeleted");
-                if (iconIsDeleted !== null) {
-                    iconIsDeleted.remove();
-                }
-                this.#restoreButton.parentElement.hidden = true;
-                this.#trashButton.parentElement.hidden = false;
-            }
-            else if (data.action === "trash") {
-                let iconIsDeleted = document.querySelector(".rpEventHeader .jsIsDeleted");
-                if (iconIsDeleted === null) {
-                    iconIsDeleted = document.createElement("span");
-                    iconIsDeleted.classList.add("badge", "label", "red", "jsIsDeleted");
-                    iconIsDeleted.innerHTML = (0, Language_1.getPhrase)("wcf.message.status.deleted");
-                    eventIcons?.appendChild(iconIsDeleted);
-                }
-                this.#restoreButton.parentElement.hidden = false;
-                this.#trashButton.parentElement.hidden = true;
             }
         }
     }
