@@ -76,37 +76,33 @@
 {/if}
 
 {capture assign='contentInteractionButtons'}
-    {if $event->canEdit() || $event->canEditOwnEvent()}
-        <div id="eventDropdown" class="contentInteractionButton dropdown jsOnly eventDropdown">
-            <button type="button" class="button small dropdownToggle">
-                {icon name='sliders'}
-                <span>{lang}rp.event.settings{/lang}</span>
-            </button>
-            <ul class="dropdownMenu">
-                <li hidden>
-                    <a href="#" class="jsDelete">{lang}rp.event.delete{/lang}</a>
-                </li>
-                <li hidden>
-                    <a href="#" class="jsRestore">{lang}rp.event.restore{/lang}</a>
-                </li>
-                <li hidden>
-                    <a href="#" class="jsTrash">{lang}rp.event.trash{/lang}</a>
-                </li>
-                <li>
-                    <a href="#" class="jsEnable" data-disable-message="{lang}rp.event.disable{/lang}"
-                        data-enable-message="{lang}rp.event.enable{/lang}">
-                        {lang}rp.event.{if $event->isDisabled}enable{else}disable{/if}{/lang}
-                    </a>
-                </li>
-                <li class="dropdownDivider"></li>
-                <li>
-                    <a href="{link controller='EventEdit' application='rp' id=$event->eventID}{/link}" class="jsEditLink">
-                        {lang}rp.event.edit{/lang}
-                    </a>
-                </li>
-            </ul>
-        </div>
-    {/if}
+    <div id="eventDropdown" class="contentInteractionButton dropdown jsOnly jsEventDropdown" style="display: none;">
+        <button type="button" class="button small dropdownToggle">
+            {icon name='sliders'}
+            <span>{lang}rp.event.settings{/lang}</span>
+        </button>
+        <ul class="dropdownMenu jsEventDropdownItems">
+            <li data-option-name="delete"><span>{lang}rp.event.delete{/lang}</span></li>
+            <li data-option-name="restore"><span>{lang}rp.event.restore{/lang}</span></li>
+            <li data-option-name="trash"><span>{lang}rp.event.trash{/lang}</span></li>
+            <li data-option-name="enable"><span>{lang}rp.event.enable{/lang}</span> </li>
+            <li data-option-name="disable"><span>{lang}rp.event.disable{/lang}</span></li>
+            {if $event->isRaidEvent()}
+                <li data-option-name="cancel"><span>{lang}rp.event.raid.cancel{/lang}</span></li>
+                {if !$event->raidID && $event->getController()->isLeader()}
+                    <li data-option-name="transform"
+                        data-link="{link controller='RaidAdd' application='rp'}eventID={@$event->eventID}{/link}">
+                        <span>{lang}rp.event.raid.transform{/lang}</span>
+                    </li>
+                {/if}
+            {/if}
+            <li class="dropdownDivider"></li>
+            <li data-option-name="editLink"
+                data-link="{link controller='EventEdit' application='rp' id=$event->eventID}{/link}">
+                <span>{lang}rp.event.edit{/lang}</span>
+            </li>
+        </ul>
+    </div>
 {/capture}
 
 {event name='beforeHeader'}
@@ -144,10 +140,12 @@
     </div>
 {/if}
 
-<div id="event{@$event->eventID}" class="event" data-can-delete="{if $event->canDelete()}true{else}false{/if}"
+<div id="event{@$event->eventID}" class="event" data-can-cancel="{if $event->canCancel()}true{else}false{/if}"
+    data-can-delete="{if $event->canDelete()}true{else}false{/if}"
     data-can-edit="{if $event->canEdit() || $event->canEditOwnEvent()}true{else}false{/if}"
     data-can-restore="{if $event->canRestore() || $event->canEditOwnEvent()}true{else}false{/if}"
     data-can-trash="{if $event->canTrash()}true{else}false{/if}"
+    data-canceled="{if $event->isCanceled}true{else}false{/if}"
     data-deleted="{if $event->isDeleted}true{else}false{/if}"
     data-enabled="{if !$event->isDisabled}true{else}false{/if}" data-event-id="{@$event->eventID}"
     data-title="{$event->getTitle()}">
@@ -168,13 +166,12 @@
 
 {include file='footer'}
 
-{if $event->canEdit() || $event->canEditOwnEvent()}
-    <script data-relocate="true">
-        require(['Daries/RP/Ui/Event/Editor'], function({ UiEventEditor }) {
-            {jsphrase name='wcf.message.status.deleted'}
-            {jsphrase name='wcf.message.status.disabled'}
+<script data-relocate="true">
+    require(['Daries/RP/Ui/Event/Editor'], function({ UiEventEditor }) {
+        WoltLabLanguage.registerPhrase("rp.event.raid.cancel.confirmMessage", '{jslang __literal=true}rp.event.raid.cancel.confirmMessage{/jslang}');
+        {jsphrase name='wcf.message.status.deleted'}
+        {jsphrase name='wcf.message.status.disabled'}
 
-            new UiEventEditor();
-        });
-    </script>
-{/if}
+        new UiEventEditor();
+    });
+</script>

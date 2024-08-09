@@ -131,6 +131,8 @@
             <item name="rp.event.raid.attendee.noCharacters"><![CDATA[You have not created characters or none characters have the required conditions for this raid.]]></item>
             <item name="rp.event.raid.attendee.notes"><![CDATA[Notes]]></item>
             <item name="rp.event.raid.attendee.remove.confirmMessage"><![CDATA[Do you really want to cancel the attendance?]]></item>
+            <item name="rp.event.raid.cancel"><![CDATA[Cancel Raid]]></item>
+            <item name="rp.event.raid.cancel.confirmMessage"><![CDATA[Do you really want to cancel “{$title}”?]]></item>
             <item name="rp.event.raid.canceled"><![CDATA[The raid was cancelled by a raid leader.]]></item>
             <item name="rp.event.raid.condition"><![CDATA[Condition]]></item>
             <item name="rp.event.raid.condition.description"><![CDATA[Here you can specify which are the minimum conditions for this raid.]]></item>

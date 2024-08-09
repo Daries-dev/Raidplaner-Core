@@ -61,6 +61,25 @@ class EventAction extends AbstractDatabaseObjectAction
     }
 
     /**
+     * Cancel raid events.
+     */
+    public function cancel(): void
+    {
+        foreach ($this->getObjects() as $event) {
+            if ($event->isCanceled) {
+                continue;
+            }
+
+            $event->update([
+                'isCanceled' => 1,
+            ]);
+        }
+
+        // reset storage
+        UserStorageHandler::getInstance()->resetAll('rpUnreadEvents');
+    }
+
+    /**
      * @inheritDoc
      */
     public function create(): Event
@@ -274,6 +293,27 @@ class EventAction extends AbstractDatabaseObjectAction
 
         if (!$this->event->canRead()) {
             throw new PermissionDeniedException();
+        }
+    }
+
+    /**
+     * Validates parameters to cancel events.
+     */
+    public function validateCancel(): void
+    {
+        // read objects
+        if (empty($this->objects)) {
+            $this->readObjects();
+
+            if (empty($this->objects)) {
+                throw new UserInputException('objectIDs');
+            }
+        }
+
+        foreach ($this->getObjects() as $event) {
+            if (!$event->canCancel()) {
+                throw new PermissionDeniedException();
+            }
         }
     }
 
