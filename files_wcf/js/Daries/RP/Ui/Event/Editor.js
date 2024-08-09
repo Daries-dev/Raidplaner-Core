@@ -3,7 +3,7 @@
  * @copyright   2023-2024 Daries.dev
  * @license Raidplaner is licensed under Creative Commons Attribution-ShareAlike 4.0 International
  */
-define(["require", "exports", "tslib", "WoltLabSuite/Core/Ui/Dropdown/Simple", "WoltLabSuite/Core/Event/Handler", "./Action/DisableAction", "WoltLabSuite/Core/Core", "WoltLabSuite/Core/Language", "./Action/TrashAction"], function (require, exports, tslib_1, Simple_1, Handler_1, DisableAction_1, Core_1, Language_1, TrashAction_1) {
+define(["require", "exports", "tslib", "WoltLabSuite/Core/Ui/Dropdown/Simple", "WoltLabSuite/Core/Event/Handler", "./Action/DisableAction", "WoltLabSuite/Core/Core", "WoltLabSuite/Core/Language", "./Action/TrashAction", "./Action/RestoreAction"], function (require, exports, tslib_1, Simple_1, Handler_1, DisableAction_1, Core_1, Language_1, TrashAction_1, RestoreAction_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.UiEventEditor = void 0;
@@ -11,6 +11,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Ui/Dropdown/Simple", "
     class UiEventEditor {
         #event;
         #eventId;
+        #restoreButton = null;
         #trashButton = null;
         constructor() {
             this.#event = document.querySelector(".event");
@@ -33,6 +34,15 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Ui/Dropdown/Simple", "
             const enableEvent = dropdownMenu.querySelector(".jsEnable");
             if (enableEvent) {
                 new DisableAction_1.DisableAction(enableEvent, this.#event);
+            }
+            if ((0, Core_1.stringToBool)(this.#event.dataset.canRestore)) {
+                this.#restoreButton = dropdownMenu.querySelector(".jsRestore");
+                if (this.#restoreButton) {
+                    new RestoreAction_1.RestoreAction(this.#restoreButton, this.#event);
+                    if ((0, Core_1.stringToBool)(this.#event.dataset.deleted)) {
+                        this.#restoreButton.parentElement.hidden = false;
+                    }
+                }
             }
             if ((0, Core_1.stringToBool)(this.#event.dataset.canDelete)) {
                 this.#trashButton = dropdownMenu.querySelector(".jsTrash");
@@ -61,14 +71,24 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Ui/Dropdown/Simple", "
                     iconIsDisabled.remove();
                 }
             }
-            else if (data.action == "trash") {
+            else if (data.action === "restore") {
+                const iconIsDeleted = document.querySelector(".rpEventHeader .jsIsDeleted");
+                if (iconIsDeleted !== null) {
+                    iconIsDeleted.remove();
+                }
+                this.#restoreButton.parentElement.hidden = true;
+                this.#trashButton.parentElement.hidden = false;
+            }
+            else if (data.action === "trash") {
                 let iconIsDeleted = document.querySelector(".rpEventHeader .jsIsDeleted");
                 if (iconIsDeleted === null) {
                     iconIsDeleted = document.createElement("span");
-                    iconIsDeleted.classList.add("badge", "label", "green", "jsIsDeleted");
+                    iconIsDeleted.classList.add("badge", "label", "red", "jsIsDeleted");
                     iconIsDeleted.innerHTML = (0, Language_1.getPhrase)("wcf.message.status.deleted");
                     eventIcons?.appendChild(iconIsDeleted);
                 }
+                this.#restoreButton.parentElement.hidden = false;
+                this.#trashButton.parentElement.hidden = true;
             }
         }
     }

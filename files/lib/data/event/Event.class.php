@@ -124,6 +124,18 @@ final class Event extends DatabaseObject implements ITitledLinkObject, IRouteCon
     }
 
     /**
+     * Returns true if the current user can restore this event.
+     */
+    public function canRestore(): bool
+    {
+        if (WCF::getSession()->getPermission('mod.rp.canRestoreEvent')) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Returns true if the current user can trash this event.
      */
     public function canTrash(): bool

@@ -10,10 +10,12 @@ import { DisableAction } from "./Action/DisableAction";
 import { stringToBool } from "WoltLabSuite/Core/Core";
 import { getPhrase } from "WoltLabSuite/Core/Language";
 import { TrashAction } from "./Action/TrashAction";
+import { RestoreAction } from "./Action/RestoreAction";
 
 export class UiEventEditor {
   readonly #event: HTMLElement;
   readonly #eventId: number;
+  #restoreButton: HTMLAnchorElement | null = null;
   #trashButton: HTMLAnchorElement | null = null;
 
   constructor() {
@@ -45,6 +47,17 @@ export class UiEventEditor {
       new DisableAction(enableEvent, this.#event);
     }
 
+    if (stringToBool(this.#event.dataset.canRestore!)) {
+      this.#restoreButton = dropdownMenu!.querySelector<HTMLAnchorElement>(".jsRestore");
+      if (this.#restoreButton) {
+        new RestoreAction(this.#restoreButton, this.#event);
+
+        if (stringToBool(this.#event.dataset.deleted!)) {
+          this.#restoreButton.parentElement!.hidden = false;
+        }
+      }
+    }
+
     if (stringToBool(this.#event.dataset.canDelete!)) {
       this.#trashButton = dropdownMenu!.querySelector<HTMLAnchorElement>(".jsTrash");
       if (this.#trashButton) {
@@ -73,7 +86,15 @@ export class UiEventEditor {
       } else if (!isDisabled && iconIsDisabled !== null) {
         iconIsDisabled.remove();
       }
-    } else if (data.action == "trash") {
+    } else if (data.action === "restore") {
+      const iconIsDeleted = document.querySelector<HTMLElement>(".rpEventHeader .jsIsDeleted");
+      if (iconIsDeleted !== null) {
+        iconIsDeleted.remove();
+      }
+
+      this.#restoreButton!.parentElement!.hidden = true;
+      this.#trashButton!.parentElement!.hidden = false;
+    } else if (data.action === "trash") {
       let iconIsDeleted = document.querySelector<HTMLElement>(".rpEventHeader .jsIsDeleted");
       if (iconIsDeleted === null) {
         iconIsDeleted = document.createElement("span");
@@ -81,6 +102,9 @@ export class UiEventEditor {
         iconIsDeleted.innerHTML = getPhrase("wcf.message.status.deleted");
         eventIcons?.appendChild(iconIsDeleted);
       }
+
+      this.#restoreButton!.parentElement!.hidden = false;
+      this.#trashButton!.parentElement!.hidden = true;
     }
   }
 }
