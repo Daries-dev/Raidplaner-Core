@@ -16,11 +16,11 @@
                 {/if}
 
                 {if $event->isDisabled}
-                    <span class="badge label green">{lang}wcf.message.status.disabled{/lang}</span>
+                    <span class="badge label green jsIsDisabled">{lang}wcf.message.status.disabled{/lang}</span>
                 {/if}
 
                 {if $event->isDeleted}
-                    <span class="badge label red">{lang}wcf.message.status.deleted{/lang}</span>
+                    <span class="badge label red jsIsDeleted">{lang}wcf.message.status.deleted{/lang}</span>
                 {/if}
             </h1>
             <ul class="inlineList commaSeparated contentHeaderMetaData">
@@ -75,7 +75,41 @@
     {/hascontent}
 {/if}
 
+{capture assign='contentInteractionButtons'}
+    <div id="eventDropdown" class="contentInteractionButton dropdown jsOnly jsEventDropdown" style="display: none;">
+        <button type="button" class="button small dropdownToggle">
+            {icon name='sliders'}
+            <span>{lang}rp.event.settings{/lang}</span>
+        </button>
+        <ul class="dropdownMenu jsEventDropdownItems">
+            <li data-option-name="delete"><span>{lang}rp.event.delete{/lang}</span></li>
+            <li data-option-name="restore"><span>{lang}rp.event.restore{/lang}</span></li>
+            <li data-option-name="trash"><span>{lang}rp.event.trash{/lang}</span></li>
+            <li data-option-name="enable"><span>{lang}rp.event.enable{/lang}</span> </li>
+            <li data-option-name="disable"><span>{lang}rp.event.disable{/lang}</span></li>
+            {if $event->isRaidEvent()}
+                <li data-option-name="cancel"><span>{lang}rp.event.raid.cancel{/lang}</span></li>
+                {if !$event->raidID && $event->getController()->isLeader()}
+                    <li data-option-name="transform"
+                        data-link="{link controller='RaidAdd' application='rp'}eventID={@$event->eventID}{/link}">
+                        <span>{lang}rp.event.raid.transform{/lang}</span>
+                    </li>
+                {/if}
+            {/if}
+            <li class="dropdownDivider"></li>
+            <li data-option-name="editLink"
+                data-link="{link controller='EventEdit' application='rp' id=$event->eventID}{/link}">
+                <span>{lang}rp.event.edit{/lang}</span>
+            </li>
+        </ul>
+    </div>
+{/capture}
+
+{event name='beforeHeader'}
+
 {include file='header'}
+
+{event name='afterHeader'}
 
 {if $event->getController()->showEventNodes('center')}
     {hascontent}
@@ -106,7 +140,17 @@
     </div>
 {/if}
 
-{@$event->getController()->getContent()}
+<div id="event{@$event->eventID}" class="event" data-can-cancel="{if $event->canCancel()}true{else}false{/if}"
+    data-can-delete="{if $event->canDelete()}true{else}false{/if}"
+    data-can-edit="{if $event->canEdit() || $event->canEditOwnEvent()}true{else}false{/if}"
+    data-can-restore="{if $event->canRestore() || $event->canEditOwnEvent()}true{else}false{/if}"
+    data-can-trash="{if $event->canTrash()}true{else}false{/if}"
+    data-canceled="{if $event->isCanceled}true{else}false{/if}"
+    data-deleted="{if $event->isDeleted}true{else}false{/if}"
+    data-enabled="{if !$event->isDisabled}true{else}false{/if}" data-event-id="{@$event->eventID}"
+    data-title="{$event->getTitle()}">
+    {@$event->getController()->getContent()}
+</div>
 
 <footer class="contentFooter">
     {hascontent}
@@ -121,3 +165,13 @@
 </footer>
 
 {include file='footer'}
+
+<script data-relocate="true">
+    require(['Daries/RP/Ui/Event/Editor'], function({ UiEventEditor }) {
+        WoltLabLanguage.registerPhrase("rp.event.raid.cancel.confirmMessage", '{jslang __literal=true}rp.event.raid.cancel.confirmMessage{/jslang}');
+        {jsphrase name='wcf.message.status.deleted'}
+        {jsphrase name='wcf.message.status.disabled'}
+
+        new UiEventEditor();
+    });
+</script>

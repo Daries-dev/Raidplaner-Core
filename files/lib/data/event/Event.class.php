@@ -76,6 +76,35 @@ final class Event extends DatabaseObject implements ITitledLinkObject, IRouteCon
     }
 
     /**
+     * Returns true if the current user can cancel this event.
+     */
+    public function canCancel(): bool
+    {
+        if (!$this->isRaidEvent()) {
+            return false;
+        }
+
+        if ($this->canEdit()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns true if the current user can delete these event.
+     */
+    public function canDelete(): bool
+    {
+        // check mod permissions
+        if (WCF::getSession()->getPermission('mod.rp.canDeleteEventCompletely')) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Returns true if the current user can edit these event.
      */
     public function canEdit(): bool
@@ -89,14 +118,6 @@ final class Event extends DatabaseObject implements ITitledLinkObject, IRouteCon
             if ($this->getController()->isLeader()) {
                 return true;
             }
-        }
-
-        if (
-            $this->userID &&
-            $this->userID == WCF::getUser()->userID &&
-            WCF::getSession()->getPermission('user.rp.canEditOwnEvent')
-        ) {
-            return true;
         }
 
         return false;
@@ -129,6 +150,39 @@ final class Event extends DatabaseObject implements ITitledLinkObject, IRouteCon
         }
 
         return true;
+    }
+
+    /**
+     * Returns true if the current user can restore this event.
+     */
+    public function canRestore(): bool
+    {
+        if (WCF::getSession()->getPermission('mod.rp.canRestoreEvent')) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns true if the current user can trash this event.
+     */
+    public function canTrash(): bool
+    {
+        if (WCF::getSession()->getPermission('mod.rp.canDeleteEvent')) {
+            return true;
+        }
+
+        // check user permissions
+        if (
+            $this->userID &&
+            $this->userID == WCF::getUser()->userID &&
+            WCF::getSession()->getPermission('user.rp.canDeleteOwnEvent')
+        ) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

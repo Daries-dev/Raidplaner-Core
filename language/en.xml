@@ -88,7 +88,10 @@
             <item name="rp.event.accepted"><![CDATA[Accepted]]></item>
             <item name="rp.event.add"><![CDATA[Create Event]]></item>
             <item name="rp.event.canceled"><![CDATA[Canceled]]></item>
+            <item name="rp.event.delete"><![CDATA[Delete permanently]]></item>
+            <item name="rp.event.disable"><![CDATA[Disable]]></item>
             <item name="rp.event.edit"><![CDATA[Edit event]]></item>
+            <item name="rp.event.enable"><![CDATA[Enable]]></item>
             <item name="rp.event.enableComments"><![CDATA[Enable comments]]></item>
             <item name="rp.event.endTime"><![CDATA[End Time]]></item>
             <item name="rp.event.endTime.error.invalid"><![CDATA[You have specified an invalid date for the end of the event. The end of the event must not be before the start.]]></item>
@@ -100,8 +103,13 @@
             <item name="rp.event.moderation.redirect"><![CDATA[Your event has been created and will be displayed once approved.]]></item>
             <item name="rp.event.notes"><![CDATA[Note]]></item>
             <item name="rp.event.participation"><![CDATA[Participation]]></item>
+            <item name="rp.event.restore"><![CDATA[Restore]]></item>
+            <item name="rp.event.settings"><![CDATA[Settings]]></item>
             <item name="rp.event.startTime"><![CDATA[Start time]]></item>
             <item name="rp.event.startTime.error.invalid"><![CDATA[You have specified an invalid date for the start of the event.]]></item>
+            <item name="rp.event.trash"><![CDATA[Move to Trash]]></item>
+            <item name="rp.event.trash.confirmMessage"><![CDATA[Do you really want to move this event to the trash?]]></item>
+            <item name="rp.event.trash.reason"><![CDATA[Reason (optional)]]></item>
             <item name="rp.event.type"><![CDATA[Event Type]]></item>
             <item name="rp.event.views"><![CDATA[{#$event->views} View{if $event->views != 1}s{/if}]]></item>
         </category>
@@ -123,6 +131,8 @@
             <item name="rp.event.raid.attendee.noCharacters"><![CDATA[You have not created characters or none characters have the required conditions for this raid.]]></item>
             <item name="rp.event.raid.attendee.notes"><![CDATA[Notes]]></item>
             <item name="rp.event.raid.attendee.remove.confirmMessage"><![CDATA[Do you really want to cancel the attendance?]]></item>
+            <item name="rp.event.raid.cancel"><![CDATA[Cancel Raid]]></item>
+            <item name="rp.event.raid.cancel.confirmMessage"><![CDATA[Do you really want to cancel “{$title}”?]]></item>
             <item name="rp.event.raid.canceled"><![CDATA[The raid was cancelled by a raid leader.]]></item>
             <item name="rp.event.raid.condition"><![CDATA[Condition]]></item>
             <item name="rp.event.raid.condition.description"><![CDATA[Here you can specify which are the minimum conditions for this raid.]]></item>
@@ -187,14 +197,23 @@
             <item name="wcf.acp.group.option.category.admin.rp"><![CDATA[Raidplaner]]></item>
             <item name="wcf.acp.group.option.category.admin.rp.character"><![CDATA[Character]]></item>
             <item name="wcf.acp.group.option.category.admin.rp.raid"><![CDATA[Raid]]></item>
+            <item name="wcf.acp.group.option.category.mod.rp"><![CDATA[Raidplaner]]></item>
+            <item name="wcf.acp.group.option.category.mod.rp.calendar"><![CDATA[Calendar]]></item>
             <item name="wcf.acp.group.option.category.user.rp"><![CDATA[Raidplaner]]></item>
-            <item name="wcf.acp.group.option.category.user.rp.calendar"><![CDATA[Kalender]]></item>
+            <item name="wcf.acp.group.option.category.user.rp.calendar"><![CDATA[Calendar]]></item>
             <item name="wcf.acp.group.option.category.user.rp.character"><![CDATA[Character]]></item>
             <item name="wcf.acp.group.option.category.user.rp.raid"><![CDATA[Raids]]></item>
+            <item name="wcf.acp.group.option.mod.rp.canDeleteEvent"><![CDATA[Can move events to trash]]></item>
+            <item name="wcf.acp.group.option.mod.rp.canDeleteEventCompletely"><![CDATA[Can delete events]]></item>
+            <item name="wcf.acp.group.option.mod.rp.canEditEvent"><![CDATA[Can edit events]]></item>
+            <item name="wcf.acp.group.option.mod.rp.canModerateEvent"><![CDATA[Can moderate events]]></item>
+            <item name="wcf.acp.group.option.mod.rp.canRestoreEvent"><![CDATA[Can restore events]]></item>
+            <item name="wcf.acp.group.option.mod.rp.canViewDeletedEvent"><![CDATA[Can view deleted events]]></item>
             <item name="wcf.acp.group.option.user.rp.canAddCharacter"><![CDATA[Can add characters]]></item>
             <item name="wcf.acp.group.option.user.rp.canCreateEvent"><![CDATA[Can create events]]></item>
             <item name="wcf.acp.group.option.user.rp.canCreateEventWithoutModeration"><![CDATA[Can create events without approval]]></item>
-            <item name="wcf.acp.group.option.user.rp.canDeleteOwnCharacter"><![CDATA[Can delete their characters]]></item>
+            <item name="wcf.acp.group.option.user.rp.canDeleteOwnCharacter"><![CDATA[Can delete own characters]]></item>
+            <item name="wcf.acp.group.option.user.rp.canDeleteOwnEvent"><![CDATA[Can delete own events]]></item>
             <item name="wcf.acp.group.option.user.rp.canEditOwnCharacter"><![CDATA[Can edit own characters]]></item>
             <item name="wcf.acp.group.option.user.rp.canEditOwnEvent"><![CDATA[Can edit own events]]></item>
             <item name="wcf.acp.group.option.user.rp.canParticipate"><![CDATA[Can participate in raids]]></item>

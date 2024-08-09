@@ -37,7 +37,7 @@ class EventAction extends AbstractDatabaseObjectAction
         $appointments = $additionalData['appointments'] ?? ['accepted' => [], 'canceled' => [], 'maybe' => []];
 
         $appointments = \array_map(
-            fn ($users) => \array_filter($users, fn ($userID) => $userID !== WCF::getUser()->userID),
+            fn($users) => \array_filter($users, fn($userID) => $userID !== WCF::getUser()->userID),
             $appointments
         );
 
@@ -58,6 +58,25 @@ class EventAction extends AbstractDatabaseObjectAction
                 ]
             ),
         ];
+    }
+
+    /**
+     * Cancel raid events.
+     */
+    public function cancel(): void
+    {
+        foreach ($this->getObjects() as $event) {
+            if ($event->isCanceled) {
+                continue;
+            }
+
+            $event->update([
+                'isCanceled' => 1,
+            ]);
+        }
+
+        // reset storage
+        UserStorageHandler::getInstance()->resetAll('rpUnreadEvents');
     }
 
     /**
@@ -94,6 +113,107 @@ class EventAction extends AbstractDatabaseObjectAction
         }
 
         return new Event($event->eventID);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function delete(): void
+    {
+        $eventIDs = [];
+        foreach ($this->getObjects() as $event) {
+            $eventIDs[] = $event->eventID;
+        }
+
+        parent::delete();
+
+        if (!empty($eventIDs)) {
+            // delete embedded object references
+            MessageEmbeddedObjectManager::getInstance()->removeObjects('dev.daries.rp.event.notes', $eventIDs);
+        }
+
+        // reset storage
+        UserStorageHandler::getInstance()->resetAll('rpUnreadEvents');
+    }
+
+    /**
+     * Disables events.
+     */
+    public function disable(): void
+    {
+        if (empty($this->objects)) {
+            $this->readObjects();
+        }
+
+        foreach ($this->getObjects() as $event) {
+            $event->update([
+                'isDisabled' => 1
+            ]);
+        }
+
+        // reset storage
+        UserStorageHandler::getInstance()->resetAll('rpUnreadEvents');
+    }
+
+    /**
+     * Enables events.
+     */
+    public function enable(): void
+    {
+        $eventIDs = [];
+        foreach ($this->getObjects() as $event) {
+            $eventIDs[] = $event->eventID;
+
+            $event->update([
+                'isDisabled' => 0
+            ]);
+        }
+
+        // trigger publication
+        if (!empty($eventIDs)) {
+            $action = new EventAction($eventIDs, 'triggerPublication');
+            $action->executeAction();
+        }
+    }
+
+    /**
+     * Restores events.
+     */
+    public function restore(): void
+    {
+        foreach ($this->getObjects() as $event) {
+            if (!$event->isDeleted) {
+                continue;
+            }
+
+            $event->update([
+                'deleteTime' => 0,
+                'isDeleted' => 0,
+            ]);
+        }
+
+        // reset storage
+        UserStorageHandler::getInstance()->resetAll('rpUnreadEvents');
+    }
+
+    /**
+     * Trashes events.
+     */
+    public function trash(): void
+    {
+        foreach ($this->getObjects() as $event) {
+            if ($event->isDeleted) {
+                continue;
+            }
+
+            $event->update([
+                'deleteTime' => TIME_NOW,
+                'isDeleted' => 1,
+            ]);
+        }
+
+        // reset storage
+        UserStorageHandler::getInstance()->resetAll('rpUnreadEvents');
     }
 
     /**
@@ -177,10 +297,93 @@ class EventAction extends AbstractDatabaseObjectAction
     }
 
     /**
+     * Validates parameters to cancel events.
+     */
+    public function validateCancel(): void
+    {
+        // read objects
+        if (empty($this->objects)) {
+            $this->readObjects();
+
+            if (empty($this->objects)) {
+                throw new UserInputException('objectIDs');
+            }
+        }
+
+        foreach ($this->getObjects() as $event) {
+            if (!$event->canCancel()) {
+                throw new PermissionDeniedException();
+            }
+        }
+    }
+
+    /**
+     * Validates the disable action.
+     */
+    public function validateDisable()
+    {
+        $this->validateEnable();
+    }
+
+    /**
+     * Validates the enable action.
+     */
+    public function validateEnable(): void
+    {
+        WCF::getSession()->checkPermissions(['mod.rp.canEditEvent']);
+
+        if (empty($this->objects)) {
+            $this->readObjects();
+        }
+    }
+
+    /**
      * Validates the mark all as read action.
      */
     public function validateMarkAllAsRead(): void
     {
         // does nothing
+    }
+
+    /**
+     * Validates parameters to restore events.
+     */
+    public function validateRestore(): void
+    {
+        // read objects
+        if (empty($this->objects)) {
+            $this->readObjects();
+
+            if (empty($this->objects)) {
+                throw new UserInputException('objectIDs');
+            }
+        }
+
+        foreach ($this->getObjects() as $event) {
+            if (!$event->canRestore()) {
+                throw new PermissionDeniedException();
+            }
+        }
+    }
+
+    /**
+     * Validates parameters to trash events.
+     */
+    public function validateTrash(): void
+    {
+        // read objects
+        if (empty($this->objects)) {
+            $this->readObjects();
+
+            if (empty($this->objects)) {
+                throw new UserInputException('objectIDs');
+            }
+        }
+
+        foreach ($this->getObjects() as $event) {
+            if (!$event->canTrash()) {
+                throw new PermissionDeniedException();
+            }
+        }
     }
 }
