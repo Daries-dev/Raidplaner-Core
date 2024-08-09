@@ -26,6 +26,7 @@ return static function (): void {
             $event->register(new \rp\system\endpoint\controller\rp\attendees\RenderAttendee);
             $event->register(new \rp\system\endpoint\controller\rp\attendees\UpdateAttendeeStatus);
             $event->register(new \rp\system\endpoint\controller\rp\events\AvailableCharacters);
+            $event->register(new \rp\system\endpoint\controller\rp\events\DeleteEvent);
             $event->register(new \rp\system\endpoint\controller\rp\events\EnableDisableEvent);
             $event->register(new \rp\system\endpoint\controller\rp\events\RestoreEvent);
             $event->register(new \rp\system\endpoint\controller\rp\events\TrashEvent);

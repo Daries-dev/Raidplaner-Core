@@ -3,12 +3,13 @@
  * @copyright   2023-2024 Daries.dev
  * @license Raidplaner is licensed under Creative Commons Attribution-ShareAlike 4.0 International
  */
-define(["require", "exports", "tslib", "WoltLabSuite/Core/Ui/Dropdown/Simple", "WoltLabSuite/Core/Core", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/Component/Confirmation", "WoltLabSuite/Core/Ui/Notification", "../../Api/Events/TrashEvent", "WoltLabSuite/Core/Component/Dialog", "../../Api/Events/RestoreEvent", "../../Api/Events/EnableDisableEvent"], function (require, exports, tslib_1, Simple_1, Core_1, Language_1, Confirmation_1, Notification_1, TrashEvent_1, Dialog_1, RestoreEvent_1, EnableDisableEvent_1) {
+define(["require", "exports", "tslib", "WoltLabSuite/Core/Ui/Dropdown/Simple", "WoltLabSuite/Core/Core", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/Component/Confirmation", "WoltLabSuite/Core/Ui/Notification", "../../Api/Events/TrashEvent", "WoltLabSuite/Core/Component/Dialog", "../../Api/Events/RestoreEvent", "../../Api/Events/EnableDisableEvent", "../../Api/Events/DeleteEvent"], function (require, exports, tslib_1, Simple_1, Core_1, Language_1, Confirmation_1, Notification_1, TrashEvent_1, Dialog_1, RestoreEvent_1, EnableDisableEvent_1, DeleteEvent_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.UiEventEditor = void 0;
     Simple_1 = tslib_1.__importDefault(Simple_1);
     class UiEventEditor {
+        #deleteButton = null;
         #event;
         #eventIcons;
         #eventId;
@@ -32,9 +33,37 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Ui/Dropdown/Simple", "
                     editLink.click();
                 });
             }
+            this.#initDeleteButton(dropdownMenu);
             this.#initEnableButton(dropdownMenu);
             this.#initRestoreButton(dropdownMenu);
             this.#initTrashButton(dropdownMenu);
+        }
+        #initDeleteButton(dropdownMenu) {
+            if ((0, Core_1.stringToBool)(this.#event.dataset.canDelete)) {
+                this.#deleteButton = dropdownMenu.querySelector(".jsDelete");
+                if (this.#deleteButton) {
+                    this.#deleteButton.addEventListener("click", async () => {
+                        const title = this.#event.dataset.title;
+                        const result = await (0, Confirmation_1.confirmationFactory)().delete(title);
+                        if (result) {
+                            const response = await (0, DeleteEvent_1.deleteEvent)(this.#eventId);
+                            if (!response.ok) {
+                                const validationError = response.error.getValidationError();
+                                if (validationError === undefined) {
+                                    throw response.error;
+                                }
+                                (0, Dialog_1.dialogFactory)().fromHtml(`<p>${validationError.message}</p>`).asAlert();
+                                return;
+                            }
+                            (0, Notification_1.show)();
+                            window.location.href = `${window.RP_API_URL}index.php?calendar`;
+                        }
+                    });
+                    if ((0, Core_1.stringToBool)(this.#event.dataset.deleted)) {
+                        this.#deleteButton.parentElement.hidden = false;
+                    }
+                }
+            }
         }
         #initEnableButton(dropdownMenu) {
             const enableEvent = dropdownMenu.querySelector(".jsEnable");
@@ -94,6 +123,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Ui/Dropdown/Simple", "
                                 iconIsDeleted.remove();
                             }
                             this.#event.dataset.deleted = "false";
+                            this.#deleteButton.parentElement.hidden = true;
                             this.#restoreButton.parentElement.hidden = true;
                             this.#trashButton.parentElement.hidden = false;
                             (0, Notification_1.show)();
@@ -106,7 +136,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Ui/Dropdown/Simple", "
             }
         }
         #initTrashButton(dropdownMenu) {
-            if ((0, Core_1.stringToBool)(this.#event.dataset.canDelete)) {
+            if ((0, Core_1.stringToBool)(this.#event.dataset.canTrash)) {
                 this.#trashButton = dropdownMenu.querySelector(".jsTrash");
                 if (this.#trashButton) {
                     this.#trashButton.addEventListener("click", async () => {
@@ -130,6 +160,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Ui/Dropdown/Simple", "
                                 iconIsDeleted.innerHTML = (0, Language_1.getPhrase)("wcf.message.status.deleted");
                                 this.#eventIcons.appendChild(iconIsDeleted);
                             }
+                            this.#deleteButton.parentElement.hidden = false;
                             this.#restoreButton.parentElement.hidden = false;
                             this.#trashButton.parentElement.hidden = true;
                             (0, Notification_1.show)();

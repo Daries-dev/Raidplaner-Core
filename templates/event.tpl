@@ -144,9 +144,10 @@
     </div>
 {/if}
 
-<div id="event{@$event->eventID}" class="event" data-can-delete="{if $event->canTrash()}true{else}false{/if}"
+<div id="event{@$event->eventID}" class="event" data-can-delete="{if $event->canDelete()}true{else}false{/if}"
     data-can-edit="{if $event->canEdit() || $event->canEditOwnEvent()}true{else}false{/if}"
     data-can-restore="{if $event->canRestore() || $event->canEditOwnEvent()}true{else}false{/if}"
+    data-can-trash="{if $event->canTrash()}true{else}false{/if}"
     data-deleted="{if $event->isDeleted}true{else}false{/if}"
     data-enabled="{if !$event->isDisabled}true{else}false{/if}" data-event-id="{@$event->eventID}"
     data-title="{$event->getTitle()}">

@@ -73,7 +73,20 @@ final class Event extends DatabaseObject implements ITitledLinkObject, IRouteCon
 
         $this->endTimeObj = new \DateTime('@' . $this->endTime);
         $this->endTimeObj->setTimezone(WCF::getUser()->getTimeZone());
-    }
+    }   
+    
+    /**
+    * Returns true if the current user can delete these event.
+    */
+   public function canDelete(): bool
+   {
+       // check mod permissions
+       if (WCF::getSession()->getPermission('mod.rp.canDeleteEventCompletely')) {
+           return true;
+       }
+
+       return false;
+   }
 
     /**
      * Returns true if the current user can edit these event.

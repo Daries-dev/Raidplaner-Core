@@ -97,6 +97,27 @@ class EventAction extends AbstractDatabaseObjectAction
     }
 
     /**
+     * @inheritDoc
+     */
+    public function delete(): void
+    {
+        $eventIDs = [];
+        foreach ($this->getObjects() as $event) {
+            $eventIDs[] = $event->eventID;
+        }
+
+        parent::delete();
+
+        if (!empty($eventIDs)) {
+            // delete embedded object references
+            MessageEmbeddedObjectManager::getInstance()->removeObjects('dev.daries.rp.event.notes', $eventIDs);
+        }
+
+        // reset storage
+        UserStorageHandler::getInstance()->resetAll('rpUnreadEvents');
+    }
+
+    /**
      * Disables events.
      */
     public function disable(): void
