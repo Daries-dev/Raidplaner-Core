@@ -124,6 +124,27 @@ final class Event extends DatabaseObject implements ITitledLinkObject, IRouteCon
     }
 
     /**
+     * Returns true if the current user can trash this event.
+     */
+    public function canTrash(): bool
+    {
+        if (WCF::getSession()->getPermission('mod.rp.canDeleteEvent')) {
+            return true;
+        }
+
+        // check user permissions
+        if (
+            $this->userID &&
+            $this->userID == WCF::getUser()->userID &&
+            WCF::getSession()->getPermission('user.rp.canDeleteOwnEvent')
+        ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Returns the event controller.
      */
     public function getController(): IEventController

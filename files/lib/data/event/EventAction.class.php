@@ -136,6 +136,26 @@ class EventAction extends AbstractDatabaseObjectAction
         }
     }
 
+        /**
+     * Trashes events.
+     */
+    public function trash(): void
+    {
+        foreach ($this->getObjects() as $event) {
+            if ($event->isDeleted) {
+                continue;
+            }
+
+            $event->update([
+                'deleteTime' => TIME_NOW,
+                'isDeleted' => 1,
+            ]);
+        }
+
+        // reset storage
+        UserStorageHandler::getInstance()->resetAll('rpUnreadEvents');
+    }
+
     /**
      * Triggers the publication of events.
      */
@@ -242,5 +262,26 @@ class EventAction extends AbstractDatabaseObjectAction
     public function validateMarkAllAsRead(): void
     {
         // does nothing
+    }
+
+    /**
+     * Validates parameters to trash events.
+     */
+    public function validateTrash(): void
+    {
+        // read objects
+        if (empty($this->objects)) {
+            $this->readObjects();
+
+            if (empty($this->objects)) {
+                throw new UserInputException('objectIDs');
+            }
+        }
+
+        foreach ($this->getObjects() as $event) {
+            if (!$event->canTrash()) {
+                throw new PermissionDeniedException();
+            }
+        }
     }
 }

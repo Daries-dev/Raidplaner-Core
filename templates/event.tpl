@@ -20,7 +20,7 @@
                 {/if}
 
                 {if $event->isDeleted}
-                    <span class="badge label red">{lang}wcf.message.status.deleted{/lang}</span>
+                    <span class="badge label red jsIsDeleted">{lang}wcf.message.status.deleted{/lang}</span>
                 {/if}
             </h1>
             <ul class="inlineList commaSeparated contentHeaderMetaData">
@@ -144,9 +144,11 @@
     </div>
 {/if}
 
-<div id="event{@$event->eventID}" class="event"
+<div id="event{@$event->eventID}" class="event" data-can-delete="{if $event->canTrash()}true{else}false{/if}"
     data-can-edit="{if $event->canEdit() || $event->canEditOwnEvent()}true{else}false{/if}"
-    data-enabled="{if !$event->isDisabled}true{else}false{/if}" data-event-id="{@$event->eventID}">
+    data-deleted="{if $event->isDeleted}true{else}false{/if}"
+    data-enabled="{if !$event->isDisabled}true{else}false{/if}" data-event-id="{@$event->eventID}"
+    data-title="{$event->getTitle()}">
     {@$event->getController()->getContent()}
 </div>
 
@@ -167,6 +169,7 @@
 {if $event->canEdit() || $event->canEditOwnEvent()}
     <script data-relocate="true">
         require(['Daries/RP/Ui/Event/Editor'], function({ UiEventEditor }) {
+            {jsphrase name='wcf.message.status.deleted'}
             {jsphrase name='wcf.message.status.disabled'}
 
             new UiEventEditor();
