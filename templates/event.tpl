@@ -75,7 +75,45 @@
     {/hascontent}
 {/if}
 
+{capture assign='contentInteractionButtons'}
+    {if $event->canEdit() || $event->canEditOwnEvent()}
+        <div id="eventDropdown" class="contentInteractionButton dropdown jsOnly eventDropdown">
+            <button type="button" class="button small dropdownToggle">
+                {icon name='sliders'}
+                <span>{lang}rp.event.settings{/lang}</span>
+            </button>
+            <ul class="dropdownMenu">
+                <li hidden>
+                    <a href="#" class="jsDelete">{lang}rp.event.delete{/lang}</a>
+                </li>
+                <li hidden>
+                    <a href="#" class="jsRestore">{lang}rp.event.restore{/lang}</a>
+                </li>
+                <li hidden>
+                    <a href="#" class="jsTrash">{lang}rp.event.trash{/lang}</a>
+                </li>
+                <li>
+                    <a href="#" class="jsEnable" data-disable-message="{lang}rp.event.disable{/lang}"
+                        data-enable-message="{lang}rp.event.enable{/lang}">
+                        {lang}rp.event.{if $event->isDisabled}enable{else}disable{/if}{/lang}
+                    </a>
+                </li>
+                <li class="dropdownDivider"></li>
+                <li>
+                    <a href="{link controller='EventEdit' application='rp' id=$event->eventID}{/link}" class="jsEditLink">
+                        {lang}rp.event.edit{/lang}
+                    </a>
+                </li>
+            </ul>
+        </div>
+    {/if}
+{/capture}
+
+{event name='beforeHeader'}
+
 {include file='header'}
+
+{event name='afterHeader'}
 
 {if $event->getController()->showEventNodes('center')}
     {hascontent}
@@ -106,7 +144,11 @@
     </div>
 {/if}
 
-{@$event->getController()->getContent()}
+<div id="event{@$event->eventID}" class="event"
+    data-can-edit="{if $event->canEdit() || $event->canEditOwnEvent()}true{else}false{/if}"
+    data-enabled="{if !$event->isDisabled}true{else}false{/if}" data-event-id="{@$event->eventID}">
+    {@$event->getController()->getContent()}
+</div>
 
 <footer class="contentFooter">
     {hascontent}
@@ -121,3 +163,11 @@
 </footer>
 
 {include file='footer'}
+
+{if $event->canEdit() || $event->canEditOwnEvent()}
+    <script data-relocate="true">
+        require(['Daries/RP/Ui/Event/Editor'], function({ UiEventEditor }) {
+            new UiEventEditor();
+        });
+    </script>
+{/if}

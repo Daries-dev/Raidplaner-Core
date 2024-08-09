@@ -88,7 +88,10 @@
             <item name="rp.event.accepted"><![CDATA[Zugesagt]]></item>
             <item name="rp.event.add"><![CDATA[Termin hinzufügen]]></item>
             <item name="rp.event.canceled"><![CDATA[Abgesagt]]></item>
+            <item name="rp.event.delete"><![CDATA[Endgültig löschen]]></item>
+            <item name="rp.event.disable"><![CDATA[Deaktivieren]]></item>
             <item name="rp.event.edit"><![CDATA[Termin bearbeiten]]></item>
+            <item name="rp.event.enable"><![CDATA[Freischalten]]></item>
             <item name="rp.event.enableComments"><![CDATA[Kommentare aktivieren]]></item>
             <item name="rp.event.endTime"><![CDATA[Endzeit]]></item>
             <item name="rp.event.endTime.error.invalid"><![CDATA[{if LANGUAGE_USE_INFORMAL_VARIANT}Du hast{else}Sie haben{/if} ein ungültiges Datum für das Ende des Termins angegeben. Das Ende des Termins darf nicht vor dem Start liegen.]]></item>
@@ -100,8 +103,13 @@
             <item name="rp.event.moderation.redirect"><![CDATA[{if LANGUAGE_USE_INFORMAL_VARIANT}Dein{else}Ihr{/if} Termin wurde gespeichert. Er wird zunächst von einem Moderator geprüft und danach, sofern keine Beanstandung vorliegt, freigeschaltet.]]></item>
             <item name="rp.event.notes"><![CDATA[Notiz]]></item>
             <item name="rp.event.participation"><![CDATA[Teilnahme]]></item>
+            <item name="rp.event.restore"><![CDATA[Wiederherstellen]]></item>
+            <item name="rp.event.settings"><![CDATA[Einstellungen]]></item>
             <item name="rp.event.startTime"><![CDATA[Startzeit]]></item>
             <item name="rp.event.startTime.error.invalid"><![CDATA[{if LANGUAGE_USE_INFORMAL_VARIANT}Du hast{else}Sie haben{/if} ein ungültiges Datum für den Start des Termins angegeben.]]></item>
+            <item name="rp.event.trash"><![CDATA[Löschen]]></item>
+            <item name="rp.event.trash.confirmMessage"><![CDATA[{if LANGUAGE_USE_INFORMAL_VARIANT}Willst du{else}Wollen Sie{/if} diesen Termin wirklich löschen?]]></item>
+            <item name="rp.event.trash.reason"><![CDATA[Grund (optional)]]></item>
             <item name="rp.event.type"><![CDATA[Termin Type]]></item>
             <item name="rp.event.views"><![CDATA[{#$event->views}x angeschaut]]></item>
         </category>
