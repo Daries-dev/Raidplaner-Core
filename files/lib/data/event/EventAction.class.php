@@ -37,7 +37,7 @@ class EventAction extends AbstractDatabaseObjectAction
         $appointments = $additionalData['appointments'] ?? ['accepted' => [], 'canceled' => [], 'maybe' => []];
 
         $appointments = \array_map(
-            fn ($users) => \array_filter($users, fn ($userID) => $userID !== WCF::getUser()->userID),
+            fn($users) => \array_filter($users, fn($userID) => $userID !== WCF::getUser()->userID),
             $appointments
         );
 
@@ -94,6 +94,46 @@ class EventAction extends AbstractDatabaseObjectAction
         }
 
         return new Event($event->eventID);
+    }
+
+    /**
+     * Disables events.
+     */
+    public function disable(): void
+    {
+        if (empty($this->objects)) {
+            $this->readObjects();
+        }
+
+        foreach ($this->getObjects() as $event) {
+            $event->update([
+                'isDisabled' => 1
+            ]);
+        }
+
+        // reset storage
+        UserStorageHandler::getInstance()->resetAll('rpUnreadEvents');
+    }
+
+    /**
+     * Enables events.
+     */
+    public function enable(): void
+    {
+        $eventIDs = [];
+        foreach ($this->getObjects() as $event) {
+            $eventIDs[] = $event->eventID;
+
+            $event->update([
+                'isDisabled' => 0
+            ]);
+        }
+
+        // trigger publication
+        if (!empty($eventIDs)) {
+            $action = new EventAction($eventIDs, 'triggerPublication');
+            $action->executeAction();
+        }
     }
 
     /**
@@ -173,6 +213,26 @@ class EventAction extends AbstractDatabaseObjectAction
 
         if (!$this->event->canRead()) {
             throw new PermissionDeniedException();
+        }
+    }
+
+    /**
+     * Validates the disable action.
+     */
+    public function validateDisable()
+    {
+        $this->validateEnable();
+    }
+
+    /**
+     * Validates the enable action.
+     */
+    public function validateEnable(): void
+    {
+        WCF::getSession()->checkPermissions(['mod.rp.canEditEvent']);
+
+        if (empty($this->objects)) {
+            $this->readObjects();
         }
     }
 

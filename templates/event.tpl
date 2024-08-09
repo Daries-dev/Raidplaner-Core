@@ -16,7 +16,7 @@
                 {/if}
 
                 {if $event->isDisabled}
-                    <span class="badge label green">{lang}wcf.message.status.disabled{/lang}</span>
+                    <span class="badge label green jsIsDisabled">{lang}wcf.message.status.disabled{/lang}</span>
                 {/if}
 
                 {if $event->isDeleted}
@@ -167,6 +167,8 @@
 {if $event->canEdit() || $event->canEditOwnEvent()}
     <script data-relocate="true">
         require(['Daries/RP/Ui/Event/Editor'], function({ UiEventEditor }) {
+            {jsphrase name='wcf.message.status.disabled'}
+
             new UiEventEditor();
         });
     </script>
