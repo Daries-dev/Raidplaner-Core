@@ -91,14 +91,6 @@ final class Event extends DatabaseObject implements ITitledLinkObject, IRouteCon
             }
         }
 
-        if (
-            $this->userID &&
-            $this->userID == WCF::getUser()->userID &&
-            WCF::getSession()->getPermission('user.rp.canEditOwnEvent')
-        ) {
-            return true;
-        }
-
         return false;
     }
 
