@@ -102,12 +102,18 @@ class RoleEditor extends DatabaseObjectEditor implements IEditableCachedObject
                                         languageCategoryID = VALUES(languageCategoryID)";
         $statement = WCF::getDB()->prepare($sql);
 
+        $title = \sprintf(
+            'rp.role.%s.%s',
+            $this->getGame()->identifier,
+            $this->identifier
+        );
+
         foreach ($languages as $language) {
             $value = $titles[$language->languageCode] ?? $defaultValue;
 
             $statement->execute([
                 $language->languageID,
-                'rp.role.' . $this->identifier,
+                $title,
                 $value,
                 $languageCategory->languageCategoryID,
                 $this->packageID,
@@ -115,7 +121,7 @@ class RoleEditor extends DatabaseObjectEditor implements IEditableCachedObject
         }
 
         // update role
-        $this->update(['title' => 'rp.role.' . $this->identifier]);
+        $this->update(['title' => $title]);
     }
 
     /**

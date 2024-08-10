@@ -102,12 +102,18 @@ class RaceEditor extends DatabaseObjectEditor implements IEditableCachedObject
                                         languageCategoryID = VALUES(languageCategoryID)";
         $statement = WCF::getDB()->prepare($sql);
 
+        $title = \sprintf(
+            'rp.race.%s.%s',
+            $this->getGame()->identifier,
+            $this->identifier
+        );
+
         foreach ($languages as $language) {
             $value = $titles[$language->languageCode] ?? $defaultValue;
 
             $statement->execute([
                 $language->languageID,
-                'rp.race.' . $this->identifier,
+                $title,
                 $value,
                 $languageCategory->languageCategoryID,
                 $this->packageID,
@@ -115,7 +121,7 @@ class RaceEditor extends DatabaseObjectEditor implements IEditableCachedObject
         }
 
         // update race
-        $this->update(['title' => 'rp.race.' . $this->identifier]);
+        $this->update(['title' => $title]);
     }
 
     /**

@@ -102,12 +102,18 @@ class ClassificationEditor extends DatabaseObjectEditor implements IEditableCach
                                         languageCategoryID = VALUES(languageCategoryID)";
         $statement = WCF::getDB()->prepare($sql);
 
+        $title = \sprintf(
+            'rp.classification.%s.%s',
+            $this->getGame()->identifier,
+            $this->identifier
+        );
+
         foreach ($languages as $language) {
             $value = $titles[$language->languageCode] ?? $defaultValue;
 
             $statement->execute([
                 $language->languageID,
-                'rp.classification.' . $this->identifier,
+                $title,
                 $value,
                 $languageCategory->languageCategoryID,
                 $this->packageID,
@@ -115,7 +121,7 @@ class ClassificationEditor extends DatabaseObjectEditor implements IEditableCach
         }
 
         // update classification
-        $this->update(['title' => 'rp.classification.' . $this->identifier]);
+        $this->update(['title' => $title]);
     }
 
     /**

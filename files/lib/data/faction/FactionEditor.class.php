@@ -101,13 +101,19 @@ class FactionEditor extends DatabaseObjectEditor implements IEditableCachedObjec
                 ON DUPLICATE KEY UPDATE languageItemValue = VALUES(languageItemValue),
                                         languageCategoryID = VALUES(languageCategoryID)";
         $statement = WCF::getDB()->prepare($sql);
+        
+        $title = \sprintf(
+            'rp.faction.%s.%s',
+            $this->getGame()->identifier,
+            $this->identifier
+        );
 
         foreach ($languages as $language) {
             $value = $titles[$language->languageCode] ?? $defaultValue;
 
             $statement->execute([
                 $language->languageID,
-                'rp.faction.' . $this->identifier,
+                $title,
                 $value,
                 $languageCategory->languageCategoryID,
                 $this->packageID,
@@ -115,7 +121,7 @@ class FactionEditor extends DatabaseObjectEditor implements IEditableCachedObjec
         }
 
         // update faction
-        $this->update(['title' => 'rp.faction.' . $this->identifier]);
+        $this->update(['title' => $title]);
     }
 
     /**

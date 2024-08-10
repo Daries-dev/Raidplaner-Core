@@ -102,12 +102,18 @@ class ServerEditor extends DatabaseObjectEditor implements IEditableCachedObject
                                         languageCategoryID = VALUES(languageCategoryID)";
         $statement = WCF::getDB()->prepare($sql);
 
+        $title = \sprintf(
+            'rp.server.%s.%s',
+            $this->getGame()->identifier,
+            $this->identifier
+        );
+
         foreach ($languages as $language) {
             $value = $titles[$language->languageCode] ?? $defaultValue;
 
             $statement->execute([
                 $language->languageID,
-                'rp.server.' . $this->identifier,
+                $title,
                 $value,
                 $languageCategory->languageCategoryID,
                 $this->packageID,
@@ -115,7 +121,7 @@ class ServerEditor extends DatabaseObjectEditor implements IEditableCachedObject
         }
 
         // update server
-        $this->update(['title' => 'rp.server.' . $this->identifier]);
+        $this->update(['title' => $title]);
     }
 
     /**
