@@ -5,6 +5,7 @@ namespace rp\system\event\command;
 use rp\data\event\Event;
 use rp\data\event\EventAction;
 use rp\event\event\EventRestored;
+use rp\system\log\modification\EventModificationLogHandler;
 use wcf\system\event\EventHandler;
 
 /**
@@ -30,9 +31,12 @@ final class RestoreEvent
                     'deleteTime' => 0,
                     'isDeleted' => 0,
                 ],
+                'noLog' => true,
             ]
         );
         $action->executeAction();
+
+        EventModificationLogHandler::getInstance()->restore($this->event);
 
         $event = new EventRestored(new Event($this->event->eventID));
         EventHandler::getInstance()->fire($event);

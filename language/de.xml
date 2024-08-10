@@ -120,6 +120,15 @@
             <item name="rp.event.controller.dev.daries.rp.event.controller.raid"><![CDATA[Raid]]></item>
         </category>
 
+        <category name="rp.event.log">
+            <item name="rp.event.log.delete"><![CDATA[Hat einen Termin gelöscht.]]></item>
+            <item name="rp.event.log.disable"><![CDATA[Hat den <a href="{$event->getLink()}" class="rpEventLink" data-object-id="{@$event->eventID}">Termin{if $event->getTitle()} „{$event->getTitle()}“{/if}</a> von <a href="{link controller='User' id=$event->userID title=$event->username}{/link}" class="userLink" data-object-id="{@$event->userID}">{$event->username}</a> deaktiviert.]]></item>
+            <item name="rp.event.log.edit"><![CDATA[Hat den <a href="{$event->getLink()}" class="rpEventLink" data-object-id="{@$event->eventID}">Termin{if $event->getTitle()} „{$event->getTitle()}“{/if}</a> von <a href="{link controller='User' id=$event->userID title=$event->username}{/link}" class="userLink" data-object-id="{@$event->userID}">{$event->username}</a> bearbeitet.]]></item>
+            <item name="rp.event.log.enable"><![CDATA[Hat den <a href="{$event->getLink()}" class="rpEventLink" data-object-id="{@$event->eventID}">Termin{if $event->getTitle()} „{$event->getTitle()}“{/if}</a> von <a href="{link controller='User' id=$event->userID title=$event->username}{/link}" class="userLink" data-object-id="{@$event->userID}">{$event->username}</a> freigeschaltet.]]></item>
+            <item name="rp.event.log.restore"><![CDATA[Hat den <a href="{$event->getLink()}" class="rpEventLink" data-object-id="{@$event->eventID}">Termin{if $event->getTitle()} „{$event->getTitle()}“{/if}</a> von <a href="{link controller='User' id=$event->userID title=$event->username}{/link}" class="userLink" data-object-id="{@$event->userID}">{$event->username}</a> wiederhergestellt.]]></item>
+            <item name="rp.event.log.trash"><![CDATA[Hat den <a href="{$event->getLink()}" class="rpEventLink" data-object-id="{@$event->eventID}">Termin{if $event->getTitle()} „{$event->getTitle()}“{/if}</a> von <a href="{link controller='User' id=$event->userID title=$event->username}{/link}" class="userLink" data-object-id="{@$event->userID}">{$event->username}</a> in den Papierkorb verschoben.]]></item>
+        </category>
+
         <category name="rp.event.raid">
             <item name="rp.event.raid.attendee.add"><![CDATA[Anmeldung]]></item>
             <item name="rp.event.raid.attendee.addByLeader"><![CDATA[Angemeldet von einem Raidleiter]]></item>
@@ -224,6 +233,16 @@
             <item name="wcf.acp.group.option.user.rp.canViewCharactersList"><![CDATA[Kann Charakter-Liste sehen]]></item>
             <item name="wcf.acp.group.option.user.rp.characterAvatarAllowedFileExtensions"><![CDATA[Erlaubte Dateiendungen]]></item>
             <item name="wcf.acp.group.option.user.rp.characterAvatarMaxSize"><![CDATA[Maximale Dateigröße]]></item>
+        </category>
+
+        <category name="wcf.acp.modificationLog">
+            <item name="wcf.acp.modificationLog.dev.daries.rp.event.close"><![CDATA[Termin (Raid) geschlossen]]></item>
+            <item name="wcf.acp.modificationLog.dev.daries.rp.event.delete"><![CDATA[Termin gelöscht]]></item>
+            <item name="wcf.acp.modificationLog.dev.daries.rp.event.disable"><![CDATA[Termin deaktiviert]]></item>
+            <item name="wcf.acp.modificationLog.dev.daries.rp.event.edit"><![CDATA[Termin bearbeitet]]></item>
+            <item name="wcf.acp.modificationLog.dev.daries.rp.event.enable"><![CDATA[Termin freigeschaltet]]></item>
+            <item name="wcf.acp.modificationLog.dev.daries.rp.event.restore"><![CDATA[Termin wiederhergestellt]]></item>
+            <item name="wcf.acp.modificationLog.dev.daries.rp.event.trash"><![CDATA[Termin in den Papierkorb verschoben]]></item>
         </category>
 
         <category name="wcf.acp.option">

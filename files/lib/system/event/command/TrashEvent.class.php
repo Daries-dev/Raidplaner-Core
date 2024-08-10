@@ -5,6 +5,7 @@ namespace rp\system\event\command;
 use rp\data\event\Event;
 use rp\data\event\EventAction;
 use rp\event\event\EventTrashed;
+use rp\system\log\modification\EventModificationLogHandler;
 use wcf\system\event\EventHandler;
 
 /**
@@ -30,9 +31,12 @@ final class TrashEvent
                     'deleteTime' => TIME_NOW,
                     'isDeleted' => 1,
                 ],
+                'noLog' => true,
             ]
         );
         $action->executeAction();
+
+        EventModificationLogHandler::getInstance()->trash($this->event);
 
         $event = new EventTrashed(new Event($this->event->eventID));
         EventHandler::getInstance()->fire($event);

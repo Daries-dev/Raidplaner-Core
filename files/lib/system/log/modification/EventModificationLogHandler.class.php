@@ -4,6 +4,7 @@ namespace rp\system\log\modification;
 
 use rp\data\event\Event;
 use rp\data\event\EventList;
+use rp\data\modification\log\ViewableEventModificationLog;
 use wcf\data\modification\log\ModificationLog;
 use wcf\system\log\modification\AbstractExtendedModificationLogHandler;
 
@@ -59,9 +60,9 @@ final class EventModificationLogHandler extends AbstractExtendedModificationLogH
     /**
      * Adds a log entry for event edit.
      */
-    public function edit(Event $event, string $reason = ''): void
+    public function edit(Event $event): void
     {
-        $this->add($event, 'edit', ['reason' => $reason]);
+        $this->add($event, 'edit');
     }
 
     /**
@@ -101,7 +102,7 @@ final class EventModificationLogHandler extends AbstractExtendedModificationLogH
      */
     public function processItems(array $items): array
     {
-        $eventIDs = \array_map(fn ($item) => $item->objectID, $items);
+        $eventIDs = \array_map(fn($item) => $item->objectID, $items);
 
         $eventList = new EventList();
         $eventList->setObjectIDs($eventIDs);
@@ -129,8 +130,8 @@ final class EventModificationLogHandler extends AbstractExtendedModificationLogH
     /**
      * Adds a log entry for event soft-delete (trash).
      */
-    public function trash(Event $event, string $reason = ''): void
+    public function trash(Event $event): void
     {
-        $this->fireNotification($event, $this->add($event, 'trash', ['reason' => $reason]));
+        $this->fireNotification($event, $this->add($event, 'trash'));
     }
 }

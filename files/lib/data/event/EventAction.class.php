@@ -3,6 +3,7 @@
 namespace rp\data\event;
 
 use rp\system\cache\runtime\EventRuntimeCache;
+use rp\system\log\modification\EventModificationLogHandler;
 use wcf\data\AbstractDatabaseObjectAction;
 use wcf\data\object\type\ObjectTypeCache;
 use wcf\data\user\UserProfile;
@@ -73,6 +74,8 @@ class EventAction extends AbstractDatabaseObjectAction
             $event->update([
                 'isCanceled' => 1,
             ]);
+
+            EventModificationLogHandler::getInstance()->cancel($event->getDecoratedObject());
         }
 
         // reset storage
@@ -123,6 +126,8 @@ class EventAction extends AbstractDatabaseObjectAction
         $eventIDs = [];
         foreach ($this->getObjects() as $event) {
             $eventIDs[] = $event->eventID;
+
+            EventModificationLogHandler::getInstance()->delete($event->getDecoratedObject());
         }
 
         parent::delete();
@@ -130,6 +135,9 @@ class EventAction extends AbstractDatabaseObjectAction
         if (!empty($eventIDs)) {
             // delete embedded object references
             MessageEmbeddedObjectManager::getInstance()->removeObjects('dev.daries.rp.event.notes', $eventIDs);
+
+            // delete modification log entries except for deleting the events
+            EventModificationLogHandler::getInstance()->deleteLogs($eventIDs, ['delete']);
         }
 
         // reset storage
@@ -149,6 +157,8 @@ class EventAction extends AbstractDatabaseObjectAction
             $event->update([
                 'isDisabled' => 1
             ]);
+
+            EventModificationLogHandler::getInstance()->disable($event->getDecoratedObject());
         }
 
         // reset storage
@@ -167,6 +177,8 @@ class EventAction extends AbstractDatabaseObjectAction
             $event->update([
                 'isDisabled' => 0
             ]);
+
+            EventModificationLogHandler::getInstance()->enable($event->getDecoratedObject());
         }
 
         // trigger publication
@@ -190,6 +202,8 @@ class EventAction extends AbstractDatabaseObjectAction
                 'deleteTime' => 0,
                 'isDeleted' => 0,
             ]);
+
+            EventModificationLogHandler::getInstance()->restore($event->getDecoratedObject());
         }
 
         // reset storage
@@ -210,6 +224,8 @@ class EventAction extends AbstractDatabaseObjectAction
                 'deleteTime' => TIME_NOW,
                 'isDeleted' => 1,
             ]);
+
+            EventModificationLogHandler::getInstance()->trash($event->getDecoratedObject());
         }
 
         // reset storage
@@ -273,6 +289,10 @@ class EventAction extends AbstractDatabaseObjectAction
                 if ($event->hasEmbeddedObjects != MessageEmbeddedObjectManager::getInstance()->registerObjects($this->parameters['notes_htmlInputProcessor'])) {
                     $event->update(['hasEmbeddedObjects' => $event->hasEmbeddedObjects ? 0 : 1]);
                 }
+            }
+
+            if (!$this->parameters['noLog']) {
+                EventModificationLogHandler::getInstance()->edit($event->getDecoratedObject());
             }
         }
     }
@@ -385,5 +405,12 @@ class EventAction extends AbstractDatabaseObjectAction
                 throw new PermissionDeniedException();
             }
         }
+    }
+
+    public function validateUpdate(): void
+    {
+        parent::validateUpdate();
+
+        $this->readBoolean('noLog', true);
     }
 }

@@ -120,6 +120,15 @@
             <item name="rp.event.controller.dev.daries.rp.event.controller.raid"><![CDATA[Raid]]></item>
         </category>
 
+        <category name="rp.event.log">
+            <item name="rp.event.log.delete"><![CDATA[Deleted a event.]]></item>
+            <item name="rp.event.log.disable"><![CDATA[Disabled the <a href="$event->getLink()}" class="rpEventLink" data-object-id="{@$event->eventID}">Event{if $event->getTitle()} “{$event->getTitle()}”{/if}</a> by <a href="{link controller='User' id=$event->userID title=$event->username}{/link}" class="userLink" data-object-id="{@$event->userID}">{$event->username}</a>.]]></item>
+            <item name="rp.event.log.edit"><![CDATA[Edited the <a href="$event->getLink()}" class="rpEventLink" data-object-id="{@$event->eventID}">Event{if $event->getTitle()} “{$event->getTitle()}”{/if}</a> by <a href="{link controller='User' id=$event->userID title=$event->username}{/link}" class="userLink" data-object-id="{@$event->userID}">{$event->username}</a>.]]></item>
+            <item name="rp.event.log.enable"><![CDATA[Approved the <a href="$event->getLink()}" class="rpEventLink" data-object-id="{@$event->eventID}">Event{if $event->getTitle()} “{$event->getTitle()}”{/if}</a> by <a href="{link controller='User' id=$event->userID title=$event->username}{/link}" class="userLink" data-object-id="{@$event->userID}">{$event->username}</a>.]]></item>
+            <item name="rp.event.log.restore"><![CDATA[Restored the <a href="$event->getLink()}" class="rpEventLink" data-object-id="{@$event->eventID}">Event{if $event->getTitle()} “{$event->getTitle()}”{/if}</a> by <a href="{link controller='User' id=$event->userID title=$event->username}{/link}" class="userLink" data-object-id="{@$event->userID}">{$event->username}</a>.]]></item>
+            <item name="rp.event.log.trash"><![CDATA[Moved the <a href="$event->getLink()}" class="rpEventLink" data-object-id="{@$event->eventID}">Event{if $event->getTitle()} “{$event->getTitle()}”{/if}</a> by <a href="{link controller='User' id=$event->userID title=$event->username}{/link}" class="userLink" data-object-id="{@$event->userID}">{$event->username}</a> to the trash.]]></item>
+        </category>
+
         <category name="rp.event.raid">
             <item name="rp.event.raid.attendee.add"><![CDATA[Registration]]></item>
             <item name="rp.event.raid.attendee.addByLeader"><![CDATA[Registered by a raid leader]]></item>
@@ -224,6 +233,16 @@
             <item name="wcf.acp.group.option.user.rp.canViewCharactersList"><![CDATA[Can view characters list]]></item>
             <item name="wcf.acp.group.option.user.rp.characterAvatarAllowedFileExtensions"><![CDATA[Allowed file extensions]]></item>
             <item name="wcf.acp.group.option.user.rp.characterAvatarMaxSize"><![CDATA[Maximum file size]]></item>
+        </category>
+
+        <category name="wcf.acp.modificationLog">
+            <item name="wcf.acp.modificationLog.dev.daries.rp.event.close"><![CDATA[Event (Raid) closed]]></item>
+            <item name="wcf.acp.modificationLog.dev.daries.rp.event.delete"><![CDATA[Event deleted]]></item>
+            <item name="wcf.acp.modificationLog.dev.daries.rp.event.disable"><![CDATA[Event disabled]]></item>
+            <item name="wcf.acp.modificationLog.dev.daries.rp.event.edit"><![CDATA[Event edited]]></item>
+            <item name="wcf.acp.modificationLog.dev.daries.rp.event.enable"><![CDATA[Event approved]]></item>
+            <item name="wcf.acp.modificationLog.dev.daries.rp.event.restore"><![CDATA[Event restored]]></item>
+            <item name="wcf.acp.modificationLog.dev.daries.rp.event.trash"><![CDATA[Event moved to the trash bin]]></item>
         </category>
 
         <category name="wcf.acp.option">
