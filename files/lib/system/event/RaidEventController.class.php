@@ -15,6 +15,7 @@ use rp\data\role\RoleCache;
 use rp\event\character\AvailableCharactersChecking;
 use rp\system\cache\runtime\CharacterProfileRuntimeCache;
 use rp\system\character\CharacterHandler;
+use rp\system\form\builder\field\character\CharacterMultipleSelectionFormField;
 use wcf\system\clipboard\ClipboardHandler;
 use wcf\system\event\EventHandler;
 use wcf\system\form\builder\container\FormContainer;
@@ -23,7 +24,6 @@ use wcf\system\form\builder\container\TabMenuFormContainer;
 use wcf\system\form\builder\field\dependency\ValueFormFieldDependency;
 use wcf\system\form\builder\field\FloatFormField;
 use wcf\system\form\builder\field\IntegerFormField;
-use wcf\system\form\builder\field\MultipleSelectionFormField;
 use wcf\system\form\builder\field\SingleSelectionFormField;
 use wcf\system\form\builder\field\wysiwyg\WysiwygFormField;
 use wcf\system\form\builder\IFormDocument;
@@ -106,6 +106,22 @@ final class RaidEventController extends AbstractEventController
             ->label('wcf.global.form.data');
         $tabMenu->appendChild($dataTab);
 
+        $characters = [];
+        $characterList = new CharacterList();
+        $characterList->getConditionBuilder()->add('gameID = ?', [RP_CURRENT_GAME_ID]);
+        $characterList->getConditionBuilder()->add('isDisabled = ?', [0]);
+        $characterList->sqlOrderBy = 'characterName ASC';
+        $characterList->readObjects();
+
+        foreach ($characterList as $character) {
+            $characters[] = [
+                'depth' => 0,
+                'label' => $character->getTitle(),
+                'userID' => $character->userID,
+                'value' => $character->getObjectID(),
+            ];
+        }
+
         $dataContainer = FormContainer::create('data')
             ->label('wcf.global.form.data')
             ->appendChildren([
@@ -117,13 +133,16 @@ final class RaidEventController extends AbstractEventController
                         $pointAccounts = PointAccountCache::getInstance()->getAccounts();
                         $raidEvents = RaidEventCache::getInstance()->getEvents();
 
+                        // Map raid events by pointAccountID for quick lookup
                         $raidEventsByPointAccount = [];
                         foreach ($raidEvents as $raidEvent) {
-                            $pointAccountID = $raidEvent->pointAccountID ?? 'none';
-                            $raidEventsByPointAccount[$pointAccountID][] = $raidEvent;
+                            if ($raidEvent->pointAccountID !== null) {
+                                $raidEventsByPointAccount[$raidEvent->pointAccountID][] = $raidEvent;
+                            }
                         }
 
                         foreach ($pointAccounts as $pointAccount) {
+                            // Add point account option
                             $options[] = [
                                 'depth' => 0,
                                 'isSelectable' => false,
@@ -131,24 +150,24 @@ final class RaidEventController extends AbstractEventController
                                 'value' => '',
                             ];
 
-                            $pointAccountID = $pointAccount->getObjectID();
-                            if (isset($raidEventsByPointAccount[$pointAccountID])) {
-                                foreach ($raidEventsByPointAccount[$pointAccountID] as $raidEvent) {
+                            // Add related raid events if they exist
+                            if (isset($raidEventsByPointAccount[$pointAccount->getObjectID()])) {
+                                foreach ($raidEventsByPointAccount[$pointAccount->getObjectID()] as $raidEvent) {
                                     $options[] = [
                                         'depth' => 1,
                                         'label' => $raidEvent->getTitle(),
                                         'value' => $raidEvent->getObjectID(),
                                     ];
                                 }
-
-                                // Remove processed raid events to avoid duplication
-                                unset($raidEventsByPointAccount[$pointAccountID]);
                             }
+
+                            // Remove processed raid events from the main array
+                            unset($raidEventsByPointAccount[$pointAccount->getObjectID()]);
                         }
 
-                        // Add remaining raid events that are not associated with any point account
-                        if (!empty($raidEventsByPointAccount['none'])) {
-                            foreach ($raidEventsByPointAccount['none'] as $raidEvent) {
+                        // Add remaining raid events
+                        foreach ($raidEventsByPointAccount as $events) {
+                            foreach ($events as $raidEvent) {
                                 $options[] = [
                                     'depth' => 0,
                                     'label' => $raidEvent->getTitle(),
@@ -158,23 +177,17 @@ final class RaidEventController extends AbstractEventController
                         }
 
                         return $options;
-                    }, true),
+                    }, true, false),
                 FloatFormField::create('points')
                     ->label('rp.event.raid.points')
                     ->description('rp.event.raid.points.description')
                     ->available(RP_POINTS_ENABLED)
                     ->minimum(0)
                     ->value(0),
-                MultipleSelectionFormField::create('leaders')
+                CharacterMultipleSelectionFormField::create('leaders')
                     ->label('rp.event.raid.leaders')
                     ->filterable()
-                    ->options(function () {
-                        $characterList = new CharacterList();
-                        $characterList->getConditionBuilder()->add('gameID = ?', [RP_CURRENT_GAME_ID]);
-                        $characterList->getConditionBuilder()->add('isDisabled = ?', [0]);
-                        $characterList->sqlOrderBy = 'characterName ASC';
-                        return $characterList;
-                    })
+                    ->options($characters, true)
                     ->addClass('eventAddLeader'),
             ]);
         $dataTab->appendChild($dataContainer);

@@ -62,39 +62,41 @@
 {if $event->isRaidEvent()}
     {capture append='sidebarRight'}
         {hascontent}
-            <section class="box" data-static-box-identifier="dev.daries.rp.event.raid.required">
-                <h2 class="boxTitle">{lang}rp.event.raid.required{/lang}</h2>
+        <section class="box" data-static-box-identifier="dev.daries.rp.event.raid.required">
+            <h2 class="boxTitle">{lang}rp.event.raid.required{/lang}</h2>
 
-                <div class="boxContent">
-                    <dl class="plain dataList">
-                        {content}
-                            {foreach from=$event->getController()->getRequirements() key=__key item=__value}
-                                <dt>{lang}{$__key}{/lang}</dt>
-                                <dd>{unsafe:$__value}</dd>
-                            {/foreach}
-                        {/content}
-                    </dl>
-                </div>
-            </section>
+            <div class="boxContent">
+                <dl class="plain dataList">
+                    {content}
+                    {foreach from=$event->getController()->getRequirements() key=__key item=__value}
+                        <dt>{lang}{$__key}{/lang}</dt>
+                        <dd>{unsafe:$__value}</dd>
+                    {/foreach}
+                    {/content}
+                </dl>
+            </div>
+        </section>
         {/hascontent}
-        
-        {hascontent}
-            <section class="box" data-static-box-identifier="dev.daries.rp.event.raid.conditions">
-                <h2 class="boxTitle">{lang}rp.event.raid.condition{/lang}</h2>
 
-                <div class="boxContent">
-                    <dl class="plain dataList">
-                        {content}
-                            {event name='eventRaidConditions'}
-                        {/content}
-                    </dl>
-                </div>
-            </section>
+        {hascontent}
+        <section class="box" data-static-box-identifier="dev.daries.rp.event.raid.conditions">
+            <h2 class="boxTitle">{lang}rp.event.raid.condition{/lang}</h2>
+
+            <div class="boxContent">
+                <dl class="plain dataList">
+                    {content}
+                    {event name='eventRaidConditions'}
+                    {/content}
+                </dl>
+            </div>
+        </section>
         {/hascontent}
 
         {if $event->leaders}
             <section class="box" data-static-box-identifier="dev.daries.rp.event.raid.leaders">
-                <h2 class="boxTitle">{lang}rp.event.raid.leader{if $event->getController()->getLeaders()|count > 1}s{/if}{/lang}</h2>
+                <h2 class="boxTitle">
+                    {lang}rp.event.raid.leader{if $event->getController()->getLeaders()|count > 1}s{/if}{/lang}
+                </h2>
 
                 <div class="boxContent">
                     <ul class="sidebarItemList">
