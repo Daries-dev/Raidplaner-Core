@@ -163,6 +163,7 @@
             <item name="rp.event.raid.points"><![CDATA[Points]]></item>
             <item name="rp.event.raid.points.description"><![CDATA[Points for this raid]]></item>
             <item name="rp.event.raid.required"><![CDATA[Required]]></item>
+            <item name="rp.event.raid.transform"><![CDATA[Complete raid]]></item>
             <item name="rp.event.raid.updateStatus"><![CDATA[Status update]]></item>
         </category>
 
@@ -180,6 +181,14 @@
 
         <category name="rp.race">
             <item name="rp.race.title"><![CDATA[Race]]></item>
+        </category>
+
+        <category name="rp.raid">
+            <item name="rp.raid.attendees"><![CDATA[Character]]></item>
+            <item name="rp.raid.notes"><![CDATA[Notes]]></item>
+            <item name="rp.raid.points"><![CDATA[Points]]></item>
+            <item name="rp.raid.time"><![CDATA[Time]]></item>
+            <item name="rp.raid.title"><![CDATA[Raid]]></item>
         </category>
 
         <category name="rp.raid.event">
@@ -213,8 +222,10 @@
             <item name="wcf.acp.group.option.category.user.rp.calendar"><![CDATA[Calendar]]></item>
             <item name="wcf.acp.group.option.category.user.rp.character"><![CDATA[Character]]></item>
             <item name="wcf.acp.group.option.category.user.rp.raid"><![CDATA[Raids]]></item>
+            <item name="wcf.acp.group.option.mod.rp.canAddRaid"><![CDATA[Can add raids]]></item>
             <item name="wcf.acp.group.option.mod.rp.canDeleteEvent"><![CDATA[Can move events to trash]]></item>
             <item name="wcf.acp.group.option.mod.rp.canDeleteEventCompletely"><![CDATA[Can delete events]]></item>
+            <item name="wcf.acp.group.option.mod.rp.canDeleteRaid"><![CDATA[Can delete raids]]></item>
             <item name="wcf.acp.group.option.mod.rp.canEditEvent"><![CDATA[Can edit events]]></item>
             <item name="wcf.acp.group.option.mod.rp.canModerateEvent"><![CDATA[Can moderate events]]></item>
             <item name="wcf.acp.group.option.mod.rp.canRestoreEvent"><![CDATA[Can restore events]]></item>

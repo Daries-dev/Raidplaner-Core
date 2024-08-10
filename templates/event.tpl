@@ -199,6 +199,7 @@
     data-can-delete="{if $event->canDelete()}true{else}false{/if}"
     data-can-edit="{if $event->canEdit() || $event->canEditOwnEvent()}true{else}false{/if}"
     data-can-restore="{if $event->canRestore() || $event->canEditOwnEvent()}true{else}false{/if}"
+    data-can-transform="{if !$event->raidID && $event->getController()->isLeader()}true{else}false{/if}"
     data-can-trash="{if $event->canTrash()}true{else}false{/if}"
     data-canceled="{if $event->isCanceled}true{else}false{/if}"
     data-deleted="{if $event->isDeleted}true{else}false{/if}"

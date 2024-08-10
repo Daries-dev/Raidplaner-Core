@@ -163,6 +163,7 @@
             <item name="rp.event.raid.points"><![CDATA[Punkte]]></item>
             <item name="rp.event.raid.points.description"><![CDATA[Punkte für diesen Raid]]></item>
             <item name="rp.event.raid.required"><![CDATA[Benötigt]]></item>
+            <item name="rp.event.raid.transform"><![CDATA[Raid abschließen]]></item>
             <item name="rp.event.raid.updateStatus"><![CDATA[Status aktualisieren]]></item>
         </category>
 
@@ -180,6 +181,14 @@
 
         <category name="rp.race">
             <item name="rp.race.title"><![CDATA[Rasse]]></item>
+        </category>
+
+        <category name="rp.raid">
+            <item name="rp.raid.attendees"><![CDATA[Charakter]]></item>
+            <item name="rp.raid.notes"><![CDATA[Notiz]]></item>
+            <item name="rp.raid.points"><![CDATA[Punkte]]></item>
+            <item name="rp.raid.time"><![CDATA[Zeitpunkt]]></item>
+            <item name="rp.raid.title"><![CDATA[Raid]]></item>
         </category>
 
         <category name="rp.raid.event">
@@ -213,8 +222,10 @@
             <item name="wcf.acp.group.option.category.user.rp.calendar"><![CDATA[Kalender]]></item>
             <item name="wcf.acp.group.option.category.user.rp.character"><![CDATA[Charakter]]></item>
             <item name="wcf.acp.group.option.category.user.rp.raid"><![CDATA[Raids]]></item>
+            <item name="wcf.acp.group.option.mod.rp.canAddRaid"><![CDATA[Kann Raids hinzufügen]]></item>
             <item name="wcf.acp.group.option.mod.rp.canDeleteEvent"><![CDATA[Kann Termine löschen]]></item>
             <item name="wcf.acp.group.option.mod.rp.canDeleteEventCompletely"><![CDATA[Kann Termine endgültig löschen]]></item>
+            <item name="wcf.acp.group.option.mod.rp.canDeleteRaid"><![CDATA[Kann Raids löschen]]></item>
             <item name="wcf.acp.group.option.mod.rp.canEditEvent"><![CDATA[Kann Termine bearbeiten]]></item>
             <item name="wcf.acp.group.option.mod.rp.canModerateEvent"><![CDATA[Kann Termine moderieren]]></item>
             <item name="wcf.acp.group.option.mod.rp.canRestoreEvent"><![CDATA[Kann Termine wiederherstellen]]></item>

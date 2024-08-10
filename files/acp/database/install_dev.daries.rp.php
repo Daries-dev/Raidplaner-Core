@@ -164,6 +164,8 @@ return [
                 ->defaultValue(0),
             NotNullInt10DatabaseTableColumn::create('cumulativeLikes')
                 ->defaultValue(0),
+            IntDatabaseTableColumn::create('raidID')
+                ->length(10),
             TextDatabaseTableColumn::create('additionalData'),
             NotNullInt10DatabaseTableColumn::create('deleteTime')
                 ->defaultValue(0),
@@ -463,6 +465,65 @@ return [
                 ->onDelete('CASCADE'),
         ]),
 
+    DatabaseTable::create('rp1_raid')
+        ->columns([
+            ObjectIdDatabaseTableColumn::create('raidID'),
+            NotNullInt10DatabaseTableColumn::create('raidEventID'),
+            NotNullInt10DatabaseTableColumn::create('time'),
+            NotNullVarchar255DatabaseTableColumn::create('addedBy'),
+            NotNullVarchar255DatabaseTableColumn::create('updatedBy')
+                ->defaultValue(''),
+            FloatDatabaseTableColumn::create('points')
+                ->length(11)
+                ->decimals(2)
+                ->notNull()
+                ->defaultValue(0),
+            MediumtextDatabaseTableColumn::create('notes'),
+        ])
+        ->indices([
+            DatabaseTablePrimaryIndex::create()
+                ->columns(['raidID']),
+        ]),
+
+    DatabaseTable::create('rp1_raid_attendee')
+        ->columns([
+            NotNullInt10DatabaseTableColumn::create('raidID'),
+            IntDatabaseTableColumn::create('characterID')
+                ->length(10),
+            NotNullVarchar255DatabaseTableColumn::create('characterName'),
+            IntDatabaseTableColumn::create('classificationID')
+                ->length(10),
+            IntDatabaseTableColumn::create('roleID')
+                ->length(10),
+        ])
+        ->indices([
+            DatabaseTableIndex::create('raidID_characterID')
+                ->columns(['raidID', 'characterID'])
+                ->type(DatabaseTableIndex::UNIQUE_TYPE),
+        ])
+        ->foreignKeys([
+            DatabaseTableForeignKey::create()
+                ->columns(['classificationID'])
+                ->referencedTable('rp1_classification')
+                ->referencedColumns(['classificationID'])
+                ->onDelete('SET NULL'),
+            DatabaseTableForeignKey::create()
+                ->columns(['characterID'])
+                ->referencedTable('rp1_member')
+                ->referencedColumns(['characterID'])
+                ->onDelete('SET NULL'),
+            DatabaseTableForeignKey::create()
+                ->columns(['raidID'])
+                ->referencedTable('rp1_raid')
+                ->referencedColumns(['raidID'])
+                ->onDelete('CASCADE'),
+            DatabaseTableForeignKey::create()
+                ->columns(['roleID'])
+                ->referencedTable('rp1_role')
+                ->referencedColumns(['roleID'])
+                ->onDelete('SET NULL'),
+        ]),
+
     DatabaseTable::create('rp1_raid_event')
         ->columns([
             ObjectIdDatabaseTableColumn::create('eventID'),
@@ -494,6 +555,15 @@ return [
                 ->columns(['gameID'])
                 ->referencedTable('rp1_game')
                 ->referencedColumns(['gameID'])
+                ->onDelete('CASCADE'),
+        ]),
+
+    PartialDatabaseTable::create('rp1_raid')
+        ->foreignKeys([
+            DatabaseTableForeignKey::create()
+                ->columns(['raidEventID'])
+                ->referencedTable('rp1_raid_event')
+                ->referencedColumns(['eventID'])
                 ->onDelete('CASCADE'),
         ]),
 

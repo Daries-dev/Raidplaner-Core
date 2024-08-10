@@ -279,6 +279,19 @@ final class Event extends DatabaseObject implements ITitledLinkObject, IRouteCon
     }
 
     /**
+     * Returns a plain version of the formatted notes.
+     */
+    public function getPlainFormattedNotes(): string
+    {
+        $processor = new HtmlOutputProcessor();
+        $processor->setOutputType('text/plain');
+        $processor->enableUgc = false;
+        $processor->process($this->notes, 'dev.daries.rp.event.notes', $this->eventID, false);
+
+        return StringUtil::encodeHTML(StringUtil::truncate($processor->getHtml(), 255));
+    }
+
+    /**
      * Returns a simplified version of the formatted notes.
      */
     public function getSimplifiedFormattedNotes(): string
