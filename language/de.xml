@@ -153,6 +153,7 @@
             <item name="rp.event.raid.participate"><![CDATA[Teilnehmen]]></item>
             <item name="rp.event.raid.points"><![CDATA[Punkte]]></item>
             <item name="rp.event.raid.points.description"><![CDATA[Punkte für diesen Raid]]></item>
+            <item name="rp.event.raid.required"><![CDATA[Benötigt]]></item>
             <item name="rp.event.raid.updateStatus"><![CDATA[Status aktualisieren]]></item>
         </category>
 

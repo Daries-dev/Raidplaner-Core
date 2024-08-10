@@ -7,11 +7,13 @@ use rp\data\classification\Classification;
 use rp\data\classification\ClassificationCache;
 use rp\data\event\raid\attendee\EventRaidAttendee;
 use rp\data\event\raid\attendee\EventRaidAttendeeList;
+use rp\data\game\GameCache;
 use rp\data\point\account\PointAccountCache;
 use rp\data\raid\event\RaidEventCache;
 use rp\data\role\Role;
 use rp\data\role\RoleCache;
 use rp\event\character\AvailableCharactersChecking;
+use rp\system\cache\runtime\CharacterProfileRuntimeCache;
 use rp\system\character\CharacterHandler;
 use wcf\system\clipboard\ClipboardHandler;
 use wcf\system\event\EventHandler;
@@ -381,6 +383,71 @@ final class RaidEventController extends AbstractEventController
                 'isExpired' => $this->isExpired(),
             ]
         );
+    }
+
+    /**
+     * Returns all character profiles from the raid leader of the current raid event.
+     * @return  CharacterProfile[]
+     */
+    public function getLeaders(): array
+    {
+        return CharacterProfileRuntimeCache::getInstance()->getObjects($this->getEvent()->leaders);
+    }
+
+    /**
+     * Returns an array of the requirements values.
+     * 
+     * Key is the language variable and value as integer.
+     */
+    public function getRequirements(): array
+    {
+        $requirements = [];
+        $event = $this->getEvent();
+        $game = GameCache::getInstance()->getCurrentGame();
+
+        switch ($event->distributionMode) {
+            case 'class':
+                foreach (ClassificationCache::getInstance()->getClassifications() as $classification) {
+                    $identifier = $classification->identifier;
+                    $value = (int)$event->{$identifier};
+                    if (!$value) {
+                        continue;
+                    }
+
+                    $key = \sprintf(
+                        'rp.classification.%s.%s',
+                        $game->identifier,
+                        $classification->identifier
+                    );
+                    $requirements[$key] = $value;
+                }
+                break;
+            case 'none':
+                $participants = $event->participants ?? null;
+                if ($participants !== null) {
+                    $requirements['rp.event.raid.participants'] = $participants;
+                }
+                break;
+            case 'role':
+                $roles = RoleCache::getInstance()->getRoles();
+                foreach ($roles as $role) {
+                    $identifier = $role->identifier;
+                    $value = (int)$event->{$identifier};
+                    if (!$value) {
+                        continue;
+                    }
+
+                    $key = \sprintf(
+                        'rp.role.%s.%s',
+                        $game->identifier,
+                        $role->identifier
+                    );
+                    $requirements[$key] = $value;
+                }
+                break;
+        }
+
+        return $requirements;
     }
 
     /**
