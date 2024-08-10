@@ -40,9 +40,9 @@ final class MyCharactersCacheBuilder extends AbstractCacheBuilder
         ]);
 
         /** @var Character $object */
-        while ($object = $statement->fetchObject(Character::class)) {
+        while ($character = $statement->fetchObject(Character::class)) {
             $data[$character->gameID] ??= [];
-            $data[$character->gameID][] = new CharacterProfile($object);
+            $data[$character->gameID][] = new CharacterProfile($character);
         }
 
         return $data;
