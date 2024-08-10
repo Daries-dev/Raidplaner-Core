@@ -28,6 +28,6 @@
 
 {include file='header'}
 
-{@$calendar}
+{unsafe:$calendar}
 
 {include file='footer'}

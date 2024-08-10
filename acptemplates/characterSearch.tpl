@@ -34,6 +34,6 @@
 	{include file='shared_formError'}
 {/if}
 
-{@$form->getHtml()}
+{unsafe:$form->getHtml()}
 
 {include file='footer'}

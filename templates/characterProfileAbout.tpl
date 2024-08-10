@@ -5,7 +5,7 @@
         <h2 class="sectionTitle">{lang}rp.character.notes{/lang}</h2>
         <dl>
             <dt></dt>
-            <dd>{@$notes|phrase|newlineToBreak}</dd>
+            <dd>{$notes|phrase|newlineToBreak}</dd>
         </dl>
     </section>
 {/if}

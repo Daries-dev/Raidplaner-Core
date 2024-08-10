@@ -1,17 +1,17 @@
 
-<daries-rp-attendee-drag-and-drop-item id="attendee{@$attendee->attendeeID}"
-    class="attendee{if $event->getController()->isLeader()} draggable{/if}" attendee-id="{@$attendee->attendeeID}"
-    character-id="{@$attendee->characterID}" distribution-id="{$__availableDistributionID}"
-    event-id="{@$attendee->eventID}" {if $event->getController()->isLeader()}draggable="true" {/if}
-    droppable-to="{implode from=$attendee->getPossibleDistribution() item=distributionID}distribution{@$distributionID}{/implode}"
-    user-id="{@$attendee->getCharacter()->userID}">
+<daries-rp-attendee-drag-and-drop-item id="attendee{$attendee->attendeeID}"
+    class="attendee{if $event->getController()->isLeader()} draggable{/if}" attendee-id="{$attendee->attendeeID}"
+    character-id="{$attendee->characterID}" distribution-id="{$__availableDistributionID}"
+    event-id="{$attendee->eventID}" {if $event->getController()->isLeader()}draggable="true" {/if}
+    droppable-to="{implode from=$attendee->getPossibleDistribution() item=distributionID}distribution{$distributionID}{/implode}"
+    user-id="{$attendee->getCharacter()->userID}">
     <div class="attendee__avatar">
         {character object=$attendee->getCharacter() type='avatar24' ariaHidden='true'}
     </div>
 
     <div class="attendee__name">
         <a href="{$attendee->getLink()}" class="rpEventRaidAttendeeLink"
-            data-object-id="{@$attendee->attendeeID}">
+            data-object-id="{$attendee->attendeeID}">
             {$attendee->getCharacter()->characterName}
         </a>
     </div>
@@ -38,7 +38,7 @@
         !$event->isDeleted && 
         $event->startTime >= TIME_NOW &&
         $attendee->getCharacter()->userID == $__wcf->user->userID}
-    <div id="attendeeOptions{@$attendee->attendeeID}" class="attendee__menu dropdown">
+    <div id="attendeeOptions{$attendee->attendeeID}" class="attendee__menu dropdown">
         <button type="button" class="dropdownToggle" aria-label="{lang}wcf.global.button.more{/lang}">
             {icon name='ellipsis-vertical'}
         </button>

@@ -11,7 +11,7 @@
 <header class="contentHeader">
     <div class="contentHeaderTitle">
         <h1 class="contentTitle">
-            {lang}{@$pageTitle}{/lang}
+            {lang}{$pageTitle}{/lang}
             {if $items}
                 <span class="badge badgeInverse">{#$items}</span>
             {/if}
@@ -61,7 +61,7 @@
 {/capture}
 
 <div class="paginationTop">
-    {@$pagesLinks}
+    {unsafe:$pagesLinks}
 </div>
 
 {if $objects|count}
@@ -71,29 +71,29 @@
             <thead>
                 <tr>
                     <th class="columnMark"><label><input type="checkbox" class="jsClipboardMarkAll"></label></th>
-                    <th class="columnID columnCharacterID{if $sortField == 'characterID'} active {@$sortOrder}{/if}"
+                    <th class="columnID columnCharacterID{if $sortField == 'characterID'} active {$sortOrder}{/if}"
                         colspan="2">
                         <a
-                            href="{link application='rp' controller='CharacterList' id=$searchID}pageNo={@$pageNo}&sortField=characterID&sortOrder={if $sortField == 'characterID' && $sortOrder == 'ASC'}DESC{else}ASC{/if}{/link}">
+                            href="{link application='rp' controller='CharacterList' id=$searchID}pageNo={$pageNo}&sortField=characterID&sortOrder={if $sortField == 'characterID' && $sortOrder == 'ASC'}DESC{else}ASC{/if}{/link}">
                             {lang}wcf.global.objectID{/lang}
                         </a>
                     </th>
-                    <th class="columnText columnCharacterName{if $sortField == 'characterName'} active {@$sortOrder}{/if}"
+                    <th class="columnText columnCharacterName{if $sortField == 'characterName'} active {$sortOrder}{/if}"
                         colspan="2">
                         <a
-                            href="{link application='rp' controller='CharacterList' id=$searchID}pageNo={@$pageNo}&sortField=characterName&sortOrder={if $sortField == 'characterName' && $sortOrder == 'ASC'}DESC{else}ASC{/if}{/link}">
+                            href="{link application='rp' controller='CharacterList' id=$searchID}pageNo={$pageNo}&sortField=characterName&sortOrder={if $sortField == 'characterName' && $sortOrder == 'ASC'}DESC{else}ASC{/if}{/link}">
                             {lang}rp.character.characterName{/lang}
                         </a>
                     </th>
-                    <th class="columnText columnUsername{if $sortField == 'username'} active {@$sortOrder}{/if}">
+                    <th class="columnText columnUsername{if $sortField == 'username'} active {$sortOrder}{/if}">
                         <a
-                            href="{link application='rp' controller='CharacterList' id=$searchID}pageNo={@$pageNo}&sortField=username&sortOrder={if $sortField == 'username' && $sortOrder == 'ASC'}DESC{else}ASC{/if}{/link}">
+                            href="{link application='rp' controller='CharacterList' id=$searchID}pageNo={$pageNo}&sortField=username&sortOrder={if $sortField == 'username' && $sortOrder == 'ASC'}DESC{else}ASC{/if}{/link}">
                             {lang}rp.acp.character.owner{/lang}
                         </a>
                     </th>
-                    <th class="columnDigits columnCreated{if $sortField == 'created'} active {@$sortOrder}{/if}">
+                    <th class="columnDigits columnCreated{if $sortField == 'created'} active {$sortOrder}{/if}">
                         <a
-                            href="{link application='rp' controller='CharacterList' id=$searchID}pageNo={@$pageNo}&sortField=created&sortOrder={if $sortField == 'created' && $sortOrder == 'ASC'}DESC{else}ASC{/if}{/link}">
+                            href="{link application='rp' controller='CharacterList' id=$searchID}pageNo={$pageNo}&sortField=created&sortOrder={if $sortField == 'created' && $sortOrder == 'ASC'}DESC{else}ASC{/if}{/link}">
                             {lang}rp.character.created{/lang}
                         </a>
                     </th>
@@ -104,13 +104,13 @@
             <tbody class="jsReloadPageWhenEmpty">
                 {foreach from=$objects item=character}
                     <tr class="jsCharacterRow jsClipboardObject jsObjectActionObject"
-                        data-object-id="{@$character->getObjectID()}"
+                        data-object-id="{$character->getObjectID()}"
                         data-enabled="{if !$character->isDisabled}true{else}false{/if}">
                         <td class="columnMark">
-                            <input type="checkbox" class="jsClipboardItem" data-object-id="{@$character->getObjectID()}">
+                            <input type="checkbox" class="jsClipboardItem" data-object-id="{$character->getObjectID()}">
                         </td>
                         <td class="columnIcon">
-                            <div class="dropdown" id="characterListDropdown{@$character->getObjectID()}">
+                            <div class="dropdown" id="characterListDropdown{$character->getObjectID()}">
                                 <a href="#" class="dropdownToggle button small">
                                     {icon name='pencil'}
                                     <span>{lang}wcf.global.button.edit{/lang}</span>
@@ -149,8 +149,8 @@
                                 </ul>
                             </div>
                         </td>
-                        <td class="columnID columnCharacterID">{@$character->getObjectID()}</td>
-                        <td class="columnIcon">{@$character->getAvatar()->getImageTag(24)}</td>
+                        <td class="columnID columnCharacterID">{$character->getObjectID()}</td>
+                        <td class="columnIcon">{unsafe:$character->getAvatar()->getImageTag(24)}</td>
                         <td class="columnText columnCharacterName">
                             <span class="characterName">
                                 <a href="{link application='rp' controller='CharacterEdit' id=$character->getObjectID()}{/link}">
@@ -184,7 +184,7 @@
 
     <footer class="contentFooter">
         <div class="paginationBottom">
-            {@$pagesLinks}
+            {unsafe:$pagesLinks}
         </div>
 
         {hascontent}

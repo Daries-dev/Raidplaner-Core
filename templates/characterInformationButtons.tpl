@@ -14,7 +14,7 @@
                 </li>
             {/if}
             {if $character->canDelete()}
-                <li class="jsObjectActionObject" data-object-id="{@$character->getObjectID()}">
+                <li class="jsObjectActionObject" data-object-id="{$character->getObjectID()}">
                     <a class="jsObjectAction pointer" data-object-action="deleteOwnCharacter"
                         data-confirm-message="{lang objectTitle=$character->getTitle() __encode=true}wcf.button.delete.confirmMessage{/lang}"
                         data-object-action-success="reload" data-tooltip="{lang}wcf.global.button.delete{/lang}"

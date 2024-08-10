@@ -8,7 +8,7 @@
         {jsphrase name='rp.event.raid.updateStatus'}
 
         BootstrapFrontend.setup({
-            RP_API_URL: '{@$__wcf->getPath('rp')}',
+            RP_API_URL: '{$__wcf->getPath('rp')}',
         });
     });
 </script>

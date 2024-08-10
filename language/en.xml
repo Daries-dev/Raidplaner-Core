@@ -51,13 +51,13 @@
         <category name="rp.character">
             <item name="rp.character.add"><![CDATA[Add Character]]></item>
             <item name="rp.character.avatar"><![CDATA[Avatar]]></item>
-            <item name="rp.character.avatar.description"><![CDATA[You may use the following file extensions “{"\n"|str_replace:', ':$__wcf->session->getPermission('user.rp.characterAvatarAllowedFileExtensions')}” for avatar with a maximum file size of {@$__wcf->session->getPermission('user.rp.characterAvatarMaxSize')|filesize}. The minimum dimensions are 128×128 pixels.]]></item>
+            <item name="rp.character.avatar.description"><![CDATA[You may use the following file extensions “{"\n"|str_replace:', ':$__wcf->session->getPermission('user.rp.characterAvatarAllowedFileExtensions')}” for avatar with a maximum file size of {unsafe:$__wcf->session->getPermission('user.rp.characterAvatarMaxSize')|filesize}. The minimum dimensions are 128×128 pixels.]]></item>
             <item name="rp.character.category.character"><![CDATA[Character]]></item>
             <item name="rp.character.characterID"><![CDATA[Character ID]]></item>
             <item name="rp.character.characterName"><![CDATA[Charactername]]></item>
             <item name="rp.character.characterName.error.notUnique"><![CDATA[This charactername is already in use.]]></item>
             <item name="rp.character.characters"><![CDATA[Characters]]></item>
-            <item name="rp.character.charactersList.created"><![CDATA[Added at {@$character->created|date}]]></item>
+            <item name="rp.character.charactersList.created"><![CDATA[Added at {unsafe:$character->created|date}]]></item>
             <item name="rp.character.created"><![CDATA[Created]]></item>
             <item name="rp.character.edit"><![CDATA[Edit Character]]></item>
             <item name="rp.character.filter"><![CDATA[Filter Characters]]></item>
@@ -286,7 +286,7 @@
         </category>
 
         <category name="wcf.page">
-            <item name="wcf.page.onlineLocation.dev.daries.rp.Character"><![CDATA[Character profile of <a href="{link application='rp' controller='Character' object=$character}{/link}" class="rpCharacterLink" data-character-id="{@$character->characterID}">{$character->getTitle()}</a>]]></item>
+            <item name="wcf.page.onlineLocation.dev.daries.rp.Character"><![CDATA[Character profile of <a href="{link application='rp' controller='Character' object=$character}{/link}" class="rpCharacterLink" data-character-id="{$character->characterID}">{$character->getTitle()}</a>]]></item>
         </category>
     </import>
 </language>

@@ -4,6 +4,6 @@
     <woltlab-core-notice type="error">{lang}rp.character.search.error.noMatches{/lang}</woltlab-core-notice>
 {/if}
 
-{@$form->getHtml()}
+{unsafe:$form->getHtml()}
 
 {include file='footer'}

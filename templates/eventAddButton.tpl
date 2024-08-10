@@ -14,9 +14,9 @@
                     <dd>
                         {foreach from=$eventControllers item=controller}
                             <label>
-                                <input type="radio" name="objectType" value="{@$controller->objectType}"
+                                <input type="radio" name="objectType" value="{$controller->objectType}"
                                     {if RP_DEFAULT_EVENT_CONTROLLER == $controller->objectType} checked{/if}>
-                                {lang}rp.event.controller.{@$controller->objectType}{/lang}
+                                {lang}rp.event.controller.{$controller->objectType}{/lang}
                             </label>
                         {/foreach}
                     </dd>

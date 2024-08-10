@@ -4,14 +4,14 @@
 
 {capture assign='__contentInformation'}
     {event name='beforeInformations'}
-    {if $contentInformation|isset}{@$contentInformation}{/if}
+    {if $contentInformation|isset}{unsafe:$contentInformation}{/if}
     {event name='afterInformations'}
 {/capture}
 {assign var='__contentInformation' value=$__contentInformation|trim}
 
 {if $__contentInformation}
     <dl class="plain inlineDataList characterContentInformation">
-        {@$__contentInformation}
+        {unsafe:$__contentInformation}
     </dl>
 {/if}
 

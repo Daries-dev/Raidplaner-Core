@@ -31,7 +31,7 @@
 {/capture}
 
 <div class="paginationTop">
-    {@$pagesLinks}
+    {unsafe:$pagesLinks}
 </div>
 
 {if $objects|count}
@@ -52,7 +52,7 @@
             </thead>
             <tbody class="jsReloadPageWhenEmpty">
                 {foreach from=$objects item=account}
-                    <tr class="jsAccountRow jsObjectActionObject" data-object-id="{@$account->getObjectID()}">
+                    <tr class="jsAccountRow jsObjectActionObject" data-object-id="{$account->getObjectID()}">
                         <td class="columnIcon">
                             <a href="{link application='rp' controller='PointAccountEdit' id=$account->getObjectID()}{/link}"
                                 title="{lang}wcf.global.button.edit{/lang}" class="jsTooltip">
@@ -60,7 +60,7 @@
                             </a>
                             {objectAction action="delete" objectTitle=$account->getTitle()}
                         </td>
-                        <td class="columnID columnAccountID">{@$account->getObjectID()}</td>
+                        <td class="columnID columnAccountID">{$account->getObjectID()}</td>
                         <td class="columnTitle columnName">
                             <a href="{link application='rp' controller='PointAccountEdit' id=$account->getObjectID()}{/link}">
                                 {$account->getTitle()}
@@ -76,7 +76,7 @@
 
     <footer class="contentFooter">
         <div class="paginationBottom">
-            {@$pagesLinks}
+            {unsafe:$pagesLinks}
         </div>
 
         <nav class="contentFooterNavigation">

@@ -3,7 +3,7 @@
     <div class="contentItemLink">
         {if $availableDistribution|isset}
             <div class="contentItemImage">
-                {@$availableDistribution->getIcon(16)}
+                {unsafe:$availableDistribution->getIcon(16)}
             </div>
         {/if}
 

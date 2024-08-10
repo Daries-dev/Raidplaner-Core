@@ -1,4 +1,4 @@
-<li class="contentItemMultiColumn" data-object-id="{@$user->userID}">
+<li class="contentItemMultiColumn" data-object-id="{$user->userID}">
 	<div class="box48">
 		{user object=$user type='avatar48' ariaHidden='true' tabindex='-1'}
 		

@@ -15,20 +15,20 @@
     <span class="badge">{#$items}</span>
 {/capture}
 {capture assign='canonicalURLParameters'}
-    sortField={@$sortField}&sortOrder={@$sortOrder}{if $letter}&letter={@$letter|rawurlencode}{/if}
+    sortField={$sortField}&sortOrder={$sortOrder}{if $letter}&letter={$letter|rawurlencode}{/if}
 {/capture}
 
 {capture assign='headContent'}
     {if $pageNo < $pages}
         <link rel="next"
-            href="{link application='rp' controller='CharactersList'}pageNo={@$pageNo+1}&{@$canonicalURLParameters}{/link}">
+            href="{link application='rp' controller='CharactersList'}pageNo={$pageNo+1}&{$canonicalURLParameters}{/link}">
     {/if}
     {if $pageNo > 1}
         <link rel="prev"
-            href="{link application='rp' controller='CharactersList'}{if $pageNo > 2}pageNo={@$pageNo-1}&{/if}{@$canonicalURLParameters}{/link}">
+            href="{link application='rp' controller='CharactersList'}{if $pageNo > 2}pageNo={$pageNo-1}&{/if}{$canonicalURLParameters}{/link}">
     {/if}
     <link rel="canonical"
-        href="{link application='rp' controller='CharactersList'}{if $pageNo > 1}pageNo={@$pageNo}&{/if}{@$canonicalURLParameters}{/link}">
+        href="{link application='rp' controller='CharactersList'}{if $pageNo > 1}pageNo={$pageNo}&{/if}{$canonicalURLParameters}{/link}">
 {/capture}
 
 {capture assign='contentHeaderNavigation'}
@@ -79,7 +79,7 @@
         <div class="containerListDisplayOptions">
             <div class="containerListSortOptions">
                 <a rel="nofollow" class="jsTooltip"
-                    href="{link application='rp' controller='CharactersList' id=$searchID}pageNo={@$pageNo}&sortField={$sortField}&sortOrder={if $sortOrder == 'ASC'}DESC{else}ASC{/if}{if $letter}&letter={$letter}{/if}{if $ownCharacters}&ownCharacters=1{/if}{/link}"
+                    href="{link application='rp' controller='CharactersList' id=$searchID}pageNo={$pageNo}&sortField={$sortField}&sortOrder={if $sortOrder == 'ASC'}DESC{else}ASC{/if}{if $letter}&letter={$letter}{/if}{if $ownCharacters}&ownCharacters=1{/if}{/link}"
                     title="{lang}wcf.global.sorting{/lang} ({lang}wcf.global.sortOrder.{if $sortOrder === 'ASC'}ascending{else}descending{/if}{/lang})">
                     {if $sortOrder === 'ASC'}
                         {icon name='arrow-down-short-wide'}
@@ -95,7 +95,7 @@
                         {foreach from=$validSortFields item=_sortField}
                             <li {if $_sortField === $sortField}class="active" {/if}>
                                 <a rel="nofollow"
-                                    href="{link application='rp' controller='CharactersList' id=$searchID}pageNo={@$pageNo}&sortField={$_sortField}&sortOrder={if $sortField === $_sortField}{if $sortOrder === 'DESC'}ASC{else}DESC{/if}{else}{$sortOrder}{/if}{if $letter}&letter={$letter}{/if}{if $ownCharacters}&ownCharacters=1{/if}{/link}">
+                                    href="{link application='rp' controller='CharactersList' id=$searchID}pageNo={$pageNo}&sortField={$_sortField}&sortOrder={if $sortField === $_sortField}{if $sortOrder === 'DESC'}ASC{else}DESC{/if}{else}{$sortOrder}{/if}{if $letter}&letter={$letter}{/if}{if $ownCharacters}&ownCharacters=1{/if}{/link}">
                                     {lang}rp.character.sortField.{$_sortField}{/lang}
                                 </a>
                             </li>
@@ -181,7 +181,7 @@
 <footer class="contentFooter">
     {hascontent}
     <div class="paginationBottom">
-        {content}{@$contentInteractionPagination}{/content}
+        {content}{unsafe:$contentInteractionPagination}{/content}
     </div>
     {/hascontent}
 

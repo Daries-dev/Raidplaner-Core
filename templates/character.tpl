@@ -1,15 +1,15 @@
 {capture assign='pageTitle'}{$character->characterName} - {lang}rp.character.characters{/lang}{/capture}
 
 {capture assign='contentHeader'}
-    <header class="contentHeader characterProfileCharacter" data-object-id="{@$character->characterID}">
+    <header class="contentHeader characterProfileCharacter" data-object-id="{$character->characterID}">
         <div class="contentHeaderIcon">
             {if $character->userID == $__wcf->user->userID}
                 <a href="{link application='rp' controller='CharacterEdit' id=$character->characterID}{/link}" class="jsTooltip"
                     title="{lang}rp.character.edit{/lang}">
-                    {@$character->getAvatar()->getImageTag(128)}
+                    {unsafe:$character->getAvatar()->getImageTag(128)}
                 </a>
             {else}
-                <span>{@$character->getAvatar()->getImageTag(128)}</span>
+                <span>{unsafe:$character->getAvatar()->getImageTag(128)}</span>
             {/if}
         </div>
 
@@ -83,7 +83,7 @@
         {foreach from=$menus item=menu}
             {if $menu->isVisible($characterID)}
                 <div id="{$menu->getID()}" class="tabMenuContent">
-                    {@$menu->getContent($characterID)}
+                    {unsafe:$menu->getContent($characterID)}
                 </div>
             {/if}
         {/foreach}

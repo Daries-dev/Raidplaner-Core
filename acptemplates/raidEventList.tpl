@@ -36,22 +36,22 @@
             <thead>
                 <tr>
                     <th class="columnID columnEventID" colspan="2">
-                        <a href="{link application='rp' controller='RaidEventList'}pageNo={@$pageNo}{/link}">
+                        <a href="{link application='rp' controller='RaidEventList'}pageNo={$pageNo}{/link}">
                             {lang}wcf.global.objectID{/lang}
                         </a>
                     </th>
                     <th class="columnText columnEventName">
-                        <a href="{link application='rp' controller='RaidEventList'}pageNo={@$pageNo}{/link}">
+                        <a href="{link application='rp' controller='RaidEventList'}pageNo={$pageNo}{/link}">
                             {lang}wcf.global.name{/lang}
                         </a>
                     </th>
                     <th class="columnText columnPointAccountName">
-                        <a href="{link application='rp' controller='RaidEventList'}pageNo={@$pageNo}{/link}">
+                        <a href="{link application='rp' controller='RaidEventList'}pageNo={$pageNo}{/link}">
                             {lang}rp.acp.raid.event.point.account{/lang}
                         </a>
                     </th>
                     <th class="columnDate columnDefaultPoints">
-                        <a href="{link application='rp' controller='RaidEventList'}pageNo={@$pageNo}{/link}">
+                        <a href="{link application='rp' controller='RaidEventList'}pageNo={$pageNo}{/link}">
                             {lang}rp.acp.raid.event.defaultPoints{/lang}
                         </a>
                     </th>
@@ -61,7 +61,7 @@
             </thead>
             <tbody class="jsReloadPageWhenEmpty">
                 {foreach from=$objects item=event}
-                    <tr class="jsEventRow jsObjectActionObject" data-object-id="{@$event->eventID}">
+                    <tr class="jsEventRow jsObjectActionObject" data-object-id="{$event->eventID}">
                         <td class="columnIcon">
                             <a href="{link application='rp' controller='RaidEventEdit' id=$event->eventID}{/link}"
                                 title="{lang}wcf.global.button.edit{/lang}" class="jsTooltip">
@@ -69,7 +69,7 @@
                             </a>
                             {objectAction action="delete" objectTitle=$event->getTitle()}
                         </td>
-                        <td class="columnID columnEventID">{@$event->eventID}</td>
+                        <td class="columnID columnEventID">{$event->eventID}</td>
                         <td class="columnText columnEventName">
                             <a href="{link application='rp' controller='RaidEventEdit' id=$event->eventID}{/link}">
                                 {$event->getTitle()}
@@ -87,7 +87,7 @@
 
     <footer class="contentFooter">
         <div class="paginationBottom">
-            {@$pagesLinks}
+            {$pagesLinks}
         </div>
 
         <nav class="contentFooterNavigation">

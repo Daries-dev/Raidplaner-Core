@@ -1,10 +1,10 @@
 {capture assign='pageTitle'}{$event->getTitle()}{/capture}
 
 {capture assign='contentHeader'}
-    <header class="contentHeader rpEventHeader" data-object-id="{@$event->eventID}" data-is-deleted="{@$event->isDeleted}"
-        data-is-disabled="{@$event->isDisabled}">
+    <header class="contentHeader rpEventHeader" data-object-id="{$event->eventID}" data-is-deleted="{$event->isDeleted}"
+        data-is-disabled="{$event->isDisabled}">
         <div class="contentHeaderIcon">
-            {@$event->getIcon(64)}
+            {unsafe:$event->getIcon(64)}
         </div>
 
         <div class="contentHeaderTitle">
@@ -26,7 +26,7 @@
             <ul class="inlineList commaSeparated contentHeaderMetaData">
                 <li>
                     {icon name='clock'}
-                    {@$event->getFormattedStartTime()} - {@$event->getFormattedEndTime()}
+                    {$event->getFormattedStartTime()} - {$event->getFormattedEndTime()}
                 </li>
                 <li>
                     {icon name='user'}
@@ -43,7 +43,7 @@
         <nav class="contentHeaderNavigation">
             <ul>
                 {content}
-                {@$event->getController()->getContentHeaderNavigation()}
+                {unsafe:$event->getController()->getContentHeaderNavigation()}
                 {/content}
             </ul>
         </nav>
@@ -67,7 +67,7 @@
 
             <div class="boxContent htmlContent">
                 {content}
-                {@$event->getSimplifiedFormattedNotes()}
+                {unsafe:$event->getSimplifiedFormattedNotes()}
                 {/content}
             </div>
         </section>
@@ -91,7 +91,7 @@
                 <li data-option-name="cancel"><span>{lang}rp.event.raid.cancel{/lang}</span></li>
                 {if !$event->raidID && $event->getController()->isLeader()}
                     <li data-option-name="transform"
-                        data-link="{link controller='RaidAdd' application='rp'}eventID={@$event->eventID}{/link}">
+                        data-link="{link controller='RaidAdd' application='rp'}eventID={$event->eventID}{/link}">
                         <span>{lang}rp.event.raid.transform{/lang}</span>
                     </li>
                 {/if}
@@ -121,7 +121,7 @@
             <dd>
                 <div class="htmlContent">
                     {content}
-                    {@$event->getFormattedNotes()}
+                    {$event->getFormattedNotes()}
                     {/content}
                 </div>
             </dd>
@@ -136,20 +136,20 @@
 
 {if $event->getDeleteNote()}
     <div class="section">
-        <p class="rpEventDeleteNote">{@$event->getDeleteNote()}</p>
+        <p class="rpEventDeleteNote">{$event->getDeleteNote()}</p>
     </div>
 {/if}
 
-<div id="event{@$event->eventID}" class="event" data-can-cancel="{if $event->canCancel()}true{else}false{/if}"
+<div id="event{$event->eventID}" class="event" data-can-cancel="{if $event->canCancel()}true{else}false{/if}"
     data-can-delete="{if $event->canDelete()}true{else}false{/if}"
     data-can-edit="{if $event->canEdit() || $event->canEditOwnEvent()}true{else}false{/if}"
     data-can-restore="{if $event->canRestore() || $event->canEditOwnEvent()}true{else}false{/if}"
     data-can-trash="{if $event->canTrash()}true{else}false{/if}"
     data-canceled="{if $event->isCanceled}true{else}false{/if}"
     data-deleted="{if $event->isDeleted}true{else}false{/if}"
-    data-enabled="{if !$event->isDisabled}true{else}false{/if}" data-event-id="{@$event->eventID}"
+    data-enabled="{if !$event->isDisabled}true{else}false{/if}" data-event-id="{$event->eventID}"
     data-title="{$event->getTitle()}">
-    {@$event->getController()->getContent()}
+    {unsafe:$event->getController()->getContent()}
 </div>
 
 <footer class="contentFooter">
