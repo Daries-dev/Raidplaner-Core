@@ -3,10 +3,14 @@
 {capture assign='contentHeader'}
     <header class="contentHeader rpRaid">
         <div class="contentHeaderIcon">
-            <a href="{link application='rp' controller='RaidEdit' id=$raid->getObjectID()}{/link}" class="jsTooltip"
-                title="{lang}rp.raid.edit{/lang}">
+            {if $__wcf->session->getPermission('mod.rp.canAddRaid')}
+                <a href="{link application='rp' controller='RaidEdit' id=$raid->getObjectID()}{/link}" class="jsTooltip"
+                    title="{lang}rp.raid.edit{/lang}">
+                    {unsafe:$raid->getIcon(64)}
+                </a>
+            {else}
                 {unsafe:$raid->getIcon(64)}
-            </a>
+            {/if}
         </div>
         <div class="contentHeaderTitle">
             <h1 class="contentTitle">
