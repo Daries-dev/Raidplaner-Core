@@ -184,6 +184,7 @@
         </category>
 
         <category name="rp.raid">
+            <item name="rp.raid.add"><![CDATA[Raid hinzufügen]]></item>
             <item name="rp.raid.attendees"><![CDATA[Charakter]]></item>
             <item name="rp.raid.notes"><![CDATA[Notiz]]></item>
             <item name="rp.raid.points"><![CDATA[Punkte]]></item>

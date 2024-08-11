@@ -2,6 +2,7 @@
 
 namespace rp\data\raid\event;
 
+use rp\data\game\GameCache;
 use rp\data\point\account\PointAccount;
 use rp\data\point\account\PointAccountCache;
 use wcf\data\DatabaseObject;
@@ -38,7 +39,12 @@ final class RaidEvent extends DatabaseObject implements ITitledObject
     {
         if ($size === null) $size = $this->size;
 
-        return '<img src="' . StringUtil::encodeHTML($this->getIconPath()) . '" style="width: ' . $size . 'px; height: ' . $size . 'px" alt="" class="raidEventIcon">';
+        return \sprintf(
+            '<img src="%s"" style="width: %dpx; height: %dpx;" alt="" class="raidEventIcon">',
+            StringUtil::encodeHTML($this->getIconPath()),
+            $size,
+            $size
+        );
     }
 
     /**
@@ -46,8 +52,11 @@ final class RaidEvent extends DatabaseObject implements ITitledObject
      */
     public function getIconPath(): string
     {
-        if (empty($this->icon)) $this->icon = 'unknown';
-        return WCF::getPath('rp') . 'images/raid/event/' . $this->icon . '.png';
+        return \sprintf(
+            '%simages/raid/event/%s.png',
+            WCF::getPath('rp'),
+            $this->icon ?? 'unknown'
+        );
     }
 
     /**

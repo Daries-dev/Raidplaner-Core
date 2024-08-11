@@ -106,6 +106,45 @@
                 <title>Charakter suchen</title>
             </content>
         </page>
+
+        <page identifier="dev.daries.rp.RaidList">
+            <pageType>system</pageType>
+            <controller>rp\page\RaidListPage</controller>
+            <name language="de">Raid-Liste</name>
+            <name language="en">Raid List</name>
+            <allowSpidersToIndex>1</allowSpidersToIndex>
+            <content language="en">
+                <title>Raids</title>
+            </content>
+            <content language="de">
+                <title>Raids</title>
+            </content>
+        </page>
+        <page identifier="dev.daries.rp.RaidAdd">
+            <pageType>system</pageType>
+            <controller>rp\form\RaidAddForm</controller>
+            <name language="de">Raid hinzufügen</name>
+            <name language="en">Add Raid</name>
+            <parent>dev.daries.rp.RaidList</parent>
+            <hasFixedParent>1</hasFixedParent>
+            <allowSpidersToIndex>0</allowSpidersToIndex>
+            <content language="en">
+                <title>Add Raid</title>
+            </content>
+            <content language="de">
+                <title>Raid hinzufügen</title>
+            </content>
+        </page>
+        <page identifier="dev.daries.rp.Raid">
+            <pageType>system</pageType>
+            <controller>rp\page\RaidPage</controller>
+            <name language="de">Raid</name>
+            <name language="en">Raid</name>
+            <parent>dev.daries.rp.RaidList</parent>
+            <allowSpidersToIndex>1</allowSpidersToIndex>
+			<hasFixedParent>1</hasFixedParent>
+            <requireObjectID>1</requireObjectID>
+        </page>
     </import>
 </data>
         
