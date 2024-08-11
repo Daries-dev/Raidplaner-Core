@@ -186,10 +186,13 @@
         <category name="rp.raid">
             <item name="rp.raid.add"><![CDATA[Add Raid]]></item>
             <item name="rp.raid.attendees"><![CDATA[Character]]></item>
+            <item name="rp.raid.created"><![CDATA[Created by]]></item>
+            <item name="rp.raid.edit"><![CDATA[Edit Raid]]></item>
             <item name="rp.raid.notes"><![CDATA[Notes]]></item>
             <item name="rp.raid.points"><![CDATA[Points]]></item>
             <item name="rp.raid.time"><![CDATA[Time]]></item>
             <item name="rp.raid.title"><![CDATA[Raid]]></item>
+            <item name="rp.raid.raids"><![CDATA[Raids]]></item>
         </category>
 
         <category name="rp.raid.event">
