@@ -1,4 +1,4 @@
-{capture assign='pageTitle'}{$raid->getTitle()} - {lang}rp.raid.raids{/lang}{/capture}
+{capture assign='pageTitle'}{$raid->getTitle()} - {lang}rp.raid.list{/lang}{/capture}
 
 {capture assign='contentHeader'}
     <header class="contentHeader rpRaid">
