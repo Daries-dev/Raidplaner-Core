@@ -107,6 +107,20 @@
             </content>
         </page>
 
+        <page identifier="info.daries.rp.PointList">
+            <pageType>system</pageType>
+            <controller>rp\page\PointListPage</controller>
+            <name language="de">Punktestand</name>
+            <name language="en">Points</name>
+            <allowSpidersToIndex>1</allowSpidersToIndex>
+            <content language="en">
+                <title>Points</title>
+            </content>
+            <content language="de">
+                <title>Punktestand</title>
+            </content>
+        </page>
+
         <page identifier="dev.daries.rp.RaidList">
             <pageType>system</pageType>
             <controller>rp\page\RaidListPage</controller>
