@@ -135,6 +135,20 @@
                 <title>Raid hinzufügen</title>
             </content>
         </page>
+        <page identifier="dev.daries.rp.RaidEdit">
+            <pageType>system</pageType>
+            <controller>rp\form\RaidEditForm</controller>
+            <name language="de">Raid bearbeiten</name>
+            <name language="en">Edit Raid</name>
+            <parent>dev.daries.rp.RaidList</parent>
+            <hasFixedParent>1</hasFixedParent>
+            <content language="en">
+                <title>Edit Raid</title>
+            </content>
+            <content language="de">
+                <title>Raid bearbeiten</title>
+            </content>
+        </page>
         <page identifier="dev.daries.rp.Raid">
             <pageType>system</pageType>
             <controller>rp\page\RaidPage</controller>
