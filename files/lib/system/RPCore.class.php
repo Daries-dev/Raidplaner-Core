@@ -3,6 +3,7 @@
 namespace rp\system;
 
 use rp\page\CalendarPage;
+use rp\system\character\point\CharacterPointHandler;
 use wcf\system\application\AbstractApplication;
 
 // define current raidplaner version
@@ -26,4 +27,12 @@ final class RPCore extends AbstractApplication
      * @inheritDoc
      */
     protected $primaryController = CalendarPage::class;
+
+    /**
+     * Returns the character point handler
+     */
+    public function getCharacterPointHandler(): CharacterPointHandler
+    {
+        return CharacterPointHandler::getInstance();
+    }
 }
