@@ -107,7 +107,7 @@
             </content>
         </page>
 
-        <page identifier="info.daries.rp.PointList">
+        <page identifier="dev.daries.rp.PointList">
             <pageType>system</pageType>
             <controller>rp\page\PointListPage</controller>
             <name language="de">Punktestand</name>

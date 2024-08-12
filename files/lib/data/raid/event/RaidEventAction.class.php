@@ -68,7 +68,7 @@ class RaidEventAction extends AbstractDatabaseObjectAction
                 $this->parameters['title_i18n'],
                 'rp.raid.event.title' . $event->eventID,
                 'rp.raid.event',
-                PackageCache::getInstance()->getPackageID('info.daries.rp')
+                PackageCache::getInstance()->getPackageID('dev.daries.rp')
             );
 
             $updateData['title'] = 'rp.raid.event.title' . $event->eventID;
@@ -119,7 +119,7 @@ class RaidEventAction extends AbstractDatabaseObjectAction
                     $this->parameters['title_i18n'],
                     'rp.raid.event.title' . $object->eventID,
                     'rp.raid.event',
-                    PackageCache::getInstance()->getPackageID('info.daries.rp')
+                    PackageCache::getInstance()->getPackageID('dev.daries.rp')
                 );
 
                 $updateData['title'] = 'rp.raid.event.title' . $object->eventID;
