@@ -32,6 +32,11 @@
             <title language="en">Raids</title>
             <page>dev.daries.rp.RaidList</page>
         </item>
+        <item identifier="dev.daries.rp.RaidEventList">
+            <parent>dev.daries.rp.PointList</parent>
+            <title language="de">Raid Events</title>
+            <title language="en">Raid Events</title>
+            <page>dev.daries.rp.RaidEventList</page>
         </item>
     </import>
 </data>

@@ -173,6 +173,19 @@
 			<hasFixedParent>1</hasFixedParent>
             <requireObjectID>1</requireObjectID>
         </page>
+        <page identifier="dev.daries.rp.RaidEventList">
+            <pageType>system</pageType>
+            <controller>rp\page\RaidEventListPage</controller>
+            <name language="de">Raid Event-Liste</name>
+            <name language="en">Raid Event List</name>
+            <allowSpidersToIndex>1</allowSpidersToIndex>
+            <content language="en">
+                <title>Raid Events</title>
+            </content>
+            <content language="de">
+                <title>Raid Events</title>
+            </content>
+        </page>
     </import>
 </data>
         

@@ -6,7 +6,9 @@ use rp\data\game\GameCache;
 use rp\data\point\account\PointAccount;
 use rp\data\point\account\PointAccountCache;
 use wcf\data\DatabaseObject;
+use wcf\data\ITitledLinkObject;
 use wcf\data\ITitledObject;
+use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
 use wcf\util\StringUtil;
 
@@ -25,7 +27,7 @@ use wcf\util\StringUtil;
  * @property-read   string  $icon       icon of the raid event
  * @property-read   int $showProfile        is `1` if the raid event is show in profile, otherwise `0`
  */
-final class RaidEvent extends DatabaseObject implements ITitledObject
+final class RaidEvent extends DatabaseObject implements ITitledLinkObject
 {
     /**
      * point account object
@@ -56,6 +58,24 @@ final class RaidEvent extends DatabaseObject implements ITitledObject
             '%simages/raid/event/%s.png',
             WCF::getPath('rp'),
             $this->icon ?? 'unknown'
+        );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getLink(): string
+    {
+        return LinkHandler::getInstance()->getLink(
+            'RaidList',
+            [
+                'application' => 'rp',
+                'forceFrontend' => true
+            ],
+            \sprintf(
+                'raidEventID=%d',
+                $this->eventID
+            )
         );
     }
 
