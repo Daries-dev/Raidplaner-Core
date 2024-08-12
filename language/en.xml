@@ -15,6 +15,13 @@
             <item name="rp.acp.character.search"><![CDATA[Search Characters]]></item>
         </category>
 
+        <category name="rp.acp.item">
+            <item name="rp.acp.item.databaseName"><![CDATA[Database Name]]></item>
+            <item name="rp.acp.item.databaseName.description"><![CDATA[The name may only consist of letters and must begin with a lowercase letter.]]></item>
+            <item name="rp.acp.item.databaseName.error.format"><![CDATA[The entered name is invalid.]]></item>
+            <item name="rp.acp.item.databaseName.error.notUnique"><![CDATA[The entered name is already used by another package installation plugin.]]></item>
+        </category>
+
         <category name="rp.acp.menu">
             <item name="rp.acp.menu.link.character"><![CDATA[Character]]></item>
             <item name="rp.acp.menu.link.character.add"><![CDATA[Add Character]]></item>

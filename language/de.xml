@@ -15,6 +15,13 @@
             <item name="rp.acp.character.search"><![CDATA[Charakter suchen]]></item>
         </category>
 
+        <category name="rp.acp.item">
+            <item name="rp.acp.item.databaseName"><![CDATA[Name der Datenbank]]></item>
+            <item name="rp.acp.item.databaseName.description"><![CDATA[Der Name darf nur Buchstaben enthalten und muss mit einem Kleinbuchstaben beginnen.]]></item>
+            <item name="rp.acp.item.databaseName.error.format"><![CDATA[Der angegebene Name ist ungültig.]]></item>
+            <item name="rp.acp.item.databaseName.error.notUnique"><![CDATA[Der angegebene Name wird bereits von einem anderen Paketinstallationsplugin verwendet.]]></item>
+        </category>
+
         <category name="rp.acp.menu">
             <item name="rp.acp.menu.link.character"><![CDATA[Charakter]]></item>
             <item name="rp.acp.menu.link.character.add"><![CDATA[Charakter hinzufügen]]></item>
