@@ -306,7 +306,7 @@ return [
             NotNullVarchar255DatabaseTableColumn::create('searchItemID'),
             NotNullInt10DatabaseTableColumn::create('time')
                 ->defaultValue(0),
-            TextDatabaseTableColumn::class('additionalData'),
+            TextDatabaseTableColumn::create('additionalData'),
         ])
         ->indices([
             DatabaseTablePrimaryIndex::create()
