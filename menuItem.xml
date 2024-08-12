@@ -26,5 +26,11 @@
             <title language="en">Points</title>
             <page>info.daries.rp.PointList</page>
         </item>
+        <item identifier="info.daries.rp.RaidList">
+            <parent>info.daries.rp.PointList</parent>
+            <title language="de">Raids</title>
+            <title language="en">Raids</title>
+            <page>info.daries.rp.RaidList</page>
+        </item>
     </import>
 </data>
