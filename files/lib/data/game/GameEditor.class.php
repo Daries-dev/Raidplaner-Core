@@ -2,7 +2,6 @@
 
 namespace rp\data\game;
 
-use rp\system\cache\builder\GameCacheBuilder;
 use wcf\data\DatabaseObjectEditor;
 use wcf\data\IEditableCachedObject;
 use wcf\data\language\category\LanguageCategory;
@@ -51,6 +50,8 @@ class GameEditor extends DatabaseObjectEditor implements IEditableCachedObject
             $game = new static::$baseClass($game->gameID);
         }
 
+        self::resetCache();
+
         /** @noinspection PhpIncompatibleReturnTypeInspection */
         return $game;
     }
@@ -84,7 +85,7 @@ class GameEditor extends DatabaseObjectEditor implements IEditableCachedObject
      */
     public static function resetCache(): void
     {
-        GameCacheBuilder::getInstance()->reset();
+        GameCache::getInstance()->resetCache();
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace rp\data\faction;
 
+use rp\data\game\GameCache;
 use rp\system\cache\builder\FactionCacheBuilder;
 use wcf\data\DatabaseObjectEditor;
 use wcf\data\IEditableCachedObject;
@@ -101,7 +102,7 @@ class FactionEditor extends DatabaseObjectEditor implements IEditableCachedObjec
                 ON DUPLICATE KEY UPDATE languageItemValue = VALUES(languageItemValue),
                                         languageCategoryID = VALUES(languageCategoryID)";
         $statement = WCF::getDB()->prepare($sql);
-        
+
         $title = \sprintf(
             'rp.faction.%s.%s',
             $this->getGame()->identifier,

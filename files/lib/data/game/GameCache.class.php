@@ -78,8 +78,8 @@ final class GameCache extends SingletonFactory
     public function getGamesByID(array $gameIDs): array
     {
         return \array_filter(
-            \array_map(fn ($gameID) => $this->getEventByID($gameID), $gameIDs),
-            fn ($game) => $game !== null
+            \array_map(fn($gameID) => $this->getEventByID($gameID), $gameIDs),
+            fn($game) => $game !== null
         );
     }
 
@@ -90,5 +90,14 @@ final class GameCache extends SingletonFactory
     {
         $this->cachedGames = GameCacheBuilder::getInstance()->getData([], 'games');
         $this->cachedIdentifier = GameCacheBuilder::getInstance()->getData([], 'identifier');
+    }
+
+    /**
+     * Resets and reloads the game cache.
+     */
+    public function resetCache()
+    {
+        GameCacheBuilder::getInstance()->reset();
+        $this->init();
     }
 }

@@ -2,6 +2,7 @@
 
 namespace rp\data\point\account;
 
+use rp\system\cache\builder\CharacterPointCacheBuilder;
 use rp\system\cache\builder\PointAccountCacheBuilder;
 use wcf\data\DatabaseObjectEditor;
 use wcf\data\IEditableCachedObject;
@@ -29,6 +30,6 @@ class PointAccountEditor extends DatabaseObjectEditor implements IEditableCached
     public static function resetCache(): void
     {
         PointAccountCacheBuilder::getInstance()->reset();
-        //CharacterPointCacheBuilder::getInstance()->reset(); //TODO
+        CharacterPointCacheBuilder::getInstance()->reset();
     }
 }
