@@ -47,6 +47,7 @@
                     <xs:element name="factions" type="factions_element" minOccurs="0" />
                     <xs:element name="races" type="races_element" minOccurs="0" />
                     <xs:element name="roles" type="roles_element" minOccurs="0" />
+                    <xs:element name="skills" type="skills_element" minOccurs="0" />
                 </xs:choice>
             </xs:extension>
         </xs:complexContent>
@@ -79,6 +80,13 @@
     <xs:complexType name="roles_element">
         <xs:choice maxOccurs="unbounded">
             <xs:element name="role" type="xs:string" minOccurs="1" />
+        </xs:choice>
+    </xs:complexType>
+
+    <!-- skills element -->
+    <xs:complexType name="skills_element">
+        <xs:choice maxOccurs="unbounded">
+            <xs:element name="skill" type="xs:string" minOccurs="1" />
         </xs:choice>
     </xs:complexType>
 </xs:schema>

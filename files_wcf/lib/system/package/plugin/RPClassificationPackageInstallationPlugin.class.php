@@ -72,6 +72,12 @@ final class RPClassificationPackageInstallationPlugin extends AbstractXMLPackage
     public array $roles = [];
 
     /**
+     * list of skills per classification id
+     * @var string[]
+     */
+    public array $skills = [];
+
+    /**
      * @inheritDoc
      */
     public $tableName = 'classification';
@@ -168,6 +174,12 @@ final class RPClassificationPackageInstallationPlugin extends AbstractXMLPackage
                 ->saveValueType(ItemListFormField::SAVE_VALUE_TYPE_ARRAY)
                 ->required(),
 
+            ItemListFormField::create('skills')
+                ->label('wcf.acp.pip.rpClassification.skills')
+                ->description('wcf.acp.pip.rpClassification.skills.description')
+                ->saveValueType(ItemListFormField::SAVE_VALUE_TYPE_ARRAY)
+                ->required(),
+
             TextFormField::create('icon')
                 ->label('wcf.acp.pip.rpClassification.icon')
                 ->description('wcf.acp.pip.rpClassification.icon.description'),
@@ -238,6 +250,19 @@ final class RPClassificationPackageInstallationPlugin extends AbstractXMLPackage
             }
         }
 
+        $skills = $element->getElementsByTagName('skills')->item(0);
+        if ($skills !== null) {
+            $entry = [];
+            /** @var \DOMElement $skill */
+            foreach ($skills->getElementsByTagName('skill') as $skill) {
+                $entry[] = $skill->nodeValue;
+            }
+
+            if (!empty($entry)) {
+                $data['skills'] = $entry;
+            }
+        }
+
         if ($saveData) {
             if (isset($data['game'])) {
                 $data['gameID'] = GameCache::getInstance()->getGameByIdentifier($data['game'])?->gameID;
@@ -263,6 +288,11 @@ final class RPClassificationPackageInstallationPlugin extends AbstractXMLPackage
             if (isset($data['roles'])) {
                 $this->roles[$data['identifier']] = $data['roles'];
                 unset($data['roles']);
+            }
+
+            if (isset($data['skills'])) {
+                $this->skills[$data['identifier']] = $data['skills'];
+                unset($data['skills']);
             }
         }
 
@@ -341,6 +371,15 @@ final class RPClassificationPackageInstallationPlugin extends AbstractXMLPackage
             }
 
             $elements['roles'] = $nodeValue;
+        } else if ($element->tagName == 'skills') {
+            $nodeValue = [];
+
+            $skills = $xpath->query('child::ns:skill', $element);
+            foreach ($skills as $skill) {
+                $nodeValue[] = $skill->nodeValue;
+            }
+
+            $elements['skills'] = $nodeValue;
         } else {
             $elements[$element->tagName] = $nodeValue;
         }
@@ -367,7 +406,14 @@ final class RPClassificationPackageInstallationPlugin extends AbstractXMLPackage
      */
     public static function getSyncDependencies()
     {
-        return ['language', 'rpGame', 'rpFaction', 'rpRace', 'rpRole'];
+        return [
+            'language',
+            'rpGame',
+            'rpFaction',
+            'rpRace',
+            'rpRole',
+            'rpSkill'
+        ];
     }
 
     /**
@@ -425,6 +471,10 @@ final class RPClassificationPackageInstallationPlugin extends AbstractXMLPackage
 
         if (!empty($this->roles)) {
             $this->postImportRoles();
+        }
+
+        if (!empty($this->skills)) {
+            $this->postImportSkills();
         }
     }
 
@@ -575,6 +625,55 @@ final class RPClassificationPackageInstallationPlugin extends AbstractXMLPackage
         }
     }
 
+    protected function postImportSkills(): void
+    {
+        $conditions = new PreparedStatementConditionBuilder();
+        $conditions->add('identifier IN (?)', [\array_keys($this->skills)]);
+        $conditions->add('packageID = ?', [$this->installation->getPackageID()]);
+
+        $sql = "SELECT  *
+                FROM    rp1_classification
+                {$conditions}";
+        $statement = WCF::getDB()->prepare($sql);
+        $statement->execute($conditions->getParameters());
+
+        /** @var Classification[] $classifications */
+        $classifications = $statement->fetchObjects(Classification::class, 'identifier');
+
+        // save skills
+        $sql = "DELETE FROM rp1_classification_to_skill
+                WHERE       classificationID = ?";
+        $deleteStatement = WCF::getDB()->prepare($sql);
+
+        $sql = "INSERT IGNORE   rp1_classification_to_skill
+                                (classificationID, skillID)
+                VALUES          (?, ?)";
+        $insertStatement = WCF::getDB()->prepare($sql);
+
+        foreach ($this->skills as $classificationIdentifier => $skills) {
+            // delete old skills
+            $deleteStatement->execute([$classifications[$classificationIdentifier]->classificationID]);
+
+            // get skill ids
+            $conditionBuilder = new PreparedStatementConditionBuilder();
+            $conditionBuilder->add('identifier IN (?)', [$skills]);
+            $sql = "SELECT  skillID
+                    FROM    rp1_skill
+                    {$conditionBuilder}";
+            $statement = WCF::getDB()->prepare($sql);
+            $statement->execute($conditionBuilder->getParameters());
+            $skillIDs = $statement->fetchAll(\PDO::FETCH_COLUMN);
+
+            // save skill ids
+            foreach ($skillIDs as $skillID) {
+                $insertStatement->execute([
+                    $classifications[$classificationIdentifier]->classificationID,
+                    $skillID,
+                ]);
+            }
+        }
+    }
+
     /**
      * @inheritDoc
      */
@@ -638,6 +737,17 @@ final class RPClassificationPackageInstallationPlugin extends AbstractXMLPackage
             $classification->appendChild($roles);
         }
 
+        if (!empty($formData['skills'])) {
+            $skills = $document->createElement('skills');
+
+            \sort($formData['skills']);
+            foreach ($formData['skills'] as $skill) {
+                $skills->appendChild($document->createElement('skill', $skill));
+            }
+
+            $classification->appendChild($skills);
+        }
+
         return $classification;
     }
 
@@ -663,6 +773,10 @@ final class RPClassificationPackageInstallationPlugin extends AbstractXMLPackage
 
         if (!empty($data['elements']['roles'])) {
             $this->roles[$data['attributes']['identifier']] = $data['elements']['roles'];
+        }
+
+        if (!empty($data['elements']['skills'])) {
+            $this->skills[$data['attributes']['identifier']] = $data['elements']['skills'];
         }
 
         return [

@@ -106,6 +106,24 @@ return [
                 ->onDelete('CASCADE'),
         ]),
 
+    DatabaseTable::create('rp1_classification_to_skill')
+        ->columns([
+            NotNullInt10DatabaseTableColumn::create('classificationID'),
+            NotNullInt10DatabaseTableColumn::create('skillID'),
+        ])
+        ->indices([
+            DatabaseTableIndex::create('classificationID_skillID')
+                ->columns(['classificationID', 'skillID'])
+                ->type(DatabaseTableIndex::UNIQUE_TYPE),
+        ])
+        ->foreignKeys([
+            DatabaseTableForeignKey::create()
+                ->columns(['classificationID'])
+                ->referencedTable('rp1_classification')
+                ->referencedColumns(['classificationID'])
+                ->onDelete('CASCADE'),
+        ]),
+
     DatabaseTable::create('rp1_faction')
         ->columns([
             ObjectIdDatabaseTableColumn::create('factionID'),
@@ -645,6 +663,46 @@ return [
                 ->columns(['packageID'])
                 ->referencedTable('wcf1_package')
                 ->referencedColumns(['packageID'])
+                ->onDelete('CASCADE'),
+        ]),
+
+    DatabaseTable::create('rp1_skill')
+        ->columns([
+            ObjectIdDatabaseTableColumn::create('skillID'),
+            NotNullInt10DatabaseTableColumn::create('gameID'),
+            NotNullVarchar255DatabaseTableColumn::create('identifier'),
+            NotNullVarchar255DatabaseTableColumn::create('title'),
+            NotNullVarchar255DatabaseTableColumn::create('icon')
+                ->defaultValue(''),
+            DefaultFalseBooleanDatabaseTableColumn::create('isDisabled'),
+            NotNullInt10DatabaseTableColumn::create('packageID'),
+        ])
+        ->indices([
+            DatabaseTablePrimaryIndex::create()
+                ->columns(['skillID']),
+            DatabaseTableIndex::create('identifier_gameID')
+                ->columns(['identifier', 'gameID'])
+                ->type(DatabaseTableIndex::UNIQUE_TYPE),
+        ])
+        ->foreignKeys([
+            DatabaseTableForeignKey::create()
+                ->columns(['gameID'])
+                ->referencedTable('rp1_game')
+                ->referencedColumns(['gameID'])
+                ->onDelete('CASCADE'),
+            DatabaseTableForeignKey::create()
+                ->columns(['packageID'])
+                ->referencedTable('wcf1_package')
+                ->referencedColumns(['packageID'])
+                ->onDelete('CASCADE'),
+        ]),
+
+    PartialDatabaseTable::create('rp1_classification_to_skill')
+        ->foreignKeys([
+            DatabaseTableForeignKey::create()
+                ->columns(['skillID'])
+                ->referencedTable('rp1_skill')
+                ->referencedColumns(['skillID'])
                 ->onDelete('CASCADE'),
         ]),
 ];
