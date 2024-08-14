@@ -27,6 +27,10 @@
                 <parent>rp</parent>
                 <showorder>4</showorder>
             </category>
+            <category name="rp.item">
+                <parent>rp</parent>
+                <showorder>5</showorder>
+            </category>
         </categories>
 
         <options>
@@ -123,6 +127,20 @@ DESC:wcf.global.sortOrder.descending</selectoptions>
                 <defaultvalue>1</defaultvalue>
             </option>
             <!-- /rp.points -->
+
+            <!-- rp.item -->
+            <option name="rp_enable_item">
+                <categoryname>rp.item</categoryname>
+                <optiontype>boolean</optiontype>
+                <defaultvalue>0</defaultvalue>
+                <enableoptions>rp_item_databases</enableoptions>
+            </option>
+            <option name="rp_item_databases">
+                <categoryname>rp.item</categoryname>
+                <optiontype>itemDatabases</optiontype>
+                <issortable>1</issortable>
+            </option>
+            <!-- /rp.item -->
         </options>
     </import>
 </data>

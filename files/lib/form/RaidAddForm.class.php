@@ -160,6 +160,18 @@ class RaidAddForm extends AbstractFormBuilderForm
             ]);
         $raidTab->appendChild($dataContainer);
 
+        // item tab
+        $itemsTab = TabFormContainer::create('itemsTab');
+        $itemsTab->label('rp.raid.items');
+        $tabMenu->appendChild($itemsTab);
+
+        $itemsContainer = FormContainer::create('itemsContainer')
+            ->appendChild(
+                RaidItemsFormField::create()
+                    ->available(RP_ENABLE_ITEM)
+            );
+        $itemsTab->appendChild($itemsContainer);
+
         if ($this->formAction === 'create' && $this->event === null) {
             $charactersFormField = CharacterMultipleSelectionFormField::create('attendeeIDs')
                 ->label('rp.raid.attendees')

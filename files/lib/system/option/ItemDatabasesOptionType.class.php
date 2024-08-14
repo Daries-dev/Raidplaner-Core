@@ -14,7 +14,7 @@ use wcf\system\WCF;
  * @copyright   2023-2024 Daries.dev
  * @license Raidplaner is licensed under Creative Commons Attribution-ShareAlike 4.0 International 
  */
-class ItemDatabaseOptionType extends AbstractOptionType
+class ItemDatabasesOptionType extends AbstractOptionType
 {
     /**
      * list of available item databases
