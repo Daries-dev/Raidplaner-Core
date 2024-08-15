@@ -25,6 +25,7 @@ final class ClassificationCacheBuilder extends AbstractCacheBuilder
             'identifier' => [],
             'classification' => [],
             'races' => [],
+            'skills' => [],
         ];
 
         // get game classification
@@ -54,6 +55,14 @@ final class ClassificationCacheBuilder extends AbstractCacheBuilder
         $statement = WCF::getDB()->prepare($sql);
         $statement->execute($conditionBuilder->getParameters());
         $data['races'] = $statement->fetchMap('raceID', 'classificationID', false);
+
+        // get skill classification
+        $sql = "SELECT  *
+                FROM    rp1_classification_to_skill
+                {$conditionBuilder}";
+        $statement = WCF::getDB()->prepare($sql);
+        $statement->execute($conditionBuilder->getParameters());
+        $data['skills'] = $statement->fetchMap('skillID', 'classificationID', false);
 
         return $data;
     }
