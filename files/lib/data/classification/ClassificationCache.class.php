@@ -27,6 +27,13 @@ final class ClassificationCache extends SingletonFactory
     protected array $cachedIdentifier = [];
 
     /**
+     * /**
+     * cached races ids with classification id as key
+     * @var int[][]
+     */
+    protected array $cachedRaces = [];
+
+    /**
      * Returns the classification with the given classification id or `null` if no such classification exists.
      */
     public function getClassificationByID(int $classificationID): ?Classification
@@ -60,9 +67,19 @@ final class ClassificationCache extends SingletonFactory
     public function getClassificationsByIDs(array $classificationIDs): array
     {
         return \array_filter(
-            \array_map(fn ($classificationID) => $this->getEventByID($classificationID), $classificationIDs),
-            fn ($classification) => $classification !== null
+            \array_map(fn($classificationID) => $this->getClassificationByID($classificationID), $classificationIDs),
+            fn($classification) => $classification !== null
         );
+    }
+
+    /**
+     * Returns the classification races.
+     * 
+     * @return	int[][]
+     */
+    public function getClassificationRaces(): array
+    {
+        return $this->cachedRaces;
     }
 
     /**
@@ -72,5 +89,6 @@ final class ClassificationCache extends SingletonFactory
     {
         $this->cachedClassifications = ClassificationCacheBuilder::getInstance()->getData(['gameID' => RP_CURRENT_GAME_ID], 'classification');
         $this->cachedIdentifier = ClassificationCacheBuilder::getInstance()->getData(['gameID' => RP_CURRENT_GAME_ID], 'identifier');
+        $this->cachedRaces = ClassificationCacheBuilder::getInstance()->getData(['gameID' => RP_CURRENT_GAME_ID], 'races');
     }
 }

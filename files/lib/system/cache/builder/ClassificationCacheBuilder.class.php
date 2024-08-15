@@ -4,6 +4,7 @@ namespace rp\system\cache\builder;
 
 use rp\data\classification\Classification;
 use wcf\system\cache\builder\AbstractCacheBuilder;
+use wcf\system\database\util\PreparedStatementConditionBuilder;
 use wcf\system\WCF;
 
 /**
@@ -23,6 +24,7 @@ final class ClassificationCacheBuilder extends AbstractCacheBuilder
         $data = [
             'identifier' => [],
             'classification' => [],
+            'races' => [],
         ];
 
         // get game classification
@@ -38,9 +40,20 @@ final class ClassificationCacheBuilder extends AbstractCacheBuilder
 
         /** @var Classification $object */
         while ($object = $statement->fetchObject(Classification::class)) {
-            $data['classification'][$object->classificationID] = $object;
-            $data['identifier'][$object->identifier] = $object->classificationID;
+            $data['classification'][$object->getObjectID()] = $object;
+            $data['identifier'][$object->identifier] = $object->getObjectID();
         }
+
+        $conditionBuilder = new PreparedStatementConditionBuilder();
+        $conditionBuilder->add('classificationID IN (?)', [\array_keys($data['classification'])]);
+
+        // get race classification
+        $sql = "SELECT  *
+                FROM    rp1_classification_to_race
+                {$conditionBuilder}";
+        $statement = WCF::getDB()->prepare($sql);
+        $statement->execute($conditionBuilder->getParameters());
+        $data['races'] = $statement->fetchMap('raceID', 'classificationID', false);
 
         return $data;
     }
