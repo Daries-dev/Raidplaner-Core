@@ -510,6 +510,7 @@ final class RPClassificationPackageInstallationPlugin extends AbstractXMLPackage
             // get faction ids
             $conditionBuilder = new PreparedStatementConditionBuilder();
             $conditionBuilder->add('identifier IN (?)', [$factions]);
+            $conditionBuilder->add('packageID = ?', [$this->installation->getPackageID()]);
             $sql = "SELECT  factionID
                     FROM    rp1_faction
                     {$conditionBuilder}";
@@ -559,6 +560,7 @@ final class RPClassificationPackageInstallationPlugin extends AbstractXMLPackage
             // get race ids
             $conditionBuilder = new PreparedStatementConditionBuilder();
             $conditionBuilder->add('identifier IN (?)', [$races]);
+            $conditionBuilder->add('packageID = ?', [$this->installation->getPackageID()]);
             $sql = "SELECT  raceID
                     FROM    rp1_race
                     {$conditionBuilder}";
@@ -608,6 +610,7 @@ final class RPClassificationPackageInstallationPlugin extends AbstractXMLPackage
             // get role ids
             $conditionBuilder = new PreparedStatementConditionBuilder();
             $conditionBuilder->add('identifier IN (?)', [$roles]);
+            $conditionBuilder->add('packageID = ?', [$this->installation->getPackageID()]);
             $sql = "SELECT  roleID
                     FROM    rp1_role
                     {$conditionBuilder}";
@@ -657,6 +660,7 @@ final class RPClassificationPackageInstallationPlugin extends AbstractXMLPackage
             // get skill ids
             $conditionBuilder = new PreparedStatementConditionBuilder();
             $conditionBuilder->add('identifier IN (?)', [$skills]);
+            $conditionBuilder->add('packageID = ?', [$this->installation->getPackageID()]);
             $sql = "SELECT  skillID
                     FROM    rp1_skill
                     {$conditionBuilder}";
