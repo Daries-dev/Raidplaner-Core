@@ -18,12 +18,14 @@ final class AvailableCharacter
      *
      * @param int|string $id        The identifier of the character. It can be an integer or a string.
      * @param string $name      The name of the character.
+     * @param int|null $raceID      The race id of the character. It is optional and can be null.
      * @param int|null $classificationID        The classification id of the character. It is optional and can be null.
      * @param int|null $roleID      The role id of the character. It is optional and can be null.
      */
     public function __construct(
         private readonly int|string $id,
         private readonly string $name,
+        private readonly ?int $raceID = null,
         private readonly ?int $classificationID = null,
         private readonly ?int $roleID = null
     ) {
@@ -51,6 +53,14 @@ final class AvailableCharacter
     public function getName(): string
     {
         return $this->name;
+    }
+
+    /**
+     * Return the race id of the character.
+     */
+    public function getRaceID(): ?int
+    {
+        return $this->raceID;
     }
 
     /**
