@@ -12,13 +12,9 @@ export class DynamicSelectManager {
   readonly #filteredSelect: HTMLSelectElement;
   readonly #optionsMapping: SelectOptionsMapping;
 
-  constructor(
-    triggerSelect: HTMLSelectElement,
-    filteredSelect: HTMLSelectElement,
-    optionsMapping: SelectOptionsMapping,
-  ) {
-    this.#triggerSelect = triggerSelect;
-    this.#filteredSelect = filteredSelect;
+  constructor(triggerSelect: string, filteredSelect: string, optionsMapping: SelectOptionsMapping) {
+    this.#triggerSelect = document.getElementById(triggerSelect) as HTMLSelectElement;
+    this.#filteredSelect = document.getElementById(filteredSelect) as HTMLSelectElement;
     this.#optionsMapping = optionsMapping;
 
     this.#triggerSelect.addEventListener("change", () => this.#handleSelectChange());

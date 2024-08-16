@@ -15,8 +15,8 @@ define(["require", "exports"], function (require, exports) {
         #filteredSelect;
         #optionsMapping;
         constructor(triggerSelect, filteredSelect, optionsMapping) {
-            this.#triggerSelect = triggerSelect;
-            this.#filteredSelect = filteredSelect;
+            this.#triggerSelect = document.getElementById(triggerSelect);
+            this.#filteredSelect = document.getElementById(filteredSelect);
             this.#optionsMapping = optionsMapping;
             this.#triggerSelect.addEventListener("change", () => this.#handleSelectChange());
             this.#handleSelectChange();
