@@ -5,6 +5,11 @@ namespace rp\system\form\builder\field;
 use wcf\system\form\builder\field\SingleSelectionFormField;
 
 /**
+ * This class adds dynamic functionalities to the `SingleSelectionFormField`.
+ * 
+ * It allows the options to be updated automatically based on another selection in the form, 
+ * which increases the interactivity and adaptability of the form.
+ * 
  * @author  Marco Daries
  * @copyright   2023-2024 Daries.dev
  * @license Raidplaner is licensed under Creative Commons Attribution-ShareAlike 4.0 International 
@@ -21,19 +26,35 @@ class DynamicSelectFormField extends SingleSelectionFormField
      */
     protected $templateName = 'shared_dynamicSelectFormField';
 
+    /**
+     * A mapping of options that is used to determine the available options for this form field based on another selection.
+     */
     protected ?array $optionsMapping = null;
 
+    /**
+     * The name of the selection field that triggers this field and whose selection affects the options in this field.
+     */
     protected ?string $triggerSelect = null;
 
+    /**
+     * Returns the option mapping that has been configured for this field.
+     * 
+     * @throws \LogicException If no option mapping has been set.
+     */
     public function getOptionsMapping(): array
     {
         if ($this->optionsMapping === null) {
-            throw new \BadMethodCallException("No options mapping have been set for field '{$this->getId()}'.");
+            throw new \LogicException("No options mapping have been set for field '{$this->getId()}'.");
         }
 
         return $this->optionsMapping;
     }
 
+    /**
+     * Returns the associated trigger selection field that affects the options in this field.
+     * 
+     * @throws \LogicException If the trigger selection field was not set.
+     */
     public function getTriggerSelect(): string
     {
         if ($this->triggerSelect === null) {
@@ -43,6 +64,12 @@ class DynamicSelectFormField extends SingleSelectionFormField
         return $this->triggerSelect;
     }
 
+    /**
+     * Sets the option mapping for this field. The mapping can either be an array or a callable that returns an array.
+     * 
+     * @throws \InvalidArgumentException If the passed mapping is neither an array nor a callable.
+     * @throws \UnexpectedValueException If the callable does not return an array.
+     */
     public function optionsMapping(array|callable $optionsMapping): self
     {
         if (!\is_array($optionsMapping) && !\is_callable($optionsMapping)) {
@@ -91,6 +118,9 @@ class DynamicSelectFormField extends SingleSelectionFormField
         return $this;
     }
 
+    /**
+     * Sets the trigger selection field that affects the options in this field.
+     */
     public function triggerSelect(string $select): self
     {
         $this->triggerSelect = $select;
