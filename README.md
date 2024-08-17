@@ -3,8 +3,8 @@ The Gamer DKP System.
 
 ## Extensions (Games)
 
-- [Star Wars: The Old Republic (in Entwicklung)](https://github.com/Daries-dev/Raidplaner-Game-SWTOR)
-- [World of Warcraft (in Entwicklung)](https://github.com/Daries-dev/Raidplaner-Game-WOW)
+- [Star Wars: The Old Republic (in development)](https://github.com/Daries-dev/Raidplaner-Game-SWTOR)
+- [World of Warcraft (in development)](https://github.com/Daries-dev/Raidplaner-Game-WOW)
 
 More games to follow.
 
