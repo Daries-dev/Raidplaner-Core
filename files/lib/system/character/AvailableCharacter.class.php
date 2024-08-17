@@ -26,8 +26,7 @@ final class AvailableCharacter
         private readonly int|string $id,
         private readonly string $name,
         private readonly ?int $raceID = null,
-        private readonly ?int $classificationID = null,
-        private readonly ?int $roleID = null
+        private readonly ?int $classificationID = null
     ) {
     }
 
@@ -61,14 +60,6 @@ final class AvailableCharacter
     public function getRaceID(): ?int
     {
         return $this->raceID;
-    }
-
-    /**
-     * Return the role id of the character.
-     */
-    public function getRoleID(): ?int
-    {
-        return $this->roleID;
     }
 
     public function __toString(): string

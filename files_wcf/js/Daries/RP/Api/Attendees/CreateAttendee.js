@@ -9,11 +9,12 @@ define(["require", "exports", "WoltLabSuite/Core/Ajax/Backend", "WoltLabSuite/Co
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.createAttendee = void 0;
-    async function createAttendee(eventId, characterId, status, guestToken = "") {
+    async function createAttendee(eventId, characterId, roleId, status, guestToken = "") {
         const url = new URL(`${window.WSC_API_URL}index.php?api/rpc/rp/attendees`);
         const payload = {
             eventID: eventId,
             characterID: characterId,
+            roleID: roleId,
             status,
             guestToken,
         };

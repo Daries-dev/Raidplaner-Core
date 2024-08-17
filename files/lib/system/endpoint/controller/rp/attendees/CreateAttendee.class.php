@@ -49,7 +49,7 @@ final class CreateAttendee implements IController
             $character->characterName,
             $availableCharacter->getClassificationID(),
             $availableCharacter->getID(),
-            $availableCharacter->getRoleID(),
+            $parameters->roleID,
             $parameters->status,
         ))();
 
@@ -109,6 +109,8 @@ final class CreateAttendeeParameters
 
         /** @var non-empty-string */
         public readonly string $characterID,
+
+        public readonly int $roleID,
 
         public readonly int $status,
 

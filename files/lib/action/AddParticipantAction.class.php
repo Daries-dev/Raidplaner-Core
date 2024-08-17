@@ -10,10 +10,12 @@ use rp\data\classification\ClassificationCache;
 use rp\data\event\Event;
 use rp\data\event\raid\attendee\EventRaidAttendee;
 use rp\data\event\raid\attendee\EventRaidAttendeeAction;
+use rp\data\race\RaceCache;
 use rp\data\role\RoleCache;
 use rp\system\cache\runtime\CharacterRuntimeCache;
 use rp\system\cache\runtime\EventRuntimeCache;
 use rp\system\character\AvailableCharacter;
+use rp\system\form\builder\field\DynamicSelectFormField;
 use wcf\http\Helper;
 use wcf\system\exception\IllegalLinkException;
 use wcf\system\exception\PermissionDeniedException;
@@ -70,26 +72,35 @@ final class AddParticipantAction implements RequestHandlerInterface
         );
 
         if (WCF::getUser()->userID) {
-            $availableCharacters = [
-                '' => WCF::getLanguage()->get('wcf.global.noSelection'),
-                ...$this->event->getController()->getContentData('availableCharacters'),
-            ];
+            $availableCharacters = $this->event->getController()->getContentData('availableCharacters');
+            $classificationRoles = ClassificationCache::getInstance()->getClassificationRoles();
+
+            $roleMapping = [];
+            foreach ($availableCharacters as $characterID => $character) {
+                $characterClassificationID = $character->getClassificationID();
+
+                foreach ($classificationRoles as $roleID => $classifications) {
+                    foreach ($classifications as $classificationID) {
+                        if ($characterClassificationID !== $classificationID) {
+                            continue;
+                        }
+
+                        $roleMapping[$characterID][] = $roleID;
+                    }
+                }
+            }
 
             $form->appendChildren([
                 SingleSelectionFormField::create('characterID')
                     ->label('rp.event.raid.attendee.character')
                     ->required()
-                    ->options($availableCharacters)
-                    ->addValidator(new FormFieldValidator('notExists', function (SingleSelectionFormField $formField) {
-                        $availableCharacters = $this->event->getController()->getContentData('availableCharacters');
-                        $value = $formField->getSaveValue();
-
-                        if (!isset($availableCharacters[$value])) {
-                            $formField->addValidationError(
-                                new FormFieldValidationError('empty')
-                            );
-                        }
-                    })),
+                    ->options($availableCharacters),
+                DynamicSelectFormField::create('roleID')
+                    ->label('rp.role.title')
+                    ->required()
+                    ->options(RoleCache::getInstance()->getRoles())
+                    ->triggerSelect(\sprintf('%s_%s', static::class, 'characterID'))
+                    ->optionsMapping($roleMapping),
                 SingleSelectionFormField::create('status')
                     ->label('rp.event.raid.status')
                     ->required()
@@ -104,50 +115,41 @@ final class AddParticipantAction implements RequestHandlerInterface
                 EmailFormField::create('email')
                     ->label('rp.event.raid.attendee.email')
                     ->required(),
-                SingleSelectionFormField::create('roleID')
-                    ->label('rp.role.title')
+                SingleSelectionFormField::create('raceID')
+                    ->label('rp.race.title')
                     ->required()
-                    ->options(['' => 'wcf.global.noSelection'] + RoleCache::getInstance()->getRoles())
-                    ->addValidator(new FormFieldValidator('uniqueness', function (SingleSelectionFormField $formField) {
+                    ->options(['' => 'wcf.global.noSelection'] + RaceCache::getInstance()->getRaces())
+                    ->addValidator(new FormFieldValidator('check', function (SingleSelectionFormField $formField) {
                         $value = $formField->getSaveValue();
 
                         if (empty($value)) {
-                            $formField->addValidationError(
-                                new FormFieldValidationError('empty')
-                            );
-                        } else {
-                            $role = RoleCache::getInstance()->getRoleByID($value);
-                            if ($role === null) {
-                                $formField->addValidationError(
-                                    new FormFieldValidationError(
-                                        'invalid',
-                                        'rp.role.error.invalid'
-                                    )
-                                );
-                            }
+                            $formField->addValidationError(new FormFieldValidationError('empty'));
                         }
                     })),
-                SingleSelectionFormField::create('classificationID')
+                DynamicSelectFormField::create('classificationID')
                     ->label('rp.classification.title')
                     ->required()
-                    ->options(['' => 'wcf.global.noSelection'] + ClassificationCache::getInstance()->getClassifications())
-                    ->addValidator(new FormFieldValidator('uniqueness', function (SingleSelectionFormField $formField) {
+                    ->options(ClassificationCache::getInstance()->getClassifications())
+                    ->triggerSelect(\sprintf('%s_%s', static::class, 'raceID'))
+                    ->optionsMapping(ClassificationCache::getInstance()->getClassificationRaces())
+                    ->addValidator(new FormFieldValidator('check', function (SingleSelectionFormField $formField) {
                         $value = $formField->getSaveValue();
 
                         if (empty($value)) {
-                            $formField->addValidationError(
-                                new FormFieldValidationError('empty')
-                            );
-                        } else {
-                            $classification = ClassificationCache::getInstance()->getClassificationByID($value);
-                            if ($classification === null) {
-                                $formField->addValidationError(
-                                    new FormFieldValidationError(
-                                        'invalid',
-                                        'rp.classification.error.invalid'
-                                    )
-                                );
-                            }
+                            $formField->addValidationError(new FormFieldValidationError('empty'));
+                        }
+                    })),
+                DynamicSelectFormField::create('roleID')
+                    ->label('rp.role.title')
+                    ->required()
+                    ->options(RoleCache::getInstance()->getRoles())
+                    ->triggerSelect(\sprintf('%s_%s', static::class, 'classificationID'))
+                    ->optionsMapping(ClassificationCache::getInstance()->getClassificationRoles())
+                    ->addValidator(new FormFieldValidator('check', function (SingleSelectionFormField $formField) {
+                        $value = $formField->getSaveValue();
+
+                        if (empty($value)) {
+                            $formField->addValidationError(new FormFieldValidationError('empty'));
                         }
                     })),
             ]);
@@ -207,7 +209,7 @@ final class AddParticipantAction implements RequestHandlerInterface
                     'characterName' => $character->characterName,
                     'classificationID' => $availableCharacter->getClassificationID(),
                     'internID' => $availableCharacter->getID(),
-                    'roleID' => $availableCharacter->getRoleID(),
+                    'roleID' => $formData['roleID'],
                     'status' => $formData['status'],
                 ];
             } else {

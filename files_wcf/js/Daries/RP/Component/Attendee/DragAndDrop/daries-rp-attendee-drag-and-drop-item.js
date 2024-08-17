@@ -91,10 +91,11 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Ui/Dropdown/Simple", "
         #showSwitchDialog(template) {
             const dialog = (0, Dialog_1.dialogFactory)().fromHtml(template).asPrompt();
             const characterId = dialog.content.querySelector('select[name="characterID"]');
+            const roleId = dialog.content.querySelector('select[name="roleId"]');
             dialog.addEventListener("primary", async () => {
                 (await (0, DeleteAttendee_1.deleteAttendee)(this.attendeeId)).unwrap();
                 this.dispatchEvent(new CustomEvent("delete"));
-                const response = await (0, CreateAttendee_1.createAttendee)(this.eventId, characterId.value, this.status);
+                const response = await (0, CreateAttendee_1.createAttendee)(this.eventId, characterId.value, parseInt(roleId.value), this.status);
                 if (!response.ok) {
                     const validationError = response.error.getValidationError();
                     if (validationError === undefined) {

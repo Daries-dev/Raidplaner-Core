@@ -35,6 +35,13 @@ final class ClassificationCache extends SingletonFactory
 
     /**
      * /**
+     * cached roles ids with classification id as key
+     * @var int[][]
+     */
+    protected array $cachedRoles = [];
+
+    /**
+     * /**
      * cached skills ids with classification id as key
      * @var int[][]
      */
@@ -90,6 +97,16 @@ final class ClassificationCache extends SingletonFactory
     }
 
     /**
+     * Returns the classification roles.
+     * 
+     * @return	int[][]
+     */
+    public function getClassificationRoles(): array
+    {
+        return $this->cachedRoles;
+    }
+
+    /**
      * Returns the classification skills.
      * 
      * @return	int[][]
@@ -107,6 +124,7 @@ final class ClassificationCache extends SingletonFactory
         $this->cachedClassifications = ClassificationCacheBuilder::getInstance()->getData(['gameID' => RP_CURRENT_GAME_ID], 'classification');
         $this->cachedIdentifier = ClassificationCacheBuilder::getInstance()->getData(['gameID' => RP_CURRENT_GAME_ID], 'identifier');
         $this->cachedRaces = ClassificationCacheBuilder::getInstance()->getData(['gameID' => RP_CURRENT_GAME_ID], 'races');
+        $this->cachedRoles = ClassificationCacheBuilder::getInstance()->getData(['gameID' => RP_CURRENT_GAME_ID], 'roles');
         $this->cachedSkills = ClassificationCacheBuilder::getInstance()->getData(['gameID' => RP_CURRENT_GAME_ID], 'skills');
     }
 }
