@@ -55,8 +55,9 @@ final class RaidEvent extends DatabaseObject implements ITitledLinkObject
     public function getIconPath(): string
     {
         return \sprintf(
-            '%simages/raid/event/%s.png',
+            '%simages/%s/%s.png',
             WCF::getPath('rp'),
+            GameCache::getInstance()->getGameByID($this->gameID)->identifier,
             $this->icon ?? 'unknown'
         );
     }
