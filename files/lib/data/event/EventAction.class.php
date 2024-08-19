@@ -291,9 +291,7 @@ class EventAction extends AbstractDatabaseObjectAction
                 }
             }
 
-            if (!$this->parameters['noLog']) {
-                EventModificationLogHandler::getInstance()->edit($event->getDecoratedObject());
-            }
+            EventModificationLogHandler::getInstance()->edit($event->getDecoratedObject());
         }
     }
 

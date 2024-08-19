@@ -5,7 +5,6 @@ namespace rp\system\event\command;
 use rp\data\event\Event;
 use rp\data\event\EventAction;
 use rp\event\event\EventEnabledDisabled;
-use rp\system\log\modification\EventModificationLogHandler;
 use wcf\system\event\EventHandler;
 
 /**
@@ -26,21 +25,9 @@ final class EnableDisableEvent
     {
         $action = new EventAction(
             [$this->event],
-            'update',
-            [
-                'data' => [
-                    'isDisabled' => $this->isEnabled ? 1 : 0,
-                ],
-                'noLog' => true,
-            ]
+            $this->isEnabled ? 'disable' : 'enable'
         );
         $action->executeAction();
-
-        if ($this->isEnabled) {
-            EventModificationLogHandler::getInstance()->disable($this->event);
-        } else {
-            EventModificationLogHandler::getInstance()->enable($this->event);
-        }
 
         $event = new EventEnabledDisabled(new Event($this->event->eventID), !$this->isEnabled);
         EventHandler::getInstance()->fire($event);
