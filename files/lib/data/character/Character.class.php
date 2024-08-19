@@ -5,6 +5,7 @@ namespace rp\data\character;
 use rp\data\character\avatar\CharacterAvatar;
 use rp\system\cache\runtime\CharacterProfileRuntimeCache;
 use wcf\data\DatabaseObject;
+use wcf\data\IPopoverObject;
 use wcf\system\request\IRouteController;
 use wcf\system\request\LinkHandler;
 use wcf\system\user\storage\UserStorageHandler;
@@ -30,7 +31,7 @@ use wcf\system\WCF;
  * @property-read   int $isPrimary      is `1` if the character is primary character of this game, otherwise `0`
  * @property-read   int $isDisabled     is `1` if the character is disabled and thus is not displayed, otherwise `0`
  */
-final class Character extends DatabaseObject implements IRouteController
+final class Character extends DatabaseObject implements IPopoverObject, IRouteController
 {
     /**
      * @inheritDoc
@@ -146,6 +147,14 @@ final class Character extends DatabaseObject implements IRouteController
             'forceFrontend' => true,
             'object' => $this
         ]);
+    }
+
+        /**
+     * @inheritDoc
+     */
+    public function getPopoverLinkClass()
+    {
+        return 'rpCharacterLink';
     }
 
     public function getPrimaryCharacter(): ?CharacterProfile

@@ -325,7 +325,7 @@
         </category>
 
         <category name="wcf.page">
-            <item name="wcf.page.onlineLocation.dev.daries.rp.Character"><![CDATA[Character profile of <a href="{link application='rp' controller='Character' object=$character}{/link}" class="rpCharacterLink" data-character-id="{$character->characterID}">{$character->getTitle()}</a>]]></item>
+            <item name="wcf.page.onlineLocation.dev.daries.rp.Character"><![CDATA[Character profile of <a href="{link application='rp' controller='Character' object=$character}{/link}" class="rpCharacterLink" data-object-id="{$character->characterID}">{$character->getTitle()}</a>]]></item>
         </category>
     </import>
 </language>

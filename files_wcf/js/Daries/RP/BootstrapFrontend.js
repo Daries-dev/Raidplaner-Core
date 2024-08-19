@@ -33,13 +33,28 @@ define(["require", "exports", "WoltLabSuite/Core/LazyLoader"], function (require
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.setup = void 0;
     function setup(options) {
+        window.RP_API_URL = options.RP_API_URL;
+        setupCharacterPopover(options.endpointCharacterPopover);
         (0, LazyLoader_1.whenFirstSeen)("daries-rp-attendee-drag-and-drop-box", () => {
             void new Promise((resolve_1, reject_1) => { require(["./Component/Attendee/DragAndDrop/daries-rp-attendee-drag-and-drop-box"], resolve_1, reject_1); }).then(__importStar);
         });
         (0, LazyLoader_1.whenFirstSeen)("daries-rp-attendee-drag-and-drop-item", () => {
             void new Promise((resolve_2, reject_2) => { require(["./Component/Attendee/DragAndDrop/daries-rp-attendee-drag-and-drop-item"], resolve_2, reject_2); }).then(__importStar);
         });
-        window.RP_API_URL = options.RP_API_URL;
     }
     exports.setup = setup;
+    function setupCharacterPopover(endpoint) {
+        if (endpoint === "") {
+            return;
+        }
+        (0, LazyLoader_1.whenFirstSeen)(".rpCharacterLink", () => {
+            void new Promise((resolve_3, reject_3) => { require(["WoltLabSuite/Core/Component/Popover"], resolve_3, reject_3); }).then(__importStar).then(({ setupFor }) => {
+                setupFor({
+                    endpoint,
+                    identifier: "dev.daries.rp.character",
+                    selector: ".rpCharacterLink",
+                });
+            });
+        });
+    }
 });

@@ -9,14 +9,32 @@
 import { whenFirstSeen } from "WoltLabSuite/Core/LazyLoader";
 
 export function setup(options: BootstrapOptions): void {
+  window.RP_API_URL = options.RP_API_URL;
+
+  setupCharacterPopover(options.endpointCharacterPopover);
+
   whenFirstSeen("daries-rp-attendee-drag-and-drop-box", () => {
     void import("./Component/Attendee/DragAndDrop/daries-rp-attendee-drag-and-drop-box");
   });
   whenFirstSeen("daries-rp-attendee-drag-and-drop-item", () => {
     void import("./Component/Attendee/DragAndDrop/daries-rp-attendee-drag-and-drop-item");
   });
+}
 
-  window.RP_API_URL = options.RP_API_URL;
+function setupCharacterPopover(endpoint: string): void {
+  if (endpoint === "") {
+    return;
+  }
+
+  whenFirstSeen(".rpCharacterLink", () => {
+    void import("WoltLabSuite/Core/Component/Popover").then(({ setupFor }) => {
+      setupFor({
+        endpoint,
+        identifier: "dev.daries.rp.character",
+        selector: ".rpCharacterLink",
+      });
+    });
+  });
 }
 
 declare global {
@@ -26,5 +44,6 @@ declare global {
 }
 
 interface BootstrapOptions {
+  endpointCharacterPopover: string;
   RP_API_URL: string;
 }

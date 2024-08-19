@@ -8,6 +8,7 @@
         {jsphrase name='rp.event.raid.updateStatus'}
 
         BootstrapFrontend.setup({
+            endpointCharacterPopover: '{link application="rp" controller='CharacterPopover'}{/link}',
             RP_API_URL: '{$__wcf->getPath('rp')}',
         });
     });
