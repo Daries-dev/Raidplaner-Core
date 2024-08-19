@@ -21,14 +21,14 @@
 {capture assign='headContent'}
     {if $pageNo < $pages}
         <link rel="next"
-            href="{link application='rp' controller='CharactersList'}pageNo={$pageNo+1}&{$canonicalURLParameters}{/link}">
+            href="{link application='rp' controller='CharacterList'}pageNo={$pageNo+1}&{$canonicalURLParameters}{/link}">
     {/if}
     {if $pageNo > 1}
         <link rel="prev"
-            href="{link application='rp' controller='CharactersList'}{if $pageNo > 2}pageNo={$pageNo-1}&{/if}{$canonicalURLParameters}{/link}">
+            href="{link application='rp' controller='CharacterList'}{if $pageNo > 2}pageNo={$pageNo-1}&{/if}{$canonicalURLParameters}{/link}">
     {/if}
     <link rel="canonical"
-        href="{link application='rp' controller='CharactersList'}{if $pageNo > 1}pageNo={$pageNo}&{/if}{$canonicalURLParameters}{/link}">
+        href="{link application='rp' controller='CharacterList'}{if $pageNo > 1}pageNo={$pageNo}&{/if}{$canonicalURLParameters}{/link}">
 {/capture}
 
 {capture assign='contentHeaderNavigation'}
@@ -68,7 +68,7 @@
 
 {capture assign='contentInteractionPagination'}
     <woltlab-core-pagination page="{$pageNo}" count="{$pages}"
-        url="{link application='rp' controller='CharactersList' id=$searchID}pageNo=%d&sortField=$sortField&sortOrder=$sortOrder&letter=$encodedLetter{/link}">
+        url="{link application='rp' controller='CharacterList' id=$searchID}pageNo=%d&sortField=$sortField&sortOrder=$sortOrder&letter=$encodedLetter{/link}">
     </woltlab-core-pagination>
 {/capture}
 
@@ -79,7 +79,7 @@
         <div class="containerListDisplayOptions">
             <div class="containerListSortOptions">
                 <a rel="nofollow" class="jsTooltip"
-                    href="{link application='rp' controller='CharactersList' id=$searchID}pageNo={$pageNo}&sortField={$sortField}&sortOrder={if $sortOrder == 'ASC'}DESC{else}ASC{/if}{if $letter}&letter={$letter}{/if}{if $ownCharacters}&ownCharacters=1{/if}{/link}"
+                    href="{link application='rp' controller='CharacterList' id=$searchID}pageNo={$pageNo}&sortField={$sortField}&sortOrder={if $sortOrder == 'ASC'}DESC{else}ASC{/if}{if $letter}&letter={$letter}{/if}{if $ownCharacters}&ownCharacters=1{/if}{/link}"
                     title="{lang}wcf.global.sorting{/lang} ({lang}wcf.global.sortOrder.{if $sortOrder === 'ASC'}ascending{else}descending{/if}{/lang})">
                     {if $sortOrder === 'ASC'}
                         {icon name='arrow-down-short-wide'}
@@ -95,7 +95,7 @@
                         {foreach from=$validSortFields item=_sortField}
                             <li {if $_sortField === $sortField}class="active" {/if}>
                                 <a rel="nofollow"
-                                    href="{link application='rp' controller='CharactersList' id=$searchID}pageNo={$pageNo}&sortField={$_sortField}&sortOrder={if $sortField === $_sortField}{if $sortOrder === 'DESC'}ASC{else}DESC{/if}{else}{$sortOrder}{/if}{if $letter}&letter={$letter}{/if}{if $ownCharacters}&ownCharacters=1{/if}{/link}">
+                                    href="{link application='rp' controller='CharacterList' id=$searchID}pageNo={$pageNo}&sortField={$_sortField}&sortOrder={if $sortField === $_sortField}{if $sortOrder === 'DESC'}ASC{else}DESC{/if}{else}{$sortOrder}{/if}{if $letter}&letter={$letter}{/if}{if $ownCharacters}&ownCharacters=1{/if}{/link}">
                                     {lang}rp.character.sortField.{$_sortField}{/lang}
                                 </a>
                             </li>
@@ -140,7 +140,7 @@
     </div>
 
     <div id="charactersListSortFilter" class="jsStaticDialogContent" data-title="{lang}rp.character.filter{/lang}">
-        <form method="post" action="{link application='rp' controller='CharactersList' id=$searchID}{/link}">
+        <form method="post" action="{link application='rp' controller='CharacterList' id=$searchID}{/link}">
             <div class="section">
                 <dl>
                     <dt><label for="letter">{lang}rp.character.sort.letters{/lang}</label></dt>
@@ -166,7 +166,7 @@
 
             <div class="formSubmit">
                 <input type="submit" value="{lang}wcf.global.button.submit{/lang}" accesskey="s">
-                <a href="{link application='rp' controller='CharactersList'}{/link}" class="button">
+                <a href="{link application='rp' controller='CharacterList'}{/link}" class="button">
                     {lang}wcf.global.button.reset{/lang}
                 </a>
                 <input type="hidden" name="sortField" value="{$sortField}">

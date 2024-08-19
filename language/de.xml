@@ -63,7 +63,7 @@
             <item name="rp.character.filter"><![CDATA[Filter Characters]]></item>
             <item name="rp.character.guildName"><![CDATA[Gilde]]></item>
             <item name="rp.character.list"><![CDATA[Charaktere]]></item>
-            <item name="rp.character.noCharacters"><![CDATA[Es wurden keine Charaktere gefunden. <a href="{link application='rp' controller='CharactersList'}{/link}">Die aktiven Filter zurücksetzen.</a>]]></item>
+            <item name="rp.character.noCharacters"><![CDATA[Es wurden keine Charaktere gefunden. <a href="{link application='rp' controller='CharacterList'}{/link}">Die aktiven Filter zurücksetzen.</a>]]></item>
             <item name="rp.character.notes"><![CDATA[Notizen]]></item>
             <item name="rp.character.primary"><![CDATA[Main]]></item>
             <item name="rp.character.profile.about.noData"><![CDATA[{if $userID == $__wcf->getUser()->userID}{if LANGUAGE_USE_INFORMAL_VARIANT}Du hast{else}Sie haben{/if} noch keine Informationen hinterlegt.{else}Der Charakter hat noch keine Informationen hinterlegt.{/if}]]></item>
@@ -249,7 +249,7 @@
             <item name="wcf.acp.group.option.user.rp.canReadEvent"><![CDATA[Kann Termine sehen]]></item>
             <item name="wcf.acp.group.option.user.rp.canUploadCharacterAvatar"><![CDATA[Kann eigenen Avatar hochladen]]></item>
             <item name="wcf.acp.group.option.user.rp.canViewCharacterProfile"><![CDATA[Kann Charakter Profile sehen]]></item>
-            <item name="wcf.acp.group.option.user.rp.canViewCharactersList"><![CDATA[Kann Charakter-Liste sehen]]></item>
+            <item name="wcf.acp.group.option.user.rp.canViewCharacterList"><![CDATA[Kann Charakter-Liste sehen]]></item>
             <item name="wcf.acp.group.option.user.rp.characterAvatarAllowedFileExtensions"><![CDATA[Erlaubte Dateiendungen]]></item>
             <item name="wcf.acp.group.option.user.rp.characterAvatarMaxSize"><![CDATA[Maximale Dateigröße]]></item>
         </category>

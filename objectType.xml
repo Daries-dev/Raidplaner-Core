@@ -4,9 +4,9 @@
     <import>
         <!-- box controllers -->
         <type>
-            <name>dev.daries.rp.myCharactersList</name>
+            <name>dev.daries.rp.myCharacterList</name>
             <definitionname>com.woltlab.wcf.boxController</definitionname>
-            <classname>rp\system\box\MyCharactersListBoxController</classname>
+            <classname>rp\system\box\MyCharacterListBoxController</classname>
         </type>
         <!-- /box controllers -->
 

@@ -13,7 +13,7 @@ use wcf\system\WCF;
  * @copyright   2023-2024 Daries.dev
  * @license Raidplaner is licensed under Creative Commons Attribution-ShareAlike 4.0 International 
  */
-final class MyCharactersListBoxController extends AbstractBoxController
+final class MyCharacterListBoxController extends AbstractBoxController
 {
     /**
      * @inheritDoc
@@ -39,7 +39,7 @@ final class MyCharactersListBoxController extends AbstractBoxController
 
         if (empty($characters)) return;
 
-        $this->content = WCF::getTPL()->fetch('boxMyCharactersList', 'rp', [
+        $this->content = WCF::getTPL()->fetch('boxMyCharacterList', 'rp', [
             'boxCharacters' => $characters,
         ], true);
     }

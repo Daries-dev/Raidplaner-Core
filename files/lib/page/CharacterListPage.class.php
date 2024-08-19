@@ -12,7 +12,7 @@ use wcf\system\WCF;
 use wcf\util\HeaderUtil;
 
 /**
- * Shows characters page.
+ * Shows character list page.
  *
  * @author  Marco Daries
  * @copyright   2023-2024 Daries.dev
@@ -20,7 +20,7 @@ use wcf\util\HeaderUtil;
  * 
  * @property    CharacterProfileList    $objectList
  */
-class CharactersListPage extends SortablePage
+class CharacterListPage extends SortablePage
 {
     /**
      * available letters
@@ -50,7 +50,7 @@ class CharactersListPage extends SortablePage
     /**
      * @inheritDoc
      */
-    public $neededPermissions = ['user.rp.canViewCharactersList'];
+    public $neededPermissions = ['user.rp.canViewCharacterList'];
 
     /**
      * @inheritDoc
@@ -178,7 +178,7 @@ class CharactersListPage extends SortablePage
                 $parameters['id'] = $this->searchID;
             }
             $url = \http_build_query($_POST, '', '&');
-            HeaderUtil::redirect(LinkHandler::getInstance()->getLink('CharactersList', $parameters, $url));
+            HeaderUtil::redirect(LinkHandler::getInstance()->getLink('CharacterList', $parameters, $url));
 
             exit;
         }

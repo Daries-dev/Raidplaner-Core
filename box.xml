@@ -2,16 +2,16 @@
 <data xmlns="http://www.woltlab.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.woltlab.com http://www.woltlab.com/XSD/6.0/box.xsd">
     <import>
-        <box identifier="dev.daries.rp.MyCharactersList">
+        <box identifier="dev.daries.rp.MyCharacterList">
             <name language="de">Meine Charaktere (Raidplaner)</name>
             <name language="en">My Characters (Raidplaner)</name>
             <boxType>system</boxType>
             <position>sidebarRight</position>
-            <objectType>dev.daries.rp.myCharactersList</objectType>
+            <objectType>dev.daries.rp.myCharacterList</objectType>
             <showHeader>1</showHeader>
             <visibleEverywhere>0</visibleEverywhere>
             <visibilityExceptions>
-                <page>dev.daries.rp.CharactersList</page>
+                <page>dev.daries.rp.CharacterList</page>
             </visibilityExceptions>
             <content language="de">
                 <title>Meine Charaktere</title>

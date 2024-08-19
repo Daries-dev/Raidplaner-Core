@@ -8,14 +8,14 @@
             <title language="en">Calendar</title>
             <page>dev.daries.rp.Calendar</page>
         </item>
-        <item identifier="dev.daries.rp.CharactersList">
+        <item identifier="dev.daries.rp.CharacterList">
 			<menu>com.woltlab.wcf.MainMenu</menu>
 			<title language="de">Charaktere</title>
 			<title language="en">Characters</title>
-			<page>dev.daries.rp.CharactersList</page>
+			<page>dev.daries.rp.CharacterList</page>
 		</item>
 		<item identifier="dev.daries.rp.CharacterSearch">
-			<parent>dev.daries.rp.CharactersList</parent>
+			<parent>dev.daries.rp.CharacterList</parent>
 			<title language="de">Charaktersuche</title>
 			<title language="en">Search Characters</title>
 			<page>dev.daries.rp.CharacterSearch</page>

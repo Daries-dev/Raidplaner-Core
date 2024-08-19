@@ -42,12 +42,12 @@
             </content>
         </page>
 
-        <page identifier="dev.daries.rp.CharactersList">
+        <page identifier="dev.daries.rp.CharacterList">
             <pageType>system</pageType>
-            <controller>rp\page\CharactersListPage</controller>
+            <controller>rp\page\CharacterListPage</controller>
             <name language="de">Charaktere</name>
             <name language="en">Characters</name>
-            <permissions>user.rp.canViewCharactersList</permissions>
+            <permissions>user.rp.canViewCharacterList</permissions>
             <content language="en">
                 <title>Characters</title>
             </content>
@@ -61,7 +61,7 @@
             <name language="de">Charakterprofil</name>
             <name language="en">Character Profile</name>
             <handler>rp\system\page\handler\CharacterPageHandler</handler>
-            <parent>dev.daries.rp.CharactersList</parent>
+            <parent>dev.daries.rp.CharacterList</parent>
             <requireObjectID>1</requireObjectID>
         </page>
         <page identifier="dev.daries.rp.CharacterAdd">
@@ -70,7 +70,7 @@
             <name language="de">Charakter erstellen</name>
             <name language="en">Add Character</name>
             <hasFixedParent>1</hasFixedParent>
-            <parent>dev.daries.rp.CharactersList</parent>
+            <parent>dev.daries.rp.CharacterList</parent>
             <content language="en">
                 <title>Add Character</title>
             </content>
@@ -84,7 +84,7 @@
             <name language="de">Charakter bearbeiten</name>
             <name language="en">Edit Character</name>
             <hasFixedParent>1</hasFixedParent>
-            <parent>dev.daries.rp.CharactersList</parent>
+            <parent>dev.daries.rp.CharacterList</parent>
             <content language="en">
                 <title>Edit Character</title>
             </content>
@@ -97,8 +97,8 @@
             <controller>rp\form\CharacterSearchForm</controller>
             <name language="de">Charakter suchen</name>
             <name language="en">Search Characters</name>
-            <parent>dev.daries.rp.CharactersList</parent>
-            <permissions>user.rp.canViewCharactersList</permissions>
+            <parent>dev.daries.rp.CharacterList</parent>
+            <permissions>user.rp.canViewCharacterList</permissions>
             <content language="en">
                 <title>Search Characters</title>
             </content>

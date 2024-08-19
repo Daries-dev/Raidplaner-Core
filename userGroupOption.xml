@@ -186,7 +186,7 @@
                 <admindefaultvalue>1</admindefaultvalue>
                 <usersonly>1</usersonly>
             </option>
-            <option name="user.rp.canViewCharactersList">
+            <option name="user.rp.canViewCharacterList">
                 <categoryname>user.rp.character</categoryname>
                 <optiontype>boolean</optiontype>
                 <defaultvalue>1</defaultvalue>

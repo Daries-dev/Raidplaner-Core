@@ -23,7 +23,7 @@ final class CharacterSearchForm extends \rp\acp\form\CharacterSearchForm
     {
         // forward to result page
         HeaderUtil::redirect(LinkHandler::getInstance()->getLink(
-            'CharactersList',
+            'CharacterList',
             [
                 'application' => 'rp',
                 'id' => $this->searchObj->searchID,
