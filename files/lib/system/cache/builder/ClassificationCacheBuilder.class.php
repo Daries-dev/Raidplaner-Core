@@ -55,7 +55,7 @@ final class ClassificationCacheBuilder extends AbstractCacheBuilder
                 {$conditionBuilder}";
         $statement = WCF::getDB()->prepare($sql);
         $statement->execute($conditionBuilder->getParameters());
-        $data['races'] = $statement->fetchMap('raceID', 'classificationID', false);
+        $data['races'] = $statement->fetchMap('classificationID', 'raceID', false);
 
         // get role classification
         $sql = "SELECT  *
@@ -63,7 +63,7 @@ final class ClassificationCacheBuilder extends AbstractCacheBuilder
                 {$conditionBuilder}";
         $statement = WCF::getDB()->prepare($sql);
         $statement->execute($conditionBuilder->getParameters());
-        $data['roles'] = $statement->fetchMap('roleID', 'classificationID', false);
+        $data['roles'] = $statement->fetchMap('classificationID', 'roleID', false);
 
         // get skill classification
         $sql = "SELECT  *
@@ -71,7 +71,7 @@ final class ClassificationCacheBuilder extends AbstractCacheBuilder
                 {$conditionBuilder}";
         $statement = WCF::getDB()->prepare($sql);
         $statement->execute($conditionBuilder->getParameters());
-        $data['skills'] = $statement->fetchMap('skillID', 'classificationID', false);
+        $data['skills'] = $statement->fetchMap('classificationID', 'skillID', false);
 
         return $data;
     }
