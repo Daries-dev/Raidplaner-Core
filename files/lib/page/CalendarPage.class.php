@@ -43,7 +43,8 @@ final class CalendarPage extends AbstractPage
 
         $eventControllers = \array_filter(
             ObjectTypeCache::getInstance()->getObjectTypes('dev.daries.rp.event.controller'),
-            fn ($controller) => $controller->getProcessor()->isAccessible()
+            fn($controller) => $controller->getProcessor()->isAccessible() &&
+                (RP_CURRENT_GAME_ID != 1 || $controller->objectType !== 'dev.daries.rp.event.controller.raid')
         );
 
         \uasort($eventControllers, function (ObjectType $a, ObjectType $b) {

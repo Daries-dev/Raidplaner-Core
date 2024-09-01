@@ -18,6 +18,7 @@ use wcf\system\request\IRouteController;
 use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
 use wcf\util\DateUtil;
+use wcf\util\MessageUtil;
 use wcf\util\StringUtil;
 
 /**
@@ -266,7 +267,7 @@ final class Event extends DatabaseObject implements ITitledLinkObject, IRouteCon
      */
     public function getExcerpt($maxLength = 255): string
     {
-        return StringUtil::truncateHTML($this->getSimplifiedFormattedNotes(), $maxLength);
+        return  MessageUtil::truncateFormattedMessage($this->getSimplifiedFormattedNotes(), $maxLength);
     }
 
     /**
