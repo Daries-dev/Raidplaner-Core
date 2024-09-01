@@ -106,6 +106,7 @@
             <item name="rp.event.moderation.redirect"><![CDATA[Your event has been created and will be displayed once approved.]]></item>
             <item name="rp.event.notes"><![CDATA[Note]]></item>
             <item name="rp.event.participation"><![CDATA[Participation]]></item>
+            <item name="rp.event.recentActivity"><![CDATA[<strong>{$author}</strong> created the {if $eventObj->isRaidEvent()}raid{else}event{/if} <strong>{$eventObj->getTitle()}</strong>.]]></item>
             <item name="rp.event.restore"><![CDATA[Restore]]></item>
             <item name="rp.event.settings"><![CDATA[Settings]]></item>
             <item name="rp.event.startTime"><![CDATA[Start time]]></item>
@@ -364,6 +365,10 @@
 
         <category name="wcf.page">
             <item name="wcf.page.onlineLocation.dev.daries.rp.Character"><![CDATA[Character profile of <a href="{link application='rp' controller='Character' object=$character}{/link}" class="rpCharacterLink" data-object-id="{$character->characterID}">{$character->getTitle()}</a>]]></item>
+        </category>
+
+        <category name="wcf.user.recentActivity">
+            <item name="wcf.user.recentActivity.dev.daries.rp.event.recentActivityEvent"><![CDATA[Event]]></item>
         </category>
     </import>
 </language>

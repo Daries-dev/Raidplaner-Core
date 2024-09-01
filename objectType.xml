@@ -116,6 +116,14 @@
         </type>
         <!-- /notification -->
 
+        <!-- recent activity event -->
+        <type>
+			<name>dev.daries.rp.event.recentActivityEvent</name>
+			<definitionname>com.woltlab.wcf.user.recentActivityEvent</definitionname>
+			<classname>rp\system\user\activity\event\EventUserActivityEvent</classname>
+		</type>
+        <!-- /recent activity event -->
+
         <!-- visit tracker -->
         <type>
             <name>dev.daries.rp.event</name>

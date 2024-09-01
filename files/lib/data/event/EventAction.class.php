@@ -12,6 +12,7 @@ use wcf\system\cache\runtime\UserProfileRuntimeCache;
 use wcf\system\exception\PermissionDeniedException;
 use wcf\system\exception\UserInputException;
 use wcf\system\message\embedded\object\MessageEmbeddedObjectManager;
+use wcf\system\user\activity\event\UserActivityEventHandler;
 use wcf\system\user\storage\UserStorageHandler;
 use wcf\system\visitTracker\VisitTracker;
 use wcf\system\WCF;
@@ -142,6 +143,12 @@ class EventAction extends AbstractDatabaseObjectAction
 
             // delete modification log entries except for deleting the events
             EventModificationLogHandler::getInstance()->deleteLogs($eventIDs, ['delete']);
+
+            // delete recent activity events
+            UserActivityEventHandler::getInstance()->removeEvents(
+                'dev.daries.rp.event.recentActivityEvent',
+                $eventIDs
+            );
         }
 
         // reset storage
@@ -157,13 +164,22 @@ class EventAction extends AbstractDatabaseObjectAction
             $this->readObjects();
         }
 
+        $eventIDs = [];
         foreach ($this->getObjects() as $event) {
             $event->update([
                 'isDisabled' => 1
             ]);
 
             EventModificationLogHandler::getInstance()->disable($event->getDecoratedObject());
+
+            $eventIDs[] = $event->getObjectID;
         }
+
+        // delete recent activity events
+        UserActivityEventHandler::getInstance()->removeEvents(
+            'dev.daries.rp.event.recentActivityEvent',
+            $eventIDs
+        );
 
         // reset storage
         UserStorageHandler::getInstance()->resetAll('rpUnreadEvents');
@@ -181,6 +197,14 @@ class EventAction extends AbstractDatabaseObjectAction
             $event->update([
                 'isDisabled' => 0
             ]);
+
+            UserActivityEventHandler::getInstance()->fireEvent(
+                'dev.daries.rp.event.recentActivityEvent',
+                $event->getObjectID(),
+                null,
+                $event->getUserID(),
+                TIME_NOW
+            );
 
             EventModificationLogHandler::getInstance()->enable($event->getDecoratedObject());
         }
@@ -245,6 +269,15 @@ class EventAction extends AbstractDatabaseObjectAction
             $this->readObjects();
         }
 
+        foreach ($this->getObjects() as $event) {
+            UserActivityEventHandler::getInstance()->fireEvent(
+                'dev.daries.rp.event.recentActivityEvent',
+                $event->getObjectID(),
+                null,
+                $event->getUserID(),
+                $event->getTime()
+            );
+        }
         // reset storage
         UserStorageHandler::getInstance()->resetAll('rpUnreadEvents');
     }
@@ -285,6 +318,7 @@ class EventAction extends AbstractDatabaseObjectAction
 
         parent::update();
 
+        $isDisabled = $this->parameters['data']['isDisabled'] ?? null;
         foreach ($this->getObjects() as $event) {
             // save embedded objects
             if (!empty($this->parameters['notes_htmlInputProcessor'])) {
@@ -294,6 +328,33 @@ class EventAction extends AbstractDatabaseObjectAction
                     $event->update(['hasEmbeddedObjects' => $event->hasEmbeddedObjects ? 0 : 1]);
                 }
             }
+
+            $resetEventIDs = [];
+            if (
+                $isDisabled !== null &&
+                $isDisabled != $event->isDisabled
+            ) {
+                if (!$isDisabled) {
+                    UserActivityEventHandler::getInstance()->fireEvent(
+                        'dev.daries.rp.event.recentActivityEvent',
+                        $event->getObjectID(),
+                        null,
+                        $this->parameters['data']['userID'] ?? $event->getUserID(),
+                        $this->parameters['data']['created'] ?? $event->getTime()
+                    );
+                } else {
+                    $resetEventIDs[] = $event->eventID;
+                }
+            }
+
+            if (!empty($resetEventIDs)) {
+                // delete recent activity events
+                UserActivityEventHandler::getInstance()->removeEvents(
+                    'dev.daries.rp.event.recentActivityEvent',
+                    $resetEventIDs
+                );
+            }
+
 
             EventModificationLogHandler::getInstance()->edit($event->getDecoratedObject());
         }
