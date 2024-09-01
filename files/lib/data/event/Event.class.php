@@ -2,6 +2,9 @@
 
 namespace rp\data\event;
 
+use rp\system\event\discussion\CommentEventDiscussionProvider;
+use rp\system\event\discussion\IEventDiscussionProvider;
+use rp\system\event\discussion\VoidEventDiscussionProvider;
 use rp\system\event\IEventController;
 use rp\system\event\RaidEventController;
 use wcf\data\DatabaseObject;
@@ -53,6 +56,11 @@ final class Event extends DatabaseObject implements ITitledLinkObject, IRouteCon
      * event controller
      */
     protected ?IEventController $controller = null;
+
+    /**
+     * discussion provider
+     */
+    protected ?IEventDiscussionProvider $discussionProvider = null;
 
     /**
      * end time object
@@ -186,6 +194,38 @@ final class Event extends DatabaseObject implements ITitledLinkObject, IRouteCon
     }
 
     /**
+     * Returns the list of the available discussion providers.
+     *
+     * @return      string[]
+     */
+    public static function getAllDiscussionProviders(): array
+    {
+        /** @var string[] $discussionProviders */
+        static $discussionProviders;
+
+        if ($discussionProviders === null) {
+            $discussionProviders = [];
+
+            $objectTypes = ObjectTypeCache::getInstance()->getObjectTypes('dev.daries.rp.event.discussionProvider');
+            $commentProvider = '';
+            foreach ($objectTypes as $objectType) {
+                // the comment and the "void" provider should always be the last in the list
+                if ($objectType->className === CommentEventDiscussionProvider::class) {
+                    $commentProvider = $objectType->className;
+                    continue;
+                }
+
+                $discussionProviders[] = $objectType->className;
+            }
+
+            $discussionProviders[] = $commentProvider;
+            $discussionProviders[] = VoidEventDiscussionProvider::class;
+        }
+
+        return $discussionProviders;
+    }
+
+    /**
      * Returns the event controller.
      */
     public function getController(): IEventController
@@ -198,6 +238,27 @@ final class Event extends DatabaseObject implements ITitledLinkObject, IRouteCon
         }
 
         return $this->controller;
+    }
+
+    /**
+     * Returns the responsible discussion provider for this event.
+     */
+    public function getDiscussionProvider(): IEventDiscussionProvider
+    {
+        if ($this->discussionProvider === null) {
+            foreach (self::getAllDiscussionProviders() as $discussionProvider) {
+                if (\call_user_func([$discussionProvider, 'isResponsible'], $this)) {
+                    $this->setDiscussionProvider(new $discussionProvider($this));
+                    break;
+                }
+            }
+
+            if ($this->discussionProvider === null) {
+                throw new \RuntimeException('No discussion provider has claimed to be responsible for the event #' . $this->eventID);
+            }
+        }
+
+        return $this->discussionProvider;
     }
 
     /**
@@ -350,6 +411,14 @@ final class Event extends DatabaseObject implements ITitledLinkObject, IRouteCon
     public function isVisible(): bool
     {
         return $this->canRead();
+    }
+
+    /**
+     * Sets the discussion provider for this event.
+     */
+    public function setDiscussionProvider(IEventDiscussionProvider $discussionProvider): void
+    {
+        $this->discussionProvider = $discussionProvider;
     }
 
     /**

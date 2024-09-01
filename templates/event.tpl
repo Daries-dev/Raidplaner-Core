@@ -28,14 +28,27 @@
                     {icon name='clock'}
                     {$event->getFormattedStartTime()} - {$event->getFormattedEndTime()}
                 </li>
+
                 <li>
                     {icon name='user'}
                     {user object=$event->getUserProfile()}
                 </li>
+
                 <li>
                     {icon name='eye'}
                     {lang}rp.event.views{/lang}
                 </li>
+
+                {if $event->getDiscussionProvider()->getDiscussionCountPhrase()}
+                    <li>
+                        {icon name='comments'}
+                        {if $event->getDiscussionProvider()->getDiscussionLink()}<a
+                            href="{$event->getDiscussionProvider()->getDiscussionLink()}">{else}<span>
+                                {/if}
+                                {$event->getDiscussionProvider()->getDiscussionCountPhrase()}
+                                {if $event->getDiscussionProvider()->getDiscussionLink()}</a>{else}</span>{/if}
+                    </li>
+                {/if}
             </ul>
         </div>
 
@@ -221,6 +234,10 @@
     </nav>
     {/hascontent}
 </footer>
+
+{event name='beforeComments'}
+
+{@$event->getDiscussionProvider()->renderDiscussions()}
 
 {include file='footer'}
 

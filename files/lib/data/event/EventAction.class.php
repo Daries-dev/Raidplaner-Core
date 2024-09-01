@@ -4,6 +4,7 @@ namespace rp\data\event;
 
 use rp\system\cache\runtime\EventRuntimeCache;
 use rp\system\log\modification\EventModificationLogHandler;
+use Symfony\Component\CssSelector\Parser\Handler\CommentHandler;
 use wcf\data\AbstractDatabaseObjectAction;
 use wcf\data\object\type\ObjectTypeCache;
 use wcf\data\user\UserProfile;
@@ -133,6 +134,9 @@ class EventAction extends AbstractDatabaseObjectAction
         parent::delete();
 
         if (!empty($eventIDs)) {
+            // delete comments
+            CommentHandler::getInstance()->deleteObjects('dev.daries.rp.eventComment', $eventIDs);
+
             // delete embedded object references
             MessageEmbeddedObjectManager::getInstance()->removeObjects('dev.daries.rp.event.notes', $eventIDs);
 

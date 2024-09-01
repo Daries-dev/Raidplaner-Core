@@ -88,6 +88,8 @@
             <item name="rp.event.accepted"><![CDATA[Zugesagt]]></item>
             <item name="rp.event.add"><![CDATA[Termin hinzufügen]]></item>
             <item name="rp.event.canceled"><![CDATA[Abgesagt]]></item>
+            <item name="rp.event.comment"><![CDATA[Termin-Kommentar]]></item>
+            <item name="rp.event.commentResponse"><![CDATA[Antwort auf Termin-Kommentar]]></item>
             <item name="rp.event.delete"><![CDATA[Endgültig löschen]]></item>
             <item name="rp.event.disable"><![CDATA[Deaktivieren]]></item>
             <item name="rp.event.edit"><![CDATA[Termin bearbeiten]]></item>
@@ -96,6 +98,7 @@
             <item name="rp.event.endTime"><![CDATA[Endzeit]]></item>
             <item name="rp.event.endTime.error.invalid"><![CDATA[{if LANGUAGE_USE_INFORMAL_VARIANT}Du hast{else}Sie haben{/if} ein ungültiges Datum für das Ende des Termins angegeben. Das Ende des Termins darf nicht vor dem Start liegen.]]></item>
             <item name="rp.event.endTime.error.tooLong"><![CDATA[Die Dauer des Termins ist zu groß. Die maximal zulässige Dauer beträgt {#RP_CALENDAR_MAX_EVENT_LENGTH} Tage.]]></item>
+            <item name="rp.event.eventComments"><![CDATA[{plural value=$event->comments one='# Kommentar' other='# Kommentare'}]]></item>
             <item name="rp.event.expired"><![CDATA[Die Anmeldefrist für diesen Termin ist bereits überschritten.]]></item>
             <item name="rp.event.isFullDay"><![CDATA[Ganztägiges Ereignis]]></item>
             <item name="rp.event.maybe"><![CDATA[Vielleicht]]></item>
@@ -213,6 +216,29 @@
             <item name="rp.skill.title"><![CDATA[Fertigkeiten]]></item>
         </category>
 
+        <category name="rp.user.notification">
+            <item name="rp.user.notification.eventComment.like.message"><![CDATA[<strong>{$author}</strong> hat auf {if LANGUAGE_USE_INFORMAL_VARIANT}deinen{else}Ihren{/if} Kommentar zum Termin <strong>{$event->getTitle()}</strong> reagiert ({@$__wcf->getReactionHandler()->renderInlineList($reactions)}).]]></item>
+            <item name="rp.user.notification.eventComment.like.message.stacked"><![CDATA[{@'wcf.user.notification.stacked.authorList'|language} haben auf {if LANGUAGE_USE_INFORMAL_VARIANT}deinen{else}Ihren{/if} Kommentar zum Termin <strong>{$event->getTitle()}</strong> reagiert ({@$__wcf->getReactionHandler()->renderInlineList($reactions)}).]]></item>
+            <item name="rp.user.notification.eventComment.like.title"><![CDATA[Reaktion auf einen Kommentar (Termin)]]></item>
+            <item name="rp.user.notification.eventComment.like.title.stacked"><![CDATA[{#$count} Benutzer haben auf {if LANGUAGE_USE_INFORMAL_VARIANT}deinen{else}Ihren{/if} Kommentar reagiert (Termin)]]></item>
+            <item name="rp.user.notification.eventComment.mail.html"><![CDATA[<p>{@$authorList} {if $count == 1 && $guestTimesTriggered < 2 && (!$event->getAuthor()->userID || $guestTimesTriggered == 0)}hat einen Kommentar{else}haben Kommentare{/if} zu dem Termin <a href="{$eventObj->getLink()}#comment{@$commentID}">{$eventObj->getTitle()}</a> verfasst:</p>]]></item>
+            <item name="rp.user.notification.eventComment.mail.plaintext"><![CDATA[{@$authorList} {if $count == 1 && $guestTimesTriggered < 2 && (!$event->getAuthor()->userID || $guestTimesTriggered == 0)}hat einen Kommentar{else}haben Kommentare{/if} zu dem Termin „{@$eventObj->getTitle()}“ [URL:{@$eventObj->getLink()}#comment{@$commentID}] verfasst{if $count == 1 && !$guestTimesTriggered}:{else}.{/if}]]></item>
+            <item name="rp.user.notification.eventComment.message"><![CDATA[{if $author->userID}<strong>{$author}</strong>{else}Ein Gast{/if} hat einen Kommentar zu dem Termin <strong>{$event->getTitle()}</strong> verfasst.]]></item>
+            <item name="rp.user.notification.eventComment.message.stacked"><![CDATA[{@'wcf.user.notification.stacked.authorList'|language} haben Kommentare zu dem Termin <strong>{$event->getTitle()}</strong> verfasst.]]></item>
+            <item name="rp.user.notification.eventComment.response.like.message"><![CDATA[<strong>{$author}</strong> hat auf {if LANGUAGE_USE_INFORMAL_VARIANT}deine{else}Ihre{/if} Antwort auf einen Kommentar zum Termin <strong>{$event->getTitle()}</strong> reagiert ({@$__wcf->getReactionHandler()->renderInlineList($reactions)}).]]></item>
+            <item name="rp.user.notification.eventComment.response.like.message.stacked"><![CDATA[{@'wcf.user.notification.stacked.authorList'|language} haben auf {if LANGUAGE_USE_INFORMAL_VARIANT}deine{else}Ihre{/if} Antwort auf einen Kommentar zum Termin <strong>{$event->getTitle()}</strong> reagiert ({@$__wcf->getReactionHandler()->renderInlineList($reactions)}).]]></item>
+            <item name="rp.user.notification.eventComment.response.like.title"><![CDATA[Reaktion auf eine Antwort eines Kommentars (Termin)]]></item>
+            <item name="rp.user.notification.eventComment.response.like.title.stacked"><![CDATA[{#$count} Benutzer haben auf {if LANGUAGE_USE_INFORMAL_VARIANT}deine{else}Ihre{/if} Antwort auf einen Kommentar reagiert (Termin)]]></item>
+            <item name="rp.user.notification.eventComment.response.mail.html"><![CDATA[<p>{@$authorList} {if $count == 1 && $guestTimesTriggered < 2 && (!$event->getAuthor()->userID || $guestTimesTriggered == 0)}hat eine Antwort{else}haben Antworten{/if} zu einem Kommentar in dem Termin <a href="{$eventObj->getLink()}#comments/comment{@$commentID}/response{@$responseID}">{$eventObj->getTitle()}</a> verfasst{if $count == 1 && !$guestTimesTriggered}:{else}.{/if}</p>]]></item>
+            <item name="rp.user.notification.eventComment.response.mail.plaintext"><![CDATA[{@$authorList} {if $count == 1 && $guestTimesTriggered < 2 && (!$event->getAuthor()->userID || $guestTimesTriggered == 0)}hat eine Antwort{else}haben Antworten{/if} zu einem Kommentar in dem Termin „{@$eventObj->getTitle()}“ [URL:{@$eventObj->getLink()}#comments/comment{@$commentID}/response{@$responseID}] verfasst{if $count == 1 && !$guestTimesTriggered}:{else}.{/if}]]></item>
+            <item name="rp.user.notification.eventComment.response.message"><![CDATA[{if $author->userID}<strong>{$author}</strong>{else}Ein Gast{/if} hat eine Antwort zu einem Kommentar in dem Termin <strong>{$event->getTitle()}</strong> verfasst.]]></item>
+            <item name="rp.user.notification.eventComment.response.message.stacked"><![CDATA[{@'wcf.user.notification.stacked.authorList'|language} haben Antworten zu einem Kommentar in dem Termin <strong>{$event->getTitle()}</strong> verfasst.]]></item>
+            <item name="rp.user.notification.eventComment.responseOwner.mail.html"><![CDATA[<p>{@$authorList} {if $count == 1 && $guestTimesTriggered < 2 && (!$event->getAuthor()->userID || $guestTimesTriggered == 0)}hat eine Antwort{else}haben Antworten{/if} zum Kommentar von <strong>{@$commentAuthor}</strong> zu {if LANGUAGE_USE_INFORMAL_VARIANT}deinem{else}Ihrem{/if} Termin <a href="{$eventObj->getLink()}#comments/comment{@$commentID}/response{@$responseID}">{$eventObj->getTitle()}</a> verfasst{if $count == 1 && !$guestTimesTriggered}:{else}.{/if}</p>]]></item>
+            <item name="rp.user.notification.eventComment.responseOwner.mail.plaintext"><![CDATA[{@$authorList} {if $count == 1 && $guestTimesTriggered < 2 && (!$event->getAuthor()->userID || $guestTimesTriggered == 0)}hat eine Antwort{else}haben Antworten{/if} zum Kommentar von {@$commentAuthor} zu {if LANGUAGE_USE_INFORMAL_VARIANT}deinem{else}Ihrem{/if} Termin „{@$eventObj->getTitle()}“ [URL:{@$eventObj->getLink()}#comments/comment{@$commentID}/response{@$responseID}] verfasst{if $count == 1 && !$guestTimesTriggered}:{else}.{/if}]]></item>
+            <item name="rp.user.notification.eventComment.responseOwner.message"><![CDATA[{if $author->userID}<strong>{$author}</strong>{else}Ein Gast{/if} hat eine Antwort zum Kommentar von <strong>{$commentAuthor}</strong> zu {if LANGUAGE_USE_INFORMAL_VARIANT}deinem{else}Ihrem{/if} Termin <strong>{$event->getTitle()}</strong> verfasst.]]></item>
+            <item name="rp.user.notification.eventComment.responseOwner.message.stacked"><![CDATA[{@'wcf.user.notification.stacked.authorList'|language} haben Antworten zum Kommentar von <strong>{$commentAuthor}</strong> zu {if LANGUAGE_USE_INFORMAL_VARIANT}deinem{else}Ihrem{/if} Termin <strong>{$event->getTitle()}</strong> verfasst.]]></item>
+        </category>
+
         <category name="wcf.acp.group">
             <item name="wcf.acp.group.option.admin.rp.canAddCharacter"><![CDATA[Kann Charaktere erstellen]]></item>
             <item name="wcf.acp.group.option.admin.rp.canDeleteCharacter"><![CDATA[Kann Charaktere löschen]]></item>
@@ -232,17 +258,24 @@
             <item name="wcf.acp.group.option.category.user.rp.raid"><![CDATA[Raids]]></item>
             <item name="wcf.acp.group.option.mod.rp.canAddRaid"><![CDATA[Kann Raids hinzufügen]]></item>
             <item name="wcf.acp.group.option.mod.rp.canDeleteEvent"><![CDATA[Kann Termine löschen]]></item>
+            <item name="wcf.acp.group.option.mod.rp.canDeleteEventComment"><![CDATA[Kann Kommentare löschen]]></item>
             <item name="wcf.acp.group.option.mod.rp.canDeleteEventCompletely"><![CDATA[Kann Termine endgültig löschen]]></item>
             <item name="wcf.acp.group.option.mod.rp.canDeleteRaid"><![CDATA[Kann Raids löschen]]></item>
             <item name="wcf.acp.group.option.mod.rp.canEditEvent"><![CDATA[Kann Termine bearbeiten]]></item>
+            <item name="wcf.acp.group.option.mod.rp.canEditEventComment"><![CDATA[Kann Kommentare bearbeiten]]></item>
             <item name="wcf.acp.group.option.mod.rp.canModerateEvent"><![CDATA[Kann Termine moderieren]]></item>
+            <item name="wcf.acp.group.option.mod.rp.canModerateEventComment"><![CDATA[Kann Kommentare moderieren]]></item>
             <item name="wcf.acp.group.option.mod.rp.canRestoreEvent"><![CDATA[Kann Termine wiederherstellen]]></item>
             <item name="wcf.acp.group.option.mod.rp.canViewDeletedEvent"><![CDATA[Kann gelöschte Termine sehen]]></item>
             <item name="wcf.acp.group.option.user.rp.canAddCharacter"><![CDATA[Kann Charaktere hinzufügen]]></item>
+            <item name="wcf.acp.group.option.user.rp.canAddEventComment"><![CDATA[Kann Kommentare erstellen]]></item>
+            <item name="wcf.acp.group.option.user.rp.canAddEventCommentWithoutModeration"><![CDATA[Kann Kommentare ohne Moderation erstellen]]></item>
             <item name="wcf.acp.group.option.user.rp.canCreateEvent"><![CDATA[Kann Termine erstellen]]></item>
+            <item name="wcf.acp.group.option.user.rp.canDeleteEventComment"><![CDATA[Kann eigene Kommentare löschen]]></item>
             <item name="wcf.acp.group.option.user.rp.canCreateEventWithoutModeration"><![CDATA[Kann Termine ohne Moderation erstellen]]></item>
             <item name="wcf.acp.group.option.user.rp.canDeleteOwnCharacter"><![CDATA[Kann eigende Charaktere löschen]]></item>
             <item name="wcf.acp.group.option.user.rp.canDeleteOwnEvent"><![CDATA[Kann eigene Termine löschen]]></item>
+            <item name="wcf.acp.group.option.user.rp.canEditEventComment"><![CDATA[Kann eigene Kommentare bearbeiten]]></item>
             <item name="wcf.acp.group.option.user.rp.canEditOwnCharacter"><![CDATA[Kann eigene Charaktere bearbeiten]]></item>
             <item name="wcf.acp.group.option.user.rp.canEditOwnEvent"><![CDATA[Kann eigene Termine bearbeiten]]></item>
             <item name="wcf.acp.group.option.user.rp.canParticipate"><![CDATA[Kann an Raids teilnehmen]]></item>
@@ -323,6 +356,11 @@
             <item name="wcf.clipboard.item.dev.daries.rp.character.delete.confirmMessage"><![CDATA[{if LANGUAGE_USE_INFORMAL_VARIANT}Willst du{else}Wollen Sie{/if} wirklich {if $count == 1}einen{else}{#$count}{/if} Charakter{if $count != 1}e{/if} löschen?]]></item>
             <item name="wcf.clipboard.item.dev.daries.rp.character.disable"><![CDATA[Deaktivieren ({#$count})]]></item>
             <item name="wcf.clipboard.item.dev.daries.rp.character.enable"><![CDATA[Aktivieren ({#$count})]]></item>
+        </category>
+        
+        <category name="wcf.like">
+            <item name="wcf.like.title.dev.daries.rp.eventComment"><![CDATA[Hat mit {@$reaction->render()} auf den Kommentar {if $commentAuthor}von <a href="{link controller='User' object=$commentAuthor}{/link}">{$commentAuthor->username}</a>{else}eines Gasts{/if} zum Termin <a href="{$comment->getLink()}">{$event->getTitle()}</a> reagiert.]]></item>
+            <item name="wcf.like.title.dev.daries.rp.eventComment.response"><![CDATA[Hat mit {@$reaction->render()} auf die Antwort {if $responseAuthor}von <a href="{link controller='User' object=$responseAuthor}{/link}">{$responseAuthor->username}</a>{else}eines Gasts{/if} zum Kommentar {if $commentAuthor}von <a href="{link controller='User' object=$commentAuthor}{/link}">{$commentAuthor->username}</a>{else}eines Gasts{/if} zum Termin <a href="{$response->getLink()}">{$event->getTitle()}</a> reagiert.]]></item>
         </category>
 
         <category name="wcf.page">
