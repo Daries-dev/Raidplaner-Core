@@ -8,7 +8,7 @@
 define(["require", "exports", "WoltLabSuite/Core/Ajax/Backend", "WoltLabSuite/Core/Api/Result"], function (require, exports, Backend_1, Result_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.createAttendee = void 0;
+    exports.createAttendee = createAttendee;
     async function createAttendee(eventId, characterId, roleId, status, guestToken = "") {
         const url = new URL(`${window.WSC_API_URL}index.php?api/rpc/rp/attendees`);
         const payload = {
@@ -27,5 +27,4 @@ define(["require", "exports", "WoltLabSuite/Core/Ajax/Backend", "WoltLabSuite/Co
         }
         return (0, Result_1.apiResultFromValue)(response);
     }
-    exports.createAttendee = createAttendee;
 });

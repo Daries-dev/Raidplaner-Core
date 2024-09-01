@@ -8,7 +8,7 @@
 define(["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.setup = void 0;
+    exports.setup = setup;
     let _element;
     function setup(elementId) {
         _element = document.getElementById(elementId);
@@ -16,7 +16,6 @@ define(["require", "exports"], function (require, exports) {
             input.addEventListener("change", () => _change(input));
         });
     }
-    exports.setup = setup;
     function _change(input) {
         const userId = parseInt(input.dataset.userId);
         const value = input.value;

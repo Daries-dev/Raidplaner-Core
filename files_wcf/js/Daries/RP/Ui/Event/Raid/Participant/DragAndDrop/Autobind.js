@@ -1,7 +1,7 @@
 define(["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.Autobind = void 0;
+    exports.Autobind = Autobind;
     function Autobind(target, propertyKey, descriptor) {
         // Save the original method
         const originalMethod = descriptor.value;
@@ -15,5 +15,4 @@ define(["require", "exports"], function (require, exports) {
         };
         Object.defineProperty(target, propertyKey, adjustedDescriptor);
     }
-    exports.Autobind = Autobind;
 });

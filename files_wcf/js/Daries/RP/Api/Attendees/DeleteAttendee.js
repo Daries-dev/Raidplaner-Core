@@ -8,7 +8,7 @@
 define(["require", "exports", "WoltLabSuite/Core/Ajax/Backend", "WoltLabSuite/Core/Api/Result"], function (require, exports, Backend_1, Result_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.deleteAttendee = void 0;
+    exports.deleteAttendee = deleteAttendee;
     async function deleteAttendee(attendeeId) {
         const url = new URL(`${window.WSC_API_URL}index.php?api/rpc/rp/attendees/${attendeeId}`);
         try {
@@ -19,5 +19,4 @@ define(["require", "exports", "WoltLabSuite/Core/Ajax/Backend", "WoltLabSuite/Co
         }
         return (0, Result_1.apiResultFromValue)([]);
     }
-    exports.deleteAttendee = deleteAttendee;
 });

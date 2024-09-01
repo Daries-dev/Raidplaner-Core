@@ -8,7 +8,7 @@
 define(["require", "exports", "WoltLabSuite/Core/Ajax/Backend", "WoltLabSuite/Core/Api/Result"], function (require, exports, Backend_1, Result_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.updateAttendeeStatus = void 0;
+    exports.updateAttendeeStatus = updateAttendeeStatus;
     async function updateAttendeeStatus(attendeeId, distributionId, status) {
         try {
             await (0, Backend_1.prepareRequest)(`${window.WSC_API_URL}index.php?api/rpc/rp/attendees/${attendeeId}/updateStatus`)
@@ -23,5 +23,4 @@ define(["require", "exports", "WoltLabSuite/Core/Ajax/Backend", "WoltLabSuite/Co
         }
         return (0, Result_1.apiResultFromValue)([]);
     }
-    exports.updateAttendeeStatus = updateAttendeeStatus;
 });

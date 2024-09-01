@@ -31,7 +31,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 define(["require", "exports", "WoltLabSuite/Core/LazyLoader"], function (require, exports, LazyLoader_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.setup = void 0;
+    exports.setup = setup;
     function setup(options) {
         window.RP_API_URL = options.RP_API_URL;
         setupCharacterPopover(options.endpointCharacterPopover);
@@ -42,7 +42,6 @@ define(["require", "exports", "WoltLabSuite/Core/LazyLoader"], function (require
             void new Promise((resolve_2, reject_2) => { require(["./Component/Attendee/DragAndDrop/daries-rp-attendee-drag-and-drop-item"], resolve_2, reject_2); }).then(__importStar);
         });
     }
-    exports.setup = setup;
     function setupCharacterPopover(endpoint) {
         if (endpoint === "") {
             return;
