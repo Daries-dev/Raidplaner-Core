@@ -486,6 +486,7 @@ return [
     DatabaseTable::create('rp1_raid')
         ->columns([
             ObjectIdDatabaseTableColumn::create('raidID'),
+            NotNullInt10DatabaseTableColumn::create('gameID'),
             NotNullInt10DatabaseTableColumn::create('raidEventID'),
             NotNullInt10DatabaseTableColumn::create('time'),
             NotNullVarchar255DatabaseTableColumn::create('addedBy'),
@@ -501,6 +502,13 @@ return [
         ->indices([
             DatabaseTablePrimaryIndex::create()
                 ->columns(['raidID']),
+        ])
+        ->foreignKeys([
+            DatabaseTableForeignKey::create()
+                ->columns(['gameID'])
+                ->referencedTable('rp1_game')
+                ->referencedColumns(['gameID'])
+                ->onDelete('CASCADE'),
         ]),
 
     DatabaseTable::create('rp1_raid_attendee')
