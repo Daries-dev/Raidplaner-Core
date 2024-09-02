@@ -399,6 +399,16 @@ final class RaidEventController extends AbstractEventController
     }
 
     /**
+     * @inheritDoc
+     */
+    public function getIcon(?int $size = null): string
+    {
+        $raidEvent = RaidEventCache::getInstance()->getEventByID($this->getEvent()->raidEventID);
+        if ($raidEvent === null) return parent::getIcon($size);
+        return $raidEvent->getIcon($size);
+    }
+
+    /**
      * Returns all character profiles from the raid leader of the current raid event.
      * @return  CharacterProfile[]
      */
