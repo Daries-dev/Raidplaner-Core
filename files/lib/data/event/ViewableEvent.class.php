@@ -151,6 +151,7 @@ class ViewableEvent extends DatabaseObjectDecorator
                         [VisitTracker::getInstance()->getVisitTime('dev.daries.rp.event')]
                     );
                     $conditionBuilder->add('(event.created > tracked_visit.visitTime OR tracked_visit.visitTime IS NULL)');
+                    $conditionBuilder->add('event.isDeleted = ?', [0]);
                     $conditionBuilder->add('event.gameID = ?', [RP_CURRENT_GAME_ID]);
 
                     $sql = "SELECT      COUNT(*)
