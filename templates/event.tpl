@@ -191,7 +191,7 @@
             <dd>
                 <div class="htmlContent">
                     {content}
-                    {$event->getFormattedNotes()}
+                    {$event->getSimplifiedFormattedNotes()}
                     {/content}
                 </div>
             </dd>
@@ -234,6 +234,50 @@
     </nav>
     {/hascontent}
 </footer>
+
+{event name='afterFooter'}
+
+{if $previousEvent || $nextEvent}
+    <div class="section">
+        <nav>
+            <ul class="eventNavigation">
+                {if $previousEvent}
+                    <li class="previousEventButton eventNavigationEvent eventNavigationEventWithImage">
+                        <span class="eventNavigationEventIcon">
+                            {icon size=48 name='chevron-left'}
+                        </span>
+                        <span class="eventNavigationEventImage">{@$previousEvent->getIcon(96)}</span>
+                        <span class="eventNavigationEventContent">
+                            <span class="eventNavigationEntityName">{lang}rp.event.previousEvent{/lang}</span>
+                            <span class="eventNavigationEventTitle">
+                                <a href="{$previousEvent->getLink()}" rel="prev" class="eventNavigationEventLink">
+                                    {$previousEvent->getTitle()}
+                                </a>
+                            </span>
+                        </span>
+                    </li>
+                {/if}
+
+                {if $nextEvent}
+                    <li class="nextEventButton eventNavigationEvent eventNavigationEventWithImage">
+                        <span class="eventNavigationEventIcon">
+                            {icon size=48 name='chevron-right'}
+                        </span>
+                        <span class="eventNavigationEventImage">{@$nextEvent->getIcon(96)}</span>
+                        <span class="eventNavigationEventContent">
+                            <span class="eventNavigationEntityName">{lang}rp.event.nextEvent{/lang}</span>
+                            <span class="eventNavigationEventTitle">
+                                <a href="{$nextEvent->getLink()}" rel="next" class="eventNavigationEventLink">
+                                    {$nextEvent->getTitle()}
+                                </a>
+                            </span>
+                        </span>
+                    </li>
+                {/if}
+            </ul>
+        </nav>
+    </div>
+{/if}
 
 {event name='beforeComments'}
 

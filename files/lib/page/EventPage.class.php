@@ -3,6 +3,7 @@
 namespace rp\page;
 
 use CuyZ\Valinor\Mapper\MappingError;
+use rp\data\event\AccessibleEventList;
 use rp\data\event\EventAction;
 use rp\data\event\EventEditor;
 use rp\data\event\ViewableEvent;
@@ -33,6 +34,16 @@ final class EventPage extends AbstractPage
     public int $eventID = 0;
 
     /**
+     * next event
+     */
+    public ?ViewableEvent $nextEvent = null;
+
+    /**
+     * previous event
+     */
+    public ?ViewableEvent $previousEvent = null;
+
+    /**
      * @inheritDoc
      */
     public function assignVariables(): void
@@ -42,6 +53,8 @@ final class EventPage extends AbstractPage
         WCF::getTPL()->assign([
             'event' => $this->event,
             'eventID' => $this->eventID,
+            'nextEvent' => $this->nextEvent,
+            'previousEvent' => $this->previousEvent,
         ]);
     }
 
@@ -74,6 +87,26 @@ final class EventPage extends AbstractPage
                 'viewableEvent' => $this->event
             ]);
             $eventAction->executeAction();
+        }
+
+        // get next event
+        $eventList = new AccessibleEventList();
+        $eventList->getConditionBuilder()->add('event.startTime > ?', [$this->event->startTime]);
+        $eventList->sqlOrderBy = 'event.startTime ASC';
+        $eventList->sqlLimit = 1;
+        $eventList->readObjects();
+        foreach ($eventList as $event) {
+            $this->nextEvent = $event;
+        }
+
+        // get previous event
+        $eventList = new AccessibleEventList();
+        $eventList->getConditionBuilder()->add('event.startTime < ?', [$this->event->startTime]);
+        $eventList->sqlOrderBy = 'event.startTime DESC';
+        $eventList->sqlLimit = 1;
+        $eventList->readObjects();
+        foreach ($eventList as $event) {
+            $this->previousEvent = $event;
         }
 
         $endDateTime = new \DateTimeImmutable('@' . $this->event->endTime, !$this->event->isFullDay ? WCF::getUser()->getTimeZone() : null);

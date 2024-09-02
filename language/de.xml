@@ -104,8 +104,10 @@
             <item name="rp.event.maybe"><![CDATA[Vielleicht]]></item>
             <item name="rp.event.moderation.info"><![CDATA[Von {if LANGUAGE_USE_INFORMAL_VARIANT}dir{else}ihnen{/if} erstellte Termine unterliegen der Moderation. D.h. {if LANGUAGE_USE_INFORMAL_VARIANT}Dein{else}Ihr{/if} Termin wird nach dem Absenden zunächst durch einen Moderator geprüft und danach, sofern keine Beanstandung vorliegt, freigeschaltet.]]></item>
             <item name="rp.event.moderation.redirect"><![CDATA[{if LANGUAGE_USE_INFORMAL_VARIANT}Dein{else}Ihr{/if} Termin wurde gespeichert. Er wird zunächst von einem Moderator geprüft und danach, sofern keine Beanstandung vorliegt, freigeschaltet.]]></item>
+            <item name="rp.event.nextEvent"><![CDATA[Nächster Termin]]></item>
             <item name="rp.event.notes"><![CDATA[Notiz]]></item>
             <item name="rp.event.participation"><![CDATA[Teilnahme]]></item>
+            <item name="rp.event.previousEvent"><![CDATA[Vorheriger Termin]]></item>
             <item name="rp.event.recentActivity"><![CDATA[<strong>{$author}</strong> hat den {if $eventObj->isRaidEvent()}Raid{else}Termin{/if} <strong>{$eventObj->getTitle()}</strong> erstellt.]]></item>
             <item name="rp.event.restore"><![CDATA[Wiederherstellen]]></item>
             <item name="rp.event.settings"><![CDATA[Einstellungen]]></item>

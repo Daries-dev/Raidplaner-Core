@@ -104,8 +104,10 @@
             <item name="rp.event.maybe"><![CDATA[Maybe]]></item>
             <item name="rp.event.moderation.info"><![CDATA[Newly created events will remain inaccessible until approved by a moderator.]]></item>
             <item name="rp.event.moderation.redirect"><![CDATA[Your event has been created and will be displayed once approved.]]></item>
+            <item name="rp.event.nextEvent"><![CDATA[Next Event]]></item>
             <item name="rp.event.notes"><![CDATA[Note]]></item>
             <item name="rp.event.participation"><![CDATA[Participation]]></item>
+            <item name="rp.event.previousEvent"><![CDATA[Previous Event]]></item>
             <item name="rp.event.recentActivity"><![CDATA[<strong>{$author}</strong> created the {if $eventObj->isRaidEvent()}raid{else}event{/if} <strong>{$eventObj->getTitle()}</strong>.]]></item>
             <item name="rp.event.restore"><![CDATA[Restore]]></item>
             <item name="rp.event.settings"><![CDATA[Settings]]></item>
