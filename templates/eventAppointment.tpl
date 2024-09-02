@@ -4,7 +4,7 @@
             <h2 class="sectionTitle">{lang}rp.event.{$status}{/lang}</h2>
         </header>
 
-        <ol class="containerList containerList jsEventAppointment" data-status="{$status}">
+        <ol class="containerList jsEventAppointment" data-status="{$status}">
             {if !$users|empty}
                 {foreach from=$users item=user}
                     {include application='rp' file='userListItem'}
