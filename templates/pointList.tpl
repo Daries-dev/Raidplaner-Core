@@ -69,11 +69,7 @@
                             {foreach from=$pointAccounts item=pointAccount}
                                 {assign var='__accountID' value=$pointAccount->getObjectID()}
                                 {if $__characterPoints[$__accountID]|isset}
-                                    <dt>{$pointAccount->getTitle()}</dt>
-                                    <dd {if $__characterPoints[$__accountID][current][color]}
-                                        class="{$__characterPoints[$__accountID][current][color]}" {/if}>
-                                        {$__characterPoints[$__accountID][current][points]}
-                                    </dd>
+                                    {include application="rp" file="pointDetails" pointsData=$__characterPoints[$__accountID] key="current" langKey=$pointAccount->getTitle()}
                                 {/if}
                             {/foreach}
                         </dl>
