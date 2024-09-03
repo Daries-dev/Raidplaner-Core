@@ -15,6 +15,7 @@ return static function (): void {
         \rp\event\character\profile\menu\CharacterProfileMenuCollecting::class,
         static function (\rp\event\character\profile\menu\CharacterProfileMenuCollecting $event) {
             $event->register(\rp\system\character\profile\menu\AboutCharacterProfileMenu::class, -100);
+            $event->register(\rp\system\character\profile\menu\PointsCharacterProfileMenu::class, -75);
         }
     );
 

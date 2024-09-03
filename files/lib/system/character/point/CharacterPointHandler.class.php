@@ -104,7 +104,10 @@ final class CharacterPointHandler extends SingletonFactory
             return;
         }
 
-        $points = CharacterPointCacheBuilder::getInstance()->getData(['userID' => $primaryCharacter->userID]);
+        $points = CharacterPointCacheBuilder::getInstance()->getData([
+            'gameID' => RP_CURRENT_GAME_ID,
+            'userID' => $primaryCharacter->userID
+        ]);
 
         if (RP_SHOW_TWINKS) {
             $this->characterPoints = $points;
