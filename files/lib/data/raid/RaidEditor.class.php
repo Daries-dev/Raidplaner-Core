@@ -6,7 +6,10 @@ use rp\data\event\Event;
 use rp\data\event\raid\attendee\EventRaidAttendee;
 use rp\data\event\raid\attendee\EventRaidAttendeeList;
 use rp\event\raid\AddAttendeesChecking;
+use rp\system\cache\builder\CharacterPointCacheBuilder;
+use rp\system\cache\builder\RaidStatsCacheBuilder;
 use wcf\data\DatabaseObjectEditor;
+use wcf\data\IEditableCachedObject;
 use wcf\system\event\EventHandler;
 use wcf\system\WCF;
 
@@ -21,7 +24,7 @@ use wcf\system\WCF;
  * @method  Raid    getDecoratedObject()
  * @mixin   Raid
  */
-class RaidEditor extends DatabaseObjectEditor
+class RaidEditor extends DatabaseObjectEditor implements IEditableCachedObject
 {
     /**
      * @inheritDoc
@@ -116,5 +119,14 @@ class RaidEditor extends DatabaseObjectEditor
                 ]);
             }
         }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function resetCache()
+    {
+        CharacterPointCacheBuilder::getInstance()->reset();
+        RaidStatsCacheBuilder::getInstance()->reset();
     }
 }
