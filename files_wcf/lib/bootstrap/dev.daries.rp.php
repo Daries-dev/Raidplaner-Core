@@ -32,6 +32,7 @@ return static function (): void {
             $event->register(new \rp\system\endpoint\controller\rp\events\EnableDisableEvent);
             $event->register(new \rp\system\endpoint\controller\rp\events\RestoreEvent);
             $event->register(new \rp\system\endpoint\controller\rp\events\TrashEvent);
+            $event->register(new \rp\system\endpoint\controller\rp\items\SearchItem);
         }
     );
 };

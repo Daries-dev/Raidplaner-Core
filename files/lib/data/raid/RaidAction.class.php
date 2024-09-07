@@ -33,6 +33,44 @@ class RaidAction extends AbstractDatabaseObjectAction
     protected $className = RaidEditor::class;
 
     /**
+     * Add attendees to given raid.
+     */
+    public function addAttendees(): void
+    {
+        if (empty($this->objects)) {
+            $this->readObjects();
+        }
+
+        $attendeeIDs = $this->parameters['attendeeIDs'] ?? [];
+        $deleteOldAttendees = $this->parameters['deleteOldAttendees'] ?? true;
+
+        foreach ($this->getObjects() as $raid) {
+            $raid->addAttendees($attendeeIDs, $deleteOldAttendees);
+        }
+
+        RaidEditor::resetCache();
+    }
+
+    /**
+     * Add items to given raid.
+     */
+    public function addItems(): void
+    {
+        if (empty($this->objects)) {
+            $this->readObjects();
+        }
+
+        $itemIDs = $this->parameters['itemIDs'] ?? [];
+        $deleteOldItems = $this->parameters['deleteOldItems'] ?? true;
+
+        foreach ($this->getObjects() as $raid) {
+            $raid->addItems($itemIDs, $deleteOldItems);
+        }
+
+        RaidEditor::resetCache();
+    }
+
+    /**
      * @inheritDoc
      */
     public function create(): Raid
@@ -46,6 +84,9 @@ class RaidAction extends AbstractDatabaseObjectAction
         $attendeeIDs = $this->parameters['attendeeIDs'] ?? [];
         $raidEditor->addAttendees($attendeeIDs, false, $this->parameters['event']);
 
+        $items = $this->parameters['items'] ?? [];
+        $raidEditor->addItems($items, false);
+
         return $raid;
     }
 
@@ -57,5 +98,21 @@ class RaidAction extends AbstractDatabaseObjectAction
         $this->parameters['data']['updatedBy'] = WCF::getUser()->username;
 
         parent::update();
+
+        $attendeeIDs = $this->parameters['attendeeIDs'] ?? [];
+        if (!empty($attendeeIDs)) {
+            $action = new self($this->objects, 'addAttendees', [
+                'attendeeIDs' => $attendeeIDs,
+            ]);
+            $action->executeAction();
+        }
+
+        $items = $this->parameters['items'] ?? [];
+        if (!empty($items)) {
+            $action = new self($this->objects, 'addItems', [
+                'items' => $items,
+            ]);
+            $action->executeAction();
+        }
     }
 }
