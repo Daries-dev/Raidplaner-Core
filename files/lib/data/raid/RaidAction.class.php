@@ -33,6 +33,25 @@ class RaidAction extends AbstractDatabaseObjectAction
     protected $className = RaidEditor::class;
 
     /**
+     * Add items to given raid.
+     */
+    public function addItems(): void
+    {
+        if (empty($this->objects)) {
+            $this->readObjects();
+        }
+
+        $itemIDs = $this->parameters['itemIDs'] ?? [];
+        $deleteOldItems = $this->parameters['deleteOldItems'] ?? true;
+
+        foreach ($this->getObjects() as $raid) {
+            $raid->addItems($itemIDs, $deleteOldItems);
+        }
+
+        RaidEditor::resetCache();
+    }
+
+    /**
      * @inheritDoc
      */
     public function create(): Raid
@@ -46,6 +65,9 @@ class RaidAction extends AbstractDatabaseObjectAction
         $attendeeIDs = $this->parameters['attendeeIDs'] ?? [];
         $raidEditor->addAttendees($attendeeIDs, false, $this->parameters['event']);
 
+        $items = $this->parameters['items'] ?? [];
+        $raidEditor->addItems($items, false);
+
         return $raid;
     }
 
@@ -57,5 +79,13 @@ class RaidAction extends AbstractDatabaseObjectAction
         $this->parameters['data']['updatedBy'] = WCF::getUser()->username;
 
         parent::update();
+
+        $items = $this->parameters['items'] ?? [];
+        if (!empty($items)) {
+            $action = new self($this->objects, 'addItems', [
+                'items' => $items,
+            ]);
+            $action->executeAction();
+        }
     }
 }

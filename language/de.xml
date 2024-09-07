@@ -188,6 +188,15 @@
             <item name="rp.game.title"><![CDATA[Spiele]]></item>
         </category>
 
+        <category name="rp.item">
+            <item name="rp.item.buyer"><![CDATA[Käufer]]></item>
+            <item name="rp.item.character"><![CDATA[Charakter]]></item>
+            <item name="rp.item.itemName"><![CDATA[Item Name]]></item>
+            <item name="rp.item.pointAccount"><![CDATA[Punktekonto]]></item>
+            <item name="rp.item.points"><![CDATA[Punkte]]></item>
+            <item name="rp.item.points.error.format"><![CDATA[Die angegebene Punkte sind ungültig.]]></item>
+        </category>
+
         <category name="rp.point.account">
             <item name="rp.point.account.noDatas"><![CDATA[Es wurden keine Punktestände gefunden. <a href="{link application='rp' controller='PointList'}{/link}">Den aktiven Filter zurücksetzen.</a>]]></item>
         </category>
@@ -371,7 +380,7 @@
             <item name="wcf.clipboard.item.dev.daries.rp.character.disable"><![CDATA[Deaktivieren ({#$count})]]></item>
             <item name="wcf.clipboard.item.dev.daries.rp.character.enable"><![CDATA[Aktivieren ({#$count})]]></item>
         </category>
-        
+
         <category name="wcf.like">
             <item name="wcf.like.title.dev.daries.rp.eventComment"><![CDATA[Hat mit {@$reaction->render()} auf den Kommentar {if $commentAuthor}von <a href="{link controller='User' object=$commentAuthor}{/link}">{$commentAuthor->username}</a>{else}eines Gasts{/if} zum Termin <a href="{$comment->getLink()}">{$event->getTitle()}</a> reagiert.]]></item>
             <item name="wcf.like.title.dev.daries.rp.eventComment.response"><![CDATA[Hat mit {@$reaction->render()} auf die Antwort {if $responseAuthor}von <a href="{link controller='User' object=$responseAuthor}{/link}">{$responseAuthor->username}</a>{else}eines Gasts{/if} zum Kommentar {if $commentAuthor}von <a href="{link controller='User' object=$commentAuthor}{/link}">{$commentAuthor->username}</a>{else}eines Gasts{/if} zum Termin <a href="{$response->getLink()}">{$event->getTitle()}</a> reagiert.]]></item>

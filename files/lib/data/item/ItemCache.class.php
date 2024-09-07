@@ -64,9 +64,7 @@ final class ItemCache extends SingletonFactory
         $items = [];
 
         foreach ($itemIDs as $itemID) {
-            $item = $this->getItemByID($itemID);
-
-            if ($item !== null) {
+            if ($item = $this->getItemByID($itemID)) {
                 $items[$item->getObjectID()] = $item;
             }
         }

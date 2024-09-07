@@ -12,6 +12,7 @@ use rp\data\raid\RaidAction;
 use rp\event\raid\character\CharacterCollecting;
 use rp\system\cache\runtime\EventRuntimeCache;
 use rp\system\form\builder\field\character\CharacterMultipleSelectionFormField;
+use rp\system\form\builder\field\item\ItemFormField;
 use wcf\data\AbstractDatabaseObjectAction;
 use wcf\form\AbstractForm;
 use wcf\form\AbstractFormBuilderForm;
@@ -167,7 +168,7 @@ class RaidAddForm extends AbstractFormBuilderForm
 
         $itemsContainer = FormContainer::create('itemsContainer')
             ->appendChild(
-                RaidItemsFormField::create()
+                ItemFormField::create()
                     ->available(RP_ENABLE_ITEM)
             );
         $itemsTab->appendChild($itemsContainer);
@@ -286,6 +287,7 @@ class RaidAddForm extends AbstractFormBuilderForm
         }
 
         $formData = $this->form->getData();
+
         $formData['data'] ??= [];
         $formData['data'] = \array_merge($this->additionalFields, $formData['data']);
         $formData['event'] = $this->event;

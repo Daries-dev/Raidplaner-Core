@@ -4,6 +4,7 @@ namespace rp\system\cache\builder;
 
 use rp\data\item\ItemList;
 use wcf\system\cache\builder\AbstractCacheBuilder;
+use wcf\system\WCF;
 
 /**
  * Caches all items.
@@ -26,9 +27,14 @@ final class ItemCacheBuilder extends AbstractCacheBuilder
 
         $itemList = new ItemList();
         $itemList->readObjects();
-        foreach ($itemList as $item) {
-            $data['items'][$item->itemID] = $item;
-            $data['itemNames'][\base64_encode($item->itemName)] = $item->itemID;
+        $data['items'] = $itemList->getObjects();
+
+        $sql = "SELECT  *
+                FROM    rp1_item_index";
+        $statement = WCF::getDB()->prepare($sql);
+        $statement->execute();
+        while ($row = $statement->fetchArray()) {
+            $data['itemNames'][\base64_encode($row['itemName'])] = $row['itemID'];
         }
 
         return $data;

@@ -188,6 +188,15 @@
             <item name="rp.game.title"><![CDATA[Games]]></item>
         </category>
 
+        <category name="rp.item">
+            <item name="rp.item.buyer"><![CDATA[Buyer]]></item>
+            <item name="rp.item.character"><![CDATA[Character]]></item>
+            <item name="rp.item.itemName"><![CDATA[Item Name]]></item>
+            <item name="rp.item.pointAccount"><![CDATA[Point Account]]></item>
+            <item name="rp.item.points"><![CDATA[Points]]></item>
+            <item name="rp.item.points.error.format"><![CDATA[The given points are invalid.]]></item>
+        </category>
+
         <category name="rp.point.account">
             <item name="rp.point.account.noDatas"><![CDATA[No points matched your criteria. <a href="{link application='rp' controller='PointList'}{/link}">Reset the applied filters.</a>]]></item>
         </category>

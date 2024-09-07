@@ -302,7 +302,6 @@ return [
     DatabaseTable::create('rp1_item')
         ->columns([
             ObjectIdDatabaseTableColumn::create('itemID'),
-            NotNullVarchar191DatabaseTableColumn::create('itemName'),
             NotNullVarchar255DatabaseTableColumn::create('searchItemID'),
             NotNullInt10DatabaseTableColumn::create('time')
                 ->defaultValue(0),
@@ -311,9 +310,24 @@ return [
         ->indices([
             DatabaseTablePrimaryIndex::create()
                 ->columns(['itemID']),
-            DatabaseTableIndex::create('itemName')
-                ->columns(['itemName'])
+        ]),
+
+    DatabaseTable::create('rp1_item_index')
+        ->columns([
+            NotNullVarchar191DatabaseTableColumn::create('itemName'),
+            NotNullInt10DatabaseTableColumn::create('itemID'),
+        ])
+        ->indices([
+            DatabaseTableIndex::create('itemName_itemID')
+                ->columns(['itemName', 'itemID'])
                 ->type(DatabaseTableIndex::UNIQUE_TYPE),
+        ])
+        ->foreignKeys([
+            DatabaseTableForeignKey::create()
+                ->columns(['itemID'])
+                ->referencedTable('rp1_item')
+                ->referencedColumns(['itemID'])
+                ->onDelete('CASCADE'),
         ]),
 
     DatabaseTable::create('rp1_item_database')
@@ -324,7 +338,7 @@ return [
             NotNullVarchar255DatabaseTableColumn::create('className'),
         ])
         ->indices([
-            DatabaseTableIndex::create('databaseName') //
+            DatabaseTableIndex::create('databaseName')
                 ->columns(['databaseName'])
                 ->type(DatabaseTableIndex::UNIQUE_TYPE),
         ])
@@ -350,7 +364,7 @@ return [
                 ->defaultValue(0),
         ])
         ->indices([
-            DatabaseTableIndex::create('iemID_characterID_raidID') //
+            DatabaseTableIndex::create('itemID_characterID_raidID') //
                 ->columns(['itemID', 'characterID', 'raidID'])
                 ->type(DatabaseTableIndex::UNIQUE_TYPE),
         ])

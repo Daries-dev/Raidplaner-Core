@@ -4,6 +4,7 @@ namespace rp\data\item;
 
 use wcf\data\DatabaseObject;
 use wcf\data\ILinkableObject;
+use wcf\system\language\LanguageFactory;
 use wcf\system\request\IRouteController;
 use wcf\system\request\LinkHandler;
 use wcf\system\WCF;
@@ -17,7 +18,6 @@ use wcf\util\StringUtil;
  * @license Raidplaner is licensed under Creative Commons Attribution-ShareAlike 4.0 International 
  *
  * @property-read   int $itemID     unique id of the item
- * @property-read   string  $itemName       unique item name of the item
  * @property-read   int $time       timestamp of the item created
  * @property-read   string  $searchItemID       id of the item from the database
  * @property-read   array   $additionalData     array with additional data of the item
@@ -105,7 +105,18 @@ final class Item extends DatabaseObject implements IRouteController, ILinkableOb
      */
     public function getTitle(): string
     {
-        return $this->itemName;
+        $itemName = $this->additionalData[WCF::getLanguage()->languageCode]['name'] ?? null;
+
+        if ($itemName === null) {
+            foreach (LanguageFactory::getInstance()->getLanguages() as $language) {
+                $itemName = $this->additionalData[$language->languageCode]['name'] ?? null;
+                if ($itemName !== null) {
+                    return $itemName;
+                }
+            }
+        }
+
+        return $itemName ?? '';
     }
 
     /**

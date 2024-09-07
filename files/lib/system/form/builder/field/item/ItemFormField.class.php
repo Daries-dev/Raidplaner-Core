@@ -1,6 +1,6 @@
 <?php
 
-namespace rp\system\form\builder\field\raid\item;
+namespace rp\system\form\builder\field\item;
 
 use rp\data\character\Character;
 use rp\data\character\CharacterList;
@@ -15,13 +15,13 @@ use wcf\system\form\builder\IFormDocument;
 use wcf\system\WCF;
 
 /**
- * Implementation of a form field for raid item.
+ * Implementation of a form field for item.
  * 
  * @author  Marco Daries
  * @copyright   2023-2024 Daries.dev
  * @license Raidplaner is licensed under Creative Commons Attribution-ShareAlike 4.0 International 
  */
-class RaidItemFormField extends AbstractFormField
+class ItemFormField extends AbstractFormField
 {
     use TDefaultIdFormField;
 
@@ -39,7 +39,7 @@ class RaidItemFormField extends AbstractFormField
     /**
      * @inheritDoc
      */
-    protected $templateName = 'shared_raidItemsFormField';
+    protected $templateName = 'shared_itemFormField';
 
     /**
      * @inheritDoc
@@ -49,15 +49,11 @@ class RaidItemFormField extends AbstractFormField
     public function getCharacters(): array
     {
         if ($this->characters === null) {
-            $this->characters = [];
-
-            $list = new CharacterList();
-            $list->getConditionBuilder()->add('isDisabled = ?', [0]);
-            $list->sqlOrderBy = 'characterName ASC';
-            $list->readObjects();
-            foreach ($list as $character) {
-                $this->characters[$character->getObjectID()] = $character;
-            }
+            $characterList = new CharacterList();
+            $characterList->getConditionBuilder()->add('isDisabled = ?', [0]);
+            $characterList->sqlOrderBy = 'characterName ASC';
+            $characterList->readObjects();
+            $this->characters = $characterList->getObjects();
         }
 
         return $this->characters;
@@ -68,7 +64,7 @@ class RaidItemFormField extends AbstractFormField
      */
     protected static function getDefaultId(): string
     {
-        return 'raidItems';
+        return 'items';
     }
 
     /**
@@ -95,7 +91,7 @@ class RaidItemFormField extends AbstractFormField
         parent::populate();
 
         $this->getDocument()->getDataHandler()->addProcessor(new CustomFormDataProcessor(
-            'raidItems',
+            'items',
             function (IFormDocument $document, array $parameters) {
                 if ($this->checkDependencies() && $this->getValue() !== null && !empty($this->getValue())) {
                     $parameters[$this->getObjectProperty()] = $this->getValue();
@@ -118,42 +114,6 @@ class RaidItemFormField extends AbstractFormField
         } else {
             $this->value = [];
         }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function updatedObject(array $data, IStorableObject $object, $loadValues = true): self
-    {
-        if ($loadValues) {
-            $sql = "SELECT      item_to_raid.characterID, item_to_raid.itemID, item.itemName, item_to_raid.pointAccountID, item_to_raid.points
-                    FROM        rp1_item_to_raid item_to_raid
-                    LEFT JOIN   rp1_item item
-                    ON          (item_to_raid.itemID = item.itemID)
-                    WHERE       item_to_raid.raidID = ?";
-            $statement = WCF::getDB()->prepare($sql);
-            $statement->execute([$object->getObjectID()]);
-
-            $items = [];
-            while ($row = $statement->fetchArray()) {
-                $character = CharacterRuntimeCache::getInstance()->getObject($row['characterID']);
-                $pointAccount = PointAccountCache::getInstance()->getAccountByID($row['pointAccountID']);
-
-                $items[] = [
-                    'characterID' => $character->getObjectID(),
-                    'characterName' => $character->getTitle(),
-                    'itemID' => $row['itemID'],
-                    'itemName' => $row['itemName'],
-                    'pointAccountID' => $pointAccount->getObjectID(),
-                    'pointAccountName' => $pointAccount->getTitle(),
-                    'points' => $row['points']
-                ];
-            }
-
-            $this->value($items);
-        }
-
-        return $this;
     }
 
     /**

@@ -3,6 +3,8 @@
 namespace rp\data\item;
 
 use wcf\data\AbstractDatabaseObjectAction;
+use wcf\system\language\LanguageFactory;
+use wcf\system\WCF;
 
 /**
  * Executes item-related actions.
@@ -28,6 +30,22 @@ class ItemAction extends AbstractDatabaseObjectAction
     {
         $this->parameters['data']['time'] = TIME_NOW;
 
-        return parent::create();
+        $item = parent::create();
+        $additionalData = $item->additionalData;
+
+        $sql = "INSERT IGNORE INTO  rp1_item_index
+                                    (itemName, itemID)
+                VALUES              (?, ?)";
+        $statement = WCF::getDB()->prepare($sql);
+        foreach (LanguageFactory::getInstance()->getLanguages() as $language) {
+            if (isset($additionalData[$language->languageCode])) {
+                $statement->execute([
+                    $additionalData[$language->languageCode]['name'],
+                    $item->getObjectID(),
+                ]);
+            }
+        }
+
+        return $item;
     }
 }

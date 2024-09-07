@@ -7,9 +7,9 @@ use rp\data\item\database\ItemDatabaseList;
 use rp\data\item\Item;
 use rp\data\item\ItemAction;
 use rp\data\item\ItemCache;
-use SessionHandler;
 use wcf\data\user\User;
 use wcf\system\language\LanguageFactory;
+use wcf\system\session\SessionHandler;
 use wcf\system\SingletonFactory;
 use wcf\system\WCF;
 use wcf\util\StringUtil;
@@ -31,7 +31,7 @@ final class ItemHandler extends SingletonFactory
     /**
      * Returns an item based on the item name
      */
-    final public function getSearchItem(string $itemName, int $itemID = 0, bool $refresh = false, array $data = []): Item
+    final public function getSearchItem(string $itemName = '', int $itemID = 0, bool $refresh = false, array $data = []): Item
     {
         $itemName = StringUtil::trim($itemName);
         if (empty($itemName) && $itemID === 0) {
@@ -41,19 +41,15 @@ final class ItemHandler extends SingletonFactory
         $item = $searchItemID = null;
         if ($itemID) {
             $item = ItemCache::getInstance()->getItemByID($itemID);
-            if ($item) {
-                $searchItemID = $item->searchItemID;
-            }
         } else {
             $item = ItemCache::getInstance()->getItemByName($itemName);
-            if ($item) {
-                $searchItemID = $item->searchItemID;
-            }
         }
 
+        $searchItemID = $item ? $item->searchItemID : null;
         if ($item === null || $refresh) {
             $newItem = null;
             $user = WCF::getUser();
+
             try {
                 SessionHandler::getInstance()->changeUser(new User(null), true);
                 if (!WCF::debugModeIsEnabled()) {
@@ -65,29 +61,31 @@ final class ItemHandler extends SingletonFactory
                     foreach ($this->databases as $database) {
                         $parser = new $database->className();
 
+                        // read only item id
                         foreach (LanguageFactory::getInstance()->getLanguages() as $language) {
-                            $searchData = [];
-
-                            if ($searchItemID === null || empty($searchItemID)) {
-                                $searchData = $parser->searchItemID($itemName, $language);
-                            } else {
-                                $searchData = [
-                                    $searchItemID,
-                                    $data['type'] ?? 'items'
-                                ];
+                            $searchItemID = $searchItemID ?? $parser->searchItemID($itemName, $language);
+                            if ($searchItemID) {
+                                break;
                             }
+                        }
 
-                            try {
-                                $newItem = $parser->getItemData(
-                                    $searchData[0],
-                                    $language,
-                                    $searchData[1]
-                                );
-                            } catch (\Exception $e) {
-                                // Handle exception if necessary
+                        // read item multi language
+                        $newItem = [];
+                        foreach (LanguageFactory::getInstance()->getLanguages() as $language) {
+                            $itemData = $parser->getItemData(
+                                $searchItemID,
+                                $language
+                            );
+
+                            if (!empty($itemData)) {
+                                $newItem[$language->languageCode] = $itemData;
                             }
+                        }
 
-                            if ($newItem !== null) break;
+                        if (!empty($newItem)) {
+                            $newItem['id'] = $searchItemID;
+                        } else {
+                            $newItem = null;
                         }
 
                         if ($newItem !== null) break;
@@ -111,20 +109,31 @@ final class ItemHandler extends SingletonFactory
             }
 
             if ($item) {
-                $action = new ItemAction([$item], 'update', ['data' => [
-                    'additionalData' => \serialize($newItem),
-                    'searchItemID' => $saveSearchItemID,
-                ]]);
+                $action = new ItemAction(
+                    [$item],
+                    'update',
+                    [
+                        'data' => [
+                            'additionalData' => \serialize($newItem),
+                            'searchItemID' => $saveSearchItemID,
+                        ]
+                    ]
+                );
                 $action->executeAction();
 
                 // reload item
                 $item = new Item($item->itemID);
-            } else {
-                $action = new ItemAction([], 'create', ['data' => [
-                    'additionalData' => \serialize($newItem),
-                    'itemName' => $itemName,
-                    'searchItemID' => $saveSearchItemID,
-                ]]);
+            } else if (!empty($newItem)) {
+                $action = new ItemAction(
+                    [],
+                    'create',
+                    [
+                        'data' => [
+                            'additionalData' => \serialize($newItem),
+                            'searchItemID' => $saveSearchItemID,
+                        ]
+                    ]
+                );
                 $item = $action->executeAction()['returnValues'];
             }
         }
