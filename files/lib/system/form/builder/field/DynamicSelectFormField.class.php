@@ -3,6 +3,7 @@
 namespace rp\system\form\builder\field;
 
 use wcf\system\form\builder\field\SingleSelectionFormField;
+use wcf\system\form\builder\field\validation\FormFieldValidationError;
 
 /**
  * This class adds dynamic functionalities to the `SingleSelectionFormField`.
@@ -126,5 +127,28 @@ class DynamicSelectFormField extends SingleSelectionFormField
         $this->triggerSelect = $select;
 
         return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function validate(): void
+    {
+        parent::validate();
+
+        $formField = $this->getDocument()->getNodeById($this->triggerSelect);
+        $triggerValue = $formField->getValue();
+
+        if (
+            !isset($this->getOptionsMapping()[$triggerValue]) ||
+            !\in_array($this->getValue(), $this->getOptionsMapping()[$triggerValue])
+        ) {
+            if (!\count($this->getValidationErrors())) {
+                $this->addValidationError(new FormFieldValidationError(
+                    'invalidValue',
+                    'wcf.global.form.error.noValidSelection'
+                ));
+            }
+        }
     }
 }
