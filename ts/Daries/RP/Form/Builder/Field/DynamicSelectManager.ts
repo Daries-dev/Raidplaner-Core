@@ -27,7 +27,7 @@ export class DynamicSelectManager {
 
     Array.from(this.#filteredSelect.options).forEach((option: HTMLOptionElement) => {
       const optionValue = option.value;
-v
+
       if (allowedOptions.includes(optionValue) || !optionValue) {
         option.style.display = "block";
         option.disabled = false;
