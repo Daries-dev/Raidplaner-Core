@@ -22,16 +22,16 @@ export class DynamicSelectManager {
   }
 
   #handleSelectChange(): void {
-    const triggerValue = parseInt(this.#triggerSelect.value, 10);
+    const triggerValue = this.#triggerSelect.value;
     const allowedOptions = this.#optionsMapping[triggerValue] || [];
 
     Array.from(this.#filteredSelect.options).forEach((option: HTMLOptionElement) => {
-      const optionValue = parseInt(option.value, 10);
-
+      const optionValue = option.value;
+v
       if (allowedOptions.includes(optionValue) || !optionValue) {
         option.style.display = "block";
         option.disabled = false;
-      } else {
+      } else {  
         option.style.display = "none";
         option.disabled = true;
       }
@@ -40,5 +40,5 @@ export class DynamicSelectManager {
 }
 
 interface SelectOptionsMapping {
-  [key: number]: number[];
+  [key: string]: string[];
 }
