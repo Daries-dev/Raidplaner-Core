@@ -191,6 +191,24 @@
         <category name="rp.item">
             <item name="rp.item.buyer"><![CDATA[Buyer]]></item>
             <item name="rp.item.character"><![CDATA[Character]]></item>
+            <item name="rp.item.form.field"><![CDATA[
+                <div class="rpItem__infos">
+                    <div class="rpItem__infoItem rpItem__infoItem--characterName">
+                        <div>Character</div>
+                        <div>{$characterName}</div>
+                    </div>
+                    <div class="rpItem__infoItem rpItem__infoItem--pointAccountName">
+                        <div>Point Account</div>
+                        <div>{$pointAccountName}</div>
+                    </div>
+                    <div class="rpItem__infoItem rpItem__infoItem--points">
+                        <div>Points</div>
+                        <div>{#$points}</div>
+                    </div>
+                </div>
+
+                {@$tooltip}
+            ]]></item>
             <item name="rp.item.itemName"><![CDATA[Item Name]]></item>
             <item name="rp.item.pointAccount"><![CDATA[Point Account]]></item>
             <item name="rp.item.points"><![CDATA[Points]]></item>

@@ -58,7 +58,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSui
                 throw new Error(`Cannot find form element for items field with id '${this.#formFieldId}'.`);
             }
             this.#form.addEventListener("submit", () => this.#submit());
-            existingItems.forEach((data) => this.#addItemByData(data));
+            existingItems.forEach((data) => void this.#addItemByData(data));
         }
         /**
          * Adds a set of item.
@@ -77,40 +77,45 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSui
                 }
                 return;
             }
+            const characterName = this.#itemCharacter.selectedOptions[0]?.textContent || "";
+            const pointAccountName = this.#itemPointAccount.selectedOptions[0]?.textContent || "";
             const item = {
                 additionalData: this.#itemAdditional.value,
                 characterId: parseInt(this.#itemCharacter.value),
-                characterName: this.#itemCharacter.textContent,
+                characterName: characterName,
                 itemId: response.value.itemID,
                 itemName: response.value.itemName,
                 pointAccountId: parseInt(this.#itemPointAccount.value),
-                pointAccountName: this.#itemPointAccount.textContent,
+                pointAccountName: pointAccountName,
                 points: parseFloat(this.#itemPoints.value),
             };
-            this.#addItemByData(item);
+            void this.#addItemByData(item);
             this.#emptyInput();
             this.#itemName.focus();
         }
         /**
          * Adds a item to the item list using the given item data.
          */
-        #addItemByData(itemData) {
+        async #addItemByData(itemData) {
+            const { tooltip } = (await (0, Tooltip_1.itemTooltip)(itemData.itemId)).unwrap();
             // add item to list
-            const listItem = document.createElement("li");
-            listItem.dataset.itemAdditional = itemData.additionalData;
-            listItem.dataset.itemCharacterId = itemData.characterId.toString();
-            listItem.dataset.itemCharacterName = itemData.characterName;
-            listItem.dataset.itemId = itemData.itemId.toString();
-            listItem.dataset.itemName = itemData.itemName;
-            listItem.dataset.itemPointAccountId = itemData.pointAccountId.toString();
-            listItem.dataset.itemPointAccountName = itemData.pointAccountName;
-            listItem.dataset.itemPoints = itemData.points.toString();
-            listItem.innerHTML = ` ${(0, Language_1.getPhrase)("rp.item.form.field", {
+            const item = document.createElement("div");
+            item.classList.add("rpItem");
+            item.dataset.itemAdditional = itemData.additionalData;
+            item.dataset.itemCharacterId = itemData.characterId.toString();
+            item.dataset.itemCharacterName = itemData.characterName;
+            item.dataset.itemId = itemData.itemId.toString();
+            item.dataset.itemName = itemData.itemName;
+            item.dataset.itemPointAccountId = itemData.pointAccountId.toString();
+            item.dataset.itemPointAccountName = itemData.pointAccountName;
+            item.dataset.itemPoints = itemData.points.toString();
+            console.log(itemData);
+            item.innerHTML = ` ${(0, Language_1.getPhrase)("rp.item.form.field", {
                 itemName: itemData.itemName,
                 pointAccountName: itemData.pointAccountName,
                 characterName: itemData.characterName,
                 points: itemData.points,
-                tooltip: void this.#getTooltip(itemData.itemId),
+                tooltip: tooltip,
             })}`;
             // add delete button
             const deleteButton = document.createElement("button");
@@ -119,8 +124,8 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSui
             deleteButton.title = (0, Language_1.getPhrase)("wcf.global.button.delete");
             deleteButton.classList.add("jsTooltip");
             deleteButton.addEventListener("click", (ev) => this.#removeItem(ev));
-            listItem.insertAdjacentElement("afterbegin", deleteButton);
-            this.#itemList.appendChild(listItem);
+            item.insertAdjacentElement("afterbegin", deleteButton);
+            this.#itemList.appendChild(item);
         }
         /**
          * Empties the input fields.
@@ -132,12 +137,8 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSui
             this.#itemCharacter.options.selectedIndex = 0;
             this.#itemPoints.value = "";
         }
-        async #getTooltip(itemId) {
-            const { tooltip } = (await (0, Tooltip_1.itemTooltip)(itemId)).unwrap();
-            return tooltip;
-        }
         async #removeItem(event) {
-            const item = event.currentTarget.closest("LI");
+            const item = event.currentTarget.closest("div");
             const result = await (0, Confirmation_1.confirmationFactory)().delete();
             if (result) {
                 item?.remove();
@@ -148,46 +149,46 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSui
          * submitting the form.
          */
         #submit() {
-            (0, Traverse_1.childrenByTag)(this.#itemList, "LI").forEach((listItem, index) => {
+            (0, Traverse_1.childrenByTag)(this.#itemList, "div").forEach((item, index) => {
                 const itemAdditional = document.createElement("input");
                 itemAdditional.type = "hidden";
                 itemAdditional.name = `${this.#formFieldId}[${index}][additionalData]`;
-                itemAdditional.value = listItem.dataset.itemAdditional;
+                itemAdditional.value = item.dataset.itemAdditional;
                 this.#form.appendChild(itemAdditional);
                 const itemCharacterID = document.createElement("input");
                 itemCharacterID.type = "hidden";
                 itemCharacterID.name = `${this.#formFieldId}[${index}][characterID]`;
-                itemCharacterID.value = listItem.dataset.itemCharacterId;
+                itemCharacterID.value = item.dataset.itemCharacterId;
                 this.#form.appendChild(itemCharacterID);
                 const itemCharacterName = document.createElement("input");
                 itemCharacterName.type = "hidden";
                 itemCharacterName.name = `${this.#formFieldId}[${index}][characterName]`;
-                itemCharacterName.value = listItem.dataset.itemCharacterName;
+                itemCharacterName.value = item.dataset.itemCharacterName;
                 this.#form.appendChild(itemCharacterName);
                 const itemID = document.createElement("input");
                 itemID.type = "hidden";
                 itemID.name = `${this.#formFieldId}[${index}][itemID]`;
-                itemID.value = listItem.dataset.itemId;
+                itemID.value = item.dataset.itemId;
                 this.#form.appendChild(itemID);
                 const itemName = document.createElement("input");
                 itemName.type = "hidden";
                 itemName.name = `${this.#formFieldId}[${index}][itemName]`;
-                itemName.value = listItem.dataset.itemName;
+                itemName.value = item.dataset.itemName;
                 this.#form.appendChild(itemName);
                 const itemPointAccountID = document.createElement("input");
                 itemPointAccountID.type = "hidden";
                 itemPointAccountID.name = `${this.#formFieldId}[${index}][pointAccountID]`;
-                itemPointAccountID.value = listItem.dataset.itemPointAccountId;
+                itemPointAccountID.value = item.dataset.itemPointAccountId;
                 this.#form.appendChild(itemPointAccountID);
                 const itemPointAccountName = document.createElement("input");
                 itemPointAccountName.type = "hidden";
                 itemPointAccountName.name = `${this.#formFieldId}[${index}][pointAccountName]`;
-                itemPointAccountName.value = listItem.dataset.itemPointAccountName;
+                itemPointAccountName.value = item.dataset.itemPointAccountName;
                 this.#form.appendChild(itemPointAccountName);
                 const itemPoints = document.createElement("input");
                 itemPoints.type = "hidden";
                 itemPoints.name = `${this.#formFieldId}[${index}][points]`;
-                itemPoints.value = listItem.dataset.itemPoints;
+                itemPoints.value = item.dataset.itemPoints;
                 this.#form.appendChild(itemPoints);
             });
         }
@@ -212,8 +213,8 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSui
                 return false;
             }
             // check if item has already been added
-            const duplicate = (0, Traverse_1.childrenByTag)(this.#itemList, "LI").some((listItem) => {
-                listItem.dataset.itemName === itemName && listItem.dataset.itemCharacterId === this.#itemCharacter.value;
+            const duplicate = (0, Traverse_1.childrenByTag)(this.#itemList, "div").some((item) => {
+                item.dataset.itemName === itemName && item.dataset.itemCharacterId === this.#itemCharacter.value;
             });
             if (duplicate) {
                 Util_1.default.innerError(this.#itemName, (0, Language_1.getPhrase)("rp.item.error.duplicate"));

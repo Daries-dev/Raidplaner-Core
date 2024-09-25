@@ -71,7 +71,7 @@ export class Item {
     }
     this.#form.addEventListener("submit", () => this.#submit());
 
-    existingItems.forEach((data) => this.#addItemByData(data));
+    existingItems.forEach((data) => void this.#addItemByData(data));
   }
 
   /**
@@ -93,18 +93,21 @@ export class Item {
       return;
     }
 
+    const characterName = this.#itemCharacter.selectedOptions[0]?.textContent || "";
+    const pointAccountName = this.#itemPointAccount.selectedOptions[0]?.textContent || "";
+
     const item: ItemData = {
       additionalData: this.#itemAdditional.value,
       characterId: parseInt(this.#itemCharacter.value),
-      characterName: this.#itemCharacter.textContent!,
+      characterName: characterName,
       itemId: response.value.itemID,
       itemName: response.value.itemName,
       pointAccountId: parseInt(this.#itemPointAccount.value),
-      pointAccountName: this.#itemPointAccount.textContent!,
+      pointAccountName: pointAccountName,
       points: parseFloat(this.#itemPoints.value),
     };
 
-    this.#addItemByData(item);
+    void this.#addItemByData(item);
 
     this.#emptyInput();
     this.#itemName.focus();
@@ -113,23 +116,27 @@ export class Item {
   /**
    * Adds a item to the item list using the given item data.
    */
-  #addItemByData(itemData: ItemData): void {
+  async #addItemByData(itemData: ItemData): Promise<void> {
+    const { tooltip } = (await itemTooltip(itemData.itemId)).unwrap();
+
     // add item to list
-    const listItem = document.createElement("li");
-    listItem.dataset.itemAdditional = itemData.additionalData;
-    listItem.dataset.itemCharacterId = itemData.characterId.toString();
-    listItem.dataset.itemCharacterName = itemData.characterName;
-    listItem.dataset.itemId = itemData.itemId.toString();
-    listItem.dataset.itemName = itemData.itemName;
-    listItem.dataset.itemPointAccountId = itemData.pointAccountId.toString();
-    listItem.dataset.itemPointAccountName = itemData.pointAccountName;
-    listItem.dataset.itemPoints = itemData.points.toString();
-    listItem.innerHTML = ` ${getPhrase("rp.item.form.field", {
+    const item = document.createElement("div");
+    item.classList.add("rpItem");
+    item.dataset.itemAdditional = itemData.additionalData;
+    item.dataset.itemCharacterId = itemData.characterId.toString();
+    item.dataset.itemCharacterName = itemData.characterName;
+    item.dataset.itemId = itemData.itemId.toString();
+    item.dataset.itemName = itemData.itemName;
+    item.dataset.itemPointAccountId = itemData.pointAccountId.toString();
+    item.dataset.itemPointAccountName = itemData.pointAccountName;
+    item.dataset.itemPoints = itemData.points.toString();
+    console.log(itemData);
+    item.innerHTML = ` ${getPhrase("rp.item.form.field", {
       itemName: itemData.itemName,
       pointAccountName: itemData.pointAccountName,
       characterName: itemData.characterName,
       points: itemData.points,
-      tooltip: void this.#getTooltip(itemData.itemId),
+      tooltip: tooltip,
     })}`;
 
     // add delete button
@@ -139,9 +146,10 @@ export class Item {
     deleteButton.title = getPhrase("wcf.global.button.delete");
     deleteButton.classList.add("jsTooltip");
     deleteButton.addEventListener("click", (ev) => this.#removeItem(ev));
-    listItem.insertAdjacentElement("afterbegin", deleteButton);
 
-    this.#itemList.appendChild(listItem);
+    item.insertAdjacentElement("afterbegin", deleteButton);
+
+    this.#itemList.appendChild(item);
   }
 
   /**
@@ -155,14 +163,8 @@ export class Item {
     this.#itemPoints.value = "";
   }
 
-  async #getTooltip(itemId: number): Promise<string> {
-    const { tooltip } = (await itemTooltip(itemId)).unwrap();
-
-    return tooltip;
-  }
-
   async #removeItem(event: Event): Promise<void> {
-    const item = (event.currentTarget as HTMLElement).closest("LI");
+    const item = (event.currentTarget as HTMLElement).closest("div");
 
     const result = await confirmationFactory().delete();
     if (result) {
@@ -175,53 +177,53 @@ export class Item {
    * submitting the form.
    */
   #submit(): void {
-    childrenByTag(this.#itemList, "LI").forEach((listItem, index) => {
+    childrenByTag(this.#itemList, "div").forEach((item: HTMLDivElement, index) => {
       const itemAdditional = document.createElement("input");
       itemAdditional.type = "hidden";
       itemAdditional.name = `${this.#formFieldId}[${index}][additionalData]`;
-      itemAdditional.value = listItem.dataset.itemAdditional!;
+      itemAdditional.value = item.dataset.itemAdditional!;
       this.#form.appendChild(itemAdditional);
 
       const itemCharacterID = document.createElement("input");
       itemCharacterID.type = "hidden";
       itemCharacterID.name = `${this.#formFieldId}[${index}][characterID]`;
-      itemCharacterID.value = listItem.dataset.itemCharacterId!;
+      itemCharacterID.value = item.dataset.itemCharacterId!;
       this.#form.appendChild(itemCharacterID);
 
       const itemCharacterName = document.createElement("input");
       itemCharacterName.type = "hidden";
       itemCharacterName.name = `${this.#formFieldId}[${index}][characterName]`;
-      itemCharacterName.value = listItem.dataset.itemCharacterName!;
+      itemCharacterName.value = item.dataset.itemCharacterName!;
       this.#form.appendChild(itemCharacterName);
 
       const itemID = document.createElement("input");
       itemID.type = "hidden";
       itemID.name = `${this.#formFieldId}[${index}][itemID]`;
-      itemID.value = listItem.dataset.itemId!;
+      itemID.value = item.dataset.itemId!;
       this.#form.appendChild(itemID);
 
       const itemName = document.createElement("input");
       itemName.type = "hidden";
       itemName.name = `${this.#formFieldId}[${index}][itemName]`;
-      itemName.value = listItem.dataset.itemName!;
+      itemName.value = item.dataset.itemName!;
       this.#form.appendChild(itemName);
 
       const itemPointAccountID = document.createElement("input");
       itemPointAccountID.type = "hidden";
       itemPointAccountID.name = `${this.#formFieldId}[${index}][pointAccountID]`;
-      itemPointAccountID.value = listItem.dataset.itemPointAccountId!;
+      itemPointAccountID.value = item.dataset.itemPointAccountId!;
       this.#form.appendChild(itemPointAccountID);
 
       const itemPointAccountName = document.createElement("input");
       itemPointAccountName.type = "hidden";
       itemPointAccountName.name = `${this.#formFieldId}[${index}][pointAccountName]`;
-      itemPointAccountName.value = listItem.dataset.itemPointAccountName!;
+      itemPointAccountName.value = item.dataset.itemPointAccountName!;
       this.#form.appendChild(itemPointAccountName);
 
       const itemPoints = document.createElement("input");
       itemPoints.type = "hidden";
       itemPoints.name = `${this.#formFieldId}[${index}][points]`;
-      itemPoints.value = listItem.dataset.itemPoints!;
+      itemPoints.value = item.dataset.itemPoints!;
       this.#form.appendChild(itemPoints);
     });
   }
@@ -250,8 +252,8 @@ export class Item {
     }
 
     // check if item has already been added
-    const duplicate = childrenByTag(this.#itemList, "LI").some((listItem) => {
-      listItem.dataset.itemName === itemName && listItem.dataset.itemCharacterId === this.#itemCharacter.value;
+    const duplicate = childrenByTag(this.#itemList, "div").some((item: HTMLDivElement) => {
+      item.dataset.itemName === itemName && item.dataset.itemCharacterId === this.#itemCharacter.value;
     });
 
     if (duplicate) {
