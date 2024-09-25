@@ -1,6 +1,6 @@
 <?php
 
-namespace rp\system\endpoint\controller\rp\items;
+namespace wcf\system\endpoint\controller\rp\items;
 
 use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ServerRequestInterface;
