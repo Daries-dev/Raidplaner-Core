@@ -10,7 +10,7 @@ import { prepareRequest } from "WoltLabSuite/Core/Ajax/Backend";
 import { ApiResult, apiResultFromError, apiResultFromValue } from "WoltLabSuite/Core/Api/Result";
 
 export async function deleteAttendee(attendeeId: number): Promise<ApiResult<[]>> {
-  const url = new URL(`${window.WSC_API_URL}index.php?api/rpc/rp/attendees/${attendeeId}`);
+  const url = new URL(`${window.WSC_RPC_API_URL}rp/attendees/${attendeeId}`);
 
   try {
     await prepareRequest(url).delete().fetchAsJson();

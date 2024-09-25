@@ -8,6 +8,6 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
-    "@woltlab/d.ts": "https://github.com/WoltLab/d.ts.git#42e01f15f93f6afd2711c878f87e7b51358c3fe7"
+    "@woltlab/d.ts": "https://github.com/WoltLab/d.ts.git#3cc6d2d5635a8c29819790368be2b3e06151bf26"
   }
 }

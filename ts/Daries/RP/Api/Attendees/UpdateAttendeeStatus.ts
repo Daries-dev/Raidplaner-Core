@@ -15,7 +15,7 @@ export async function updateAttendeeStatus(
   status: string,
 ): Promise<ApiResult<[]>> {
   try {
-    await prepareRequest(`${window.WSC_API_URL}index.php?api/rpc/rp/attendees/${attendeeId}/updateStatus`)
+    await prepareRequest(`${window.WSC_RPC_API_URL}rp/attendees/${attendeeId}/updateStatus`)
       .post({
         distributionId,
         status,

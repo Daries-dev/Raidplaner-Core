@@ -11,7 +11,7 @@ define(["require", "exports", "WoltLabSuite/Core/Ajax/Backend", "WoltLabSuite/Co
     exports.enableDisableEvent = enableDisableEvent;
     async function enableDisableEvent(eventId, isEnabled) {
         try {
-            await (0, Backend_1.prepareRequest)(`${window.WSC_API_URL}index.php?api/rpc/rp/events/${eventId}/enable-disable`)
+            await (0, Backend_1.prepareRequest)(`${window.WSC_RPC_API_URL}rp/events/${eventId}/enable-disable`)
                 .post({
                 isEnabled,
             })

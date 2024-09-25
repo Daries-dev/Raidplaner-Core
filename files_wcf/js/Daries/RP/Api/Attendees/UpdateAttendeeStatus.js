@@ -11,7 +11,7 @@ define(["require", "exports", "WoltLabSuite/Core/Ajax/Backend", "WoltLabSuite/Co
     exports.updateAttendeeStatus = updateAttendeeStatus;
     async function updateAttendeeStatus(attendeeId, distributionId, status) {
         try {
-            await (0, Backend_1.prepareRequest)(`${window.WSC_API_URL}index.php?api/rpc/rp/attendees/${attendeeId}/updateStatus`)
+            await (0, Backend_1.prepareRequest)(`${window.WSC_RPC_API_URL}rp/attendees/${attendeeId}/updateStatus`)
                 .post({
                 distributionId,
                 status,

@@ -1,5 +1,5 @@
 /**
- * Create a new attendee.
+ * Gets the html code for the rendering of a attendee.
  *
  * @author  Marco Daries
  * @copyright   2023-2024 Daries.dev
@@ -10,7 +10,7 @@ import { prepareRequest } from "WoltLabSuite/Core/Ajax/Backend";
 import { ApiResult, apiResultFromError, apiResultFromValue } from "WoltLabSuite/Core/Api/Result";
 
 export async function renderAttendee(attendeeId: number): Promise<ApiResult<Response>> {
-  const url = new URL(`${window.WSC_API_URL}index.php?api/rpc/rp/attendees/render`);
+  const url = new URL(`${window.WSC_RPC_API_URL}rp/attendees/render`);
   url.searchParams.set("attendeeID", attendeeId.toString());
 
   let response: Response;

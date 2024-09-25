@@ -5,7 +5,7 @@
  * @copyright   2023-2024 Daries.dev
  * @license Raidplaner is licensed under Creative Commons Attribution-ShareAlike 4.0 International
  */
-define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/Dom/Traverse", "WoltLabSuite/Core/Dom/Util", "../../../Api/Items/SearchItem", "WoltLabSuite/Core/Component/Confirmation"], function (require, exports, tslib_1, Language_1, Traverse_1, Util_1, SearchItem_1, Confirmation_1) {
+define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/Dom/Traverse", "WoltLabSuite/Core/Dom/Util", "../../../Api/Items/SearchItem", "WoltLabSuite/Core/Component/Confirmation", "../../../Api/Items/Tooltip"], function (require, exports, tslib_1, Language_1, Traverse_1, Util_1, SearchItem_1, Confirmation_1, Tooltip_1) {
     "use strict";
     var _a;
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -110,6 +110,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSui
                 pointAccountName: itemData.pointAccountName,
                 characterName: itemData.characterName,
                 points: itemData.points,
+                tooltip: void this.#getTooltip(itemData.itemId),
             })}`;
             // add delete button
             const deleteButton = document.createElement("button");
@@ -130,6 +131,10 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSui
             this.#itemPointAccount.options.selectedIndex = 0;
             this.#itemCharacter.options.selectedIndex = 0;
             this.#itemPoints.value = "";
+        }
+        async #getTooltip(itemId) {
+            const { tooltip } = (await (0, Tooltip_1.itemTooltip)(itemId)).unwrap();
+            return tooltip;
         }
         async #removeItem(event) {
             const item = event.currentTarget.closest("LI");
@@ -193,6 +198,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSui
          */
         #validateInput() {
             return this.#validateItemName() && this.#validateItemPoints();
+            // TODO Add Validate for character and pointAccount
         }
         /**
          * Returns `true` if the currently entered item name is

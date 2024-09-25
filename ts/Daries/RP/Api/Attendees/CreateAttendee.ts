@@ -16,7 +16,7 @@ export async function createAttendee(
   status: number,
   guestToken: string = "",
 ): Promise<ApiResult<Response>> {
-    const url = new URL(`${window.WSC_API_URL}index.php?api/rpc/rp/attendees`);
+    const url = new URL(`${window.WSC_RPC_API_URL}rp/attendees`);
 
     const payload = {
         eventID: eventId,

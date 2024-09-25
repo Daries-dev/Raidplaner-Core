@@ -10,7 +10,7 @@ import { prepareRequest } from "WoltLabSuite/Core/Ajax/Backend";
 import { ApiResult, apiResultFromError, apiResultFromValue } from "WoltLabSuite/Core/Api/Result";
 
 export async function availableCharacters(eventId: number): Promise<ApiResult<Response>> {
-  const url = new URL(`${window.WSC_API_URL}index.php?api/rpc/rp/events/${eventId}/availableCharacters`);
+  const url = new URL(`${window.WSC_RPC_API_URL}rp/events/${eventId}/availableCharacters`);
 
   let response: Response;
   try {

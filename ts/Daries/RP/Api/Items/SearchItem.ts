@@ -10,7 +10,7 @@ import { prepareRequest } from "WoltLabSuite/Core/Ajax/Backend";
 import { ApiResult, apiResultFromError, apiResultFromValue } from "WoltLabSuite/Core/Api/Result";
 
 export async function searchItem(itemName: string, additionalData: string = ""): Promise<ApiResult<Response>> {
-  const url = new URL(`${window.WSC_API_URL}index.php?api/rpc/rp/items/search`);
+  const url = new URL(`${window.WSC_RPC_API_URL}rp/items/search`);
   url.searchParams.set("itemName", itemName);
   url.searchParams.set("additionalData", additionalData);
 

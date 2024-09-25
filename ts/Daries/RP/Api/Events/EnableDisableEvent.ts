@@ -11,7 +11,7 @@ import { ApiResult, apiResultFromError, apiResultFromValue } from "WoltLabSuite/
 
 export async function enableDisableEvent(eventId: number, isEnabled: boolean): Promise<ApiResult<[]>> {
   try {
-    await prepareRequest(`${window.WSC_API_URL}index.php?api/rpc/rp/events/${eventId}/enable-disable`)
+    await prepareRequest(`${window.WSC_RPC_API_URL}rp/events/${eventId}/enable-disable`)
       .post({
         isEnabled,
       })

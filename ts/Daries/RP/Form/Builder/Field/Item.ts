@@ -11,6 +11,7 @@ import { childrenByTag } from "WoltLabSuite/Core/Dom/Traverse";
 import DomUtil from "WoltLabSuite/Core/Dom/Util";
 import { searchItem } from "../../../Api/Items/SearchItem";
 import { confirmationFactory } from "WoltLabSuite/Core/Component/Confirmation";
+import { itemTooltip } from "../../../Api/Items/Tooltip";
 
 export class Item {
   #addButton: HTMLAnchorElement;
@@ -128,6 +129,7 @@ export class Item {
       pointAccountName: itemData.pointAccountName,
       characterName: itemData.characterName,
       points: itemData.points,
+      tooltip: void this.#getTooltip(itemData.itemId),
     })}`;
 
     // add delete button
@@ -151,6 +153,12 @@ export class Item {
     this.#itemPointAccount.options.selectedIndex = 0;
     this.#itemCharacter.options.selectedIndex = 0;
     this.#itemPoints.value = "";
+  }
+
+  async #getTooltip(itemId: number): Promise<string> {
+    const { tooltip } = (await itemTooltip(itemId)).unwrap();
+
+    return tooltip;
   }
 
   async #removeItem(event: Event): Promise<void> {
@@ -225,6 +233,7 @@ export class Item {
    */
   #validateInput(): boolean {
     return this.#validateItemName() && this.#validateItemPoints();
+    // TODO Add Validate for character and pointAccount
   }
 
   /**

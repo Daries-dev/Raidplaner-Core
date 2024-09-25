@@ -11,7 +11,7 @@ import { ApiResult, apiResultFromError, apiResultFromValue } from "WoltLabSuite/
 
 export async function deleteEvent(eventId: number): Promise<ApiResult<[]>> {
   try {
-    await prepareRequest(`${window.WSC_API_URL}index.php?api/rpc/rp/events/${eventId}`).delete().fetchAsJson();
+    await prepareRequest(`${window.WSC_RPC_API_URL}rp/events/${eventId}`).delete().fetchAsJson();
   } catch (e) {
     return apiResultFromError(e);
   }

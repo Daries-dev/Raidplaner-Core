@@ -11,7 +11,7 @@ define(["require", "exports", "WoltLabSuite/Core/Ajax/Backend", "WoltLabSuite/Co
     exports.deleteEvent = deleteEvent;
     async function deleteEvent(eventId) {
         try {
-            await (0, Backend_1.prepareRequest)(`${window.WSC_API_URL}index.php?api/rpc/rp/events/${eventId}`).delete().fetchAsJson();
+            await (0, Backend_1.prepareRequest)(`${window.WSC_RPC_API_URL}rp/events/${eventId}`).delete().fetchAsJson();
         }
         catch (e) {
             return (0, Result_1.apiResultFromError)(e);
