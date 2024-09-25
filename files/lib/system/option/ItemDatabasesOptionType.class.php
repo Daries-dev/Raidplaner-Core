@@ -40,7 +40,7 @@ class ItemDatabasesOptionType extends AbstractOptionType
     {
         if (self::$databases === null) {
             self::$databases = [];
-            $sql = "SELECT  databaseName
+            $sql = "SELECT  identifier
                     FROM    rp1_item_database";
             $statement = WCF::getDB()->prepare($sql);
             $statement->execute();
@@ -86,8 +86,8 @@ class ItemDatabasesOptionType extends AbstractOptionType
 
         $availableDatabases = self::getDatabases();
 
-        foreach ($newValue as $databaseName) {
-            if (!\in_array($databaseName, $availableDatabases, true)) {
+        foreach ($newValue as $identifier) {
+            if (!\in_array($identifier, $availableDatabases, true)) {
                 throw new UserInputException($option->optionName, 'validationFailed');
             }
         }

@@ -334,14 +334,14 @@ return [
 
     DatabaseTable::create('rp1_item_database')
         ->columns([
-            NotNullVarchar191DatabaseTableColumn::create('databaseName'),
+            NotNullVarchar191DatabaseTableColumn::create('identifier'),
             IntDatabaseTableColumn::create('packageID')
                 ->length(10),
             NotNullVarchar255DatabaseTableColumn::create('className'),
         ])
         ->indices([
-            DatabaseTableIndex::create('databaseName')
-                ->columns(['databaseName'])
+            DatabaseTableIndex::create('identifier')
+                ->columns(['identifier'])
                 ->type(DatabaseTableIndex::UNIQUE_TYPE),
         ])
         ->foreignKeys([

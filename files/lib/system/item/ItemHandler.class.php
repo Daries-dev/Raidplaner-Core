@@ -153,7 +153,7 @@ final class ItemHandler extends SingletonFactory
     {
         if (!empty(RP_ITEM_DATABASES)) {
             $list = new ItemDatabaseList();
-            $list->getConditionBuilder()->add('databaseName IN (?)', [\explode(',', RP_ITEM_DATABASES)]);
+            $list->getConditionBuilder()->add('identifier IN (?)', [\explode(',', RP_ITEM_DATABASES)]);
             $list->readObjects();
             $this->databases = $list;
         }

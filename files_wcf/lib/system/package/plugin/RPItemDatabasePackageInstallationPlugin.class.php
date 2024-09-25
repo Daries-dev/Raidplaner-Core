@@ -56,33 +56,33 @@ final class RPItemDatabasePackageInstallationPlugin extends AbstractXMLPackageIn
         $dataContainer = $form->getNodeById('data');
 
         $dataContainer->appendChildren([
-                TextFormField::create('databaseName')
-                ->objectProperty('name')
-                ->label('rp.acp.item.databaseName')
-                ->description('rp.acp.item.databaseName.description')
+                TextFormField::create('identifier')
+                ->objectProperty('identifier')
+                ->label('rp.acp.item.identifier')
+                ->description('rp.acp.item.identifier.description')
                 ->required()
                 ->addValidator(new FormFieldValidator('format', static function (TextFormField $formField) {
                             if (\preg_match('~^[a-z][A-z]+$~', $formField->getValue()) !== 1) {
                                 $formField->addValidationError(
                                     new FormFieldValidationError(
                                         'format',
-                                        'rp.acp.item.databaseName.error.format'
+                                        'rp.acp.item.identifier.error.format'
                                     )
                                 );
                             }
                         }))
                 ->addValidator(new FormFieldValidator('uniqueness', function (TextFormField $formField) {
                             if (
-                                $formField->getDocument()->getFormMode() === IFormDocument::FORM_MODE_CREATE || $this->editedEntry->getAttribute('name') !== $formField->getValue()
+                                $formField->getDocument()->getFormMode() === IFormDocument::FORM_MODE_CREATE || $this->editedEntry->getAttribute('identifier') !== $formField->getValue()
                             ) {
                                 $databaseList = new ItemDatabaseList();
-                                $databaseList->getConditionBuilder()->add('databaseName = ?', [$formField->getValue()]);
+                                $databaseList->getConditionBuilder()->add('identifier = ?', [$formField->getValue()]);
 
                                 if ($databaseList->countObjects()) {
                                     $formField->addValidationError(
                                         new FormFieldValidationError(
                                             'format',
-                                            'rp.acp.item.databaseName.error.notUnique'
+                                            'rp.acp.item.identifier.error.notUnique'
                                         )
                                     );
                                 }
@@ -101,7 +101,7 @@ final class RPItemDatabasePackageInstallationPlugin extends AbstractXMLPackageIn
     {
         return [
             'className' => $element->nodeValue,
-            'databaseName' => $element->getAttribute('name')
+            'identifier' => $element->getAttribute('identifier')
         ];
     }
 
@@ -112,10 +112,10 @@ final class RPItemDatabasePackageInstallationPlugin extends AbstractXMLPackageIn
     {
         $sql = "SELECT  *
                 FROM    rp" . WCF_N . "_" . $this->tableName . "
-                WHERE   databaseName = ?
+                WHERE   identifier = ?
                     AND packageID = ?";
         $parameters = [
-            $data['databaseName'],
+            $data['identifier'],
             $this->installation->getPackageID(),
         ];
 
@@ -138,7 +138,7 @@ final class RPItemDatabasePackageInstallationPlugin extends AbstractXMLPackageIn
      */
     public function getElementIdentifier(\DOMElement $element): string
     {
-        return $element->getAttribute('name');
+        return $element->getAttribute('identifier');
     }
 
     /**
@@ -155,12 +155,12 @@ final class RPItemDatabasePackageInstallationPlugin extends AbstractXMLPackageIn
     protected function handleDelete(array $items): void
     {
         $sql = "DELETE FROM rp1_" . $this->tableName . "
-                WHERE       databaseName = ?
+                WHERE       identifier = ?
                         AND packageID = ?";
         $statement = WCF::getDB()->prepare($sql);
         foreach ($items as $item) {
             $statement->execute([
-                $item['attributes']['name'],
+                $item['attributes']['identifier'],
                 $this->installation->getPackageID(),
             ]);
         }
@@ -173,7 +173,7 @@ final class RPItemDatabasePackageInstallationPlugin extends AbstractXMLPackageIn
     {
         return [
             'className' => $data['nodeValue'],
-            'databaseName' => $data['attributes']['name']
+            'identifier' => $data['attributes']['identifier']
         ];
     }
 
@@ -185,7 +185,7 @@ final class RPItemDatabasePackageInstallationPlugin extends AbstractXMLPackageIn
         $data = $form->getData()['data'];
 
         $database = $document->createElement($this->tagName, $data['className']);
-        $database->setAttribute('name', $data['name']);
+        $database->setAttribute('identifier', $data['identifier']);
 
         return $database;
     }
@@ -197,7 +197,7 @@ final class RPItemDatabasePackageInstallationPlugin extends AbstractXMLPackageIn
     {
         $entryList->setKeys([
             'className' => 'wcf.form.field.className',
-            'databaseName' => 'rp.acp.item.databaseName'
+            'identifier' => 'rp.acp.item.identifier'
         ]);
     }
 }

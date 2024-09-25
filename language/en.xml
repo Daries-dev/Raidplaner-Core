@@ -16,10 +16,10 @@
         </category>
 
         <category name="rp.acp.item">
-            <item name="rp.acp.item.databaseName"><![CDATA[Database Name]]></item>
-            <item name="rp.acp.item.databaseName.description"><![CDATA[The name may only consist of letters and must begin with a lowercase letter.]]></item>
-            <item name="rp.acp.item.databaseName.error.format"><![CDATA[The entered name is invalid.]]></item>
-            <item name="rp.acp.item.databaseName.error.notUnique"><![CDATA[The entered name is already used by another package installation plugin.]]></item>
+            <item name="rp.acp.item.identifier"><![CDATA[Database Name]]></item>
+            <item name="rp.acp.item.identifier.description"><![CDATA[The name may only consist of letters and must begin with a lowercase letter.]]></item>
+            <item name="rp.acp.item.identifier.error.format"><![CDATA[The entered name is invalid.]]></item>
+            <item name="rp.acp.item.identifier.error.notUnique"><![CDATA[The entered name is already used by another package installation plugin.]]></item>
         </category>
 
         <category name="rp.acp.menu">
