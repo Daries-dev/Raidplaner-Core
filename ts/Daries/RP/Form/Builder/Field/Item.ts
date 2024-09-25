@@ -130,7 +130,6 @@ export class Item {
     item.dataset.itemPointAccountId = itemData.pointAccountId.toString();
     item.dataset.itemPointAccountName = itemData.pointAccountName;
     item.dataset.itemPoints = itemData.points.toString();
-    console.log(itemData);
     item.innerHTML = ` ${getPhrase("rp.item.form.field", {
       itemName: itemData.itemName,
       pointAccountName: itemData.pointAccountName,
@@ -177,7 +176,7 @@ export class Item {
    * submitting the form.
    */
   #submit(): void {
-    childrenByTag(this.#itemList, "div").forEach((item: HTMLDivElement, index) => {
+    childrenByTag(this.#itemList, "DIV").forEach((item: HTMLDivElement, index) => {
       const itemAdditional = document.createElement("input");
       itemAdditional.type = "hidden";
       itemAdditional.name = `${this.#formFieldId}[${index}][additionalData]`;

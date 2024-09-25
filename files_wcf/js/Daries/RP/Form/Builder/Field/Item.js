@@ -109,7 +109,6 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSui
             item.dataset.itemPointAccountId = itemData.pointAccountId.toString();
             item.dataset.itemPointAccountName = itemData.pointAccountName;
             item.dataset.itemPoints = itemData.points.toString();
-            console.log(itemData);
             item.innerHTML = ` ${(0, Language_1.getPhrase)("rp.item.form.field", {
                 itemName: itemData.itemName,
                 pointAccountName: itemData.pointAccountName,
@@ -149,7 +148,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSui
          * submitting the form.
          */
         #submit() {
-            (0, Traverse_1.childrenByTag)(this.#itemList, "div").forEach((item, index) => {
+            (0, Traverse_1.childrenByTag)(this.#itemList, "DIV").forEach((item, index) => {
                 const itemAdditional = document.createElement("input");
                 itemAdditional.type = "hidden";
                 itemAdditional.name = `${this.#formFieldId}[${index}][additionalData]`;
