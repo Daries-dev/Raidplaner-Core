@@ -2,6 +2,8 @@
 
 namespace rp\system;
 
+use rp\data\game\Game;
+use rp\data\game\GameCache;
 use rp\page\CalendarPage;
 use rp\system\character\point\CharacterPointHandler;
 use wcf\system\application\AbstractApplication;
@@ -24,9 +26,22 @@ final class RPCore extends AbstractApplication
     protected $abbreviation = 'rp';
 
     /**
+     * game object
+     */
+    protected static Game $gameObj;
+
+    /**
      * @inheritDoc
      */
     protected $primaryController = CalendarPage::class;
+
+    /**
+     * @inheritDoc
+     */
+    public function __run()
+    {
+        $this->initGame();
+    }
 
     /**
      * Returns the character point handler
@@ -34,5 +49,21 @@ final class RPCore extends AbstractApplication
     public function getCharacterPointHandler(): CharacterPointHandler
     {
         return CharacterPointHandler::getInstance();
+    }
+
+    /**
+     * Returns the current game object.
+     */
+    public function getGame(): Game
+    {
+        return self::$gameObj;
+    }
+
+    /**
+     * Initialises the current game.
+     */
+    protected function initGame(): void
+    {
+        self::$gameObj = GameCache::getInstance()->getCurrentGame();
     }
 }

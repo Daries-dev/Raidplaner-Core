@@ -11,5 +11,7 @@
             endpointCharacterPopover: '{link application="rp" controller='CharacterPopover'}{/link}',
             RP_API_URL: '{$__wcf->getPath('rp')}',
         });
+
+        document.body.setAttribute('rp-game', '{$__rp->getGame()->identifier}');
     });
 </script>
