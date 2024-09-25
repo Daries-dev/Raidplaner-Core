@@ -22,17 +22,17 @@ return static function (): void {
     $eventHandler->register(
         \wcf\event\endpoint\ControllerCollecting::class,
         static function (\wcf\event\endpoint\ControllerCollecting $event) {
-            $event->register(new \rp\system\endpoint\controller\rp\attendees\CreateAttendee);
-            $event->register(new \rp\system\endpoint\controller\rp\attendees\DeleteAttendee);
-            $event->register(new \rp\system\endpoint\controller\rp\attendees\RenderAttendee);
-            $event->register(new \rp\system\endpoint\controller\rp\attendees\UpdateAttendeeStatus);
-            $event->register(new \rp\system\endpoint\controller\rp\events\AvailableCharacters);
-            $event->register(new \rp\system\endpoint\controller\rp\events\CancelEvent);
-            $event->register(new \rp\system\endpoint\controller\rp\events\DeleteEvent);
-            $event->register(new \rp\system\endpoint\controller\rp\events\EnableDisableEvent);
-            $event->register(new \rp\system\endpoint\controller\rp\events\RestoreEvent);
-            $event->register(new \rp\system\endpoint\controller\rp\events\TrashEvent);
-            $event->register(new \rp\system\endpoint\controller\rp\items\SearchItem);
+            $event->register(new \wcf\system\endpoint\controller\rp\attendees\CreateAttendee);
+            $event->register(new \wcf\system\endpoint\controller\rp\attendees\DeleteAttendee);
+            $event->register(new \wcf\system\endpoint\controller\rp\attendees\RenderAttendee);
+            $event->register(new \wcf\system\endpoint\controller\rp\attendees\UpdateAttendeeStatus);
+            $event->register(new \wcf\system\endpoint\controller\rp\events\AvailableCharacters);
+            $event->register(new \wcf\system\endpoint\controller\rp\events\CancelEvent);
+            $event->register(new \wcf\system\endpoint\controller\rp\events\DeleteEvent);
+            $event->register(new \wcf\system\endpoint\controller\rp\events\EnableDisableEvent);
+            $event->register(new \wcf\system\endpoint\controller\rp\events\RestoreEvent);
+            $event->register(new \wcf\system\endpoint\controller\rp\events\TrashEvent);
+            $event->register(new \wcf\system\endpoint\controller\rp\items\SearchItem);
         }
     );
 };
