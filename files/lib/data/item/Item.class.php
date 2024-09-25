@@ -119,6 +119,22 @@ final class Item extends DatabaseObject implements IRouteController, ILinkableOb
         return $itemName ?? 'Unknown';
     }
 
+    public function getTooltip(): string
+    {
+        $tooltip = $this->additionalData[WCF::getLanguage()->languageCode]['tooltip'] ?? null;
+
+        if ($tooltip === null) {
+            foreach (LanguageFactory::getInstance()->getLanguages() as $language) {
+                $tooltip = $this->additionalData[$language->languageCode]['tooltip'] ?? null;
+                if ($tooltip !== null) {
+                    return $tooltip;
+                }
+            }
+        }
+
+        return $tooltip ?? '';
+    }
+
     /**
      * @inheritDoc
      */
