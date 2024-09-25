@@ -17,24 +17,24 @@ interface IItemDatabase
      * Return item array, with all information about an item.
      * 
      * The returned array must at least contain the following keys:
-     * - 'content' (string)
      * - 'icon' (string)
      * - 'iconExtension' (string)
      * - 'iconURL' (string)
      * - 'name' (string)
+     * - 'tooltip' (string)
      * 
      * Example structure:
      * $itemData = [
-     *     'content' => '',
      *     'icon' => '',
      *     'iconExtension' => '',
      *     'iconURL' => '',
      *     'name' => '',
+     *     'tooltip' => '',
      * ];
      * 
      * Additional fields may be included in the array, but the above keys are required.
      */
-    public function getItemData(string|int $itemID, ?Language $language = null): ?array;
+    public function getItemData(string|int $itemID, ?Language $language = null, ?string $additionalData = null): ?array;
 
     /**
      * Searches an item id for an item name.

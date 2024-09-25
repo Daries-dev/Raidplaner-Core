@@ -12,12 +12,13 @@ import DomUtil from "WoltLabSuite/Core/Dom/Util";
 import { searchItem } from "../../../Api/Items/SearchItem";
 import { confirmationFactory } from "WoltLabSuite/Core/Component/Confirmation";
 
-class Item {
+export class Item {
   #addButton: HTMLAnchorElement;
   #itemCharacter: HTMLSelectElement;
   #form: HTMLFormElement;
   #formFieldId: string;
-  #itemList: HTMLOListElement;
+  #itemAdditional: HTMLInputElement;
+  #itemList: HTMLDivElement;
   #itemName: HTMLInputElement;
   #itemPointAccount: HTMLSelectElement;
   #itemPoints: HTMLInputElement;
@@ -27,7 +28,7 @@ class Item {
   constructor(formFieldId: string, existingItems: ItemData[]) {
     this.#formFieldId = formFieldId;
 
-    this.#itemList = document.getElementById(`${this.#formFieldId}_itemList`) as HTMLOListElement;
+    this.#itemList = document.getElementById(`${this.#formFieldId}_itemList`) as HTMLDivElement;
     if (this.#itemList === null) {
       throw new Error(`Cannot find item list for items field with id '${this.#formFieldId}'.`);
     }
@@ -35,6 +36,11 @@ class Item {
     this.#itemName = document.getElementById(`${this.#formFieldId}_itemName`) as HTMLInputElement;
     if (this.#itemName === null) {
       throw new Error(`Cannot find item name for items field with id '${this.#formFieldId}'.`);
+    }
+
+    this.#itemAdditional = document.getElementById(`${this.#formFieldId}_additionalData`) as HTMLInputElement;
+    if (this.#itemAdditional === null) {
+      throw new Error(`Cannot find item additional data for items field with id '${this.#formFieldId}'.`);
     }
 
     this.#itemPointAccount = document.getElementById(`${this.#formFieldId}_pointAccount`) as HTMLSelectElement;
@@ -77,7 +83,7 @@ class Item {
       return;
     }
 
-    const response = await searchItem(this.#itemName.value);
+    const response = await searchItem(this.#itemName.value, this.#itemAdditional.value);
     if (!response.ok) {
       const validationError = response.error.getValidationError();
       if (validationError === undefined) {
@@ -87,6 +93,7 @@ class Item {
     }
 
     const item: ItemData = {
+      additionalData: this.#itemAdditional.value,
       characterId: parseInt(this.#itemCharacter.value),
       characterName: this.#itemCharacter.textContent!,
       itemId: response.value.itemID,
@@ -108,12 +115,13 @@ class Item {
   #addItemByData(itemData: ItemData): void {
     // add item to list
     const listItem = document.createElement("li");
+    listItem.dataset.itemAdditional = itemData.additionalData;
+    listItem.dataset.itemCharacterId = itemData.characterId.toString();
+    listItem.dataset.itemCharacterName = itemData.characterName;
     listItem.dataset.itemId = itemData.itemId.toString();
     listItem.dataset.itemName = itemData.itemName;
     listItem.dataset.itemPointAccountId = itemData.pointAccountId.toString();
     listItem.dataset.itemPointAccountName = itemData.pointAccountName;
-    listItem.dataset.itemCharacterId = itemData.characterId.toString();
-    listItem.dataset.itemCharacterName = itemData.characterName;
     listItem.dataset.itemPoints = itemData.points.toString();
     listItem.innerHTML = ` ${getPhrase("rp.item.form.field", {
       itemName: itemData.itemName,
@@ -138,6 +146,7 @@ class Item {
    * Empties the input fields.
    */
   #emptyInput(): void {
+    this.#itemAdditional.value = "";
     this.#itemName.value = "";
     this.#itemPointAccount.options.selectedIndex = 0;
     this.#itemCharacter.options.selectedIndex = 0;
@@ -159,6 +168,24 @@ class Item {
    */
   #submit(): void {
     childrenByTag(this.#itemList, "LI").forEach((listItem, index) => {
+      const itemAdditional = document.createElement("input");
+      itemAdditional.type = "hidden";
+      itemAdditional.name = `${this.#formFieldId}[${index}][additionalData]`;
+      itemAdditional.value = listItem.dataset.itemAdditional!;
+      this.#form.appendChild(itemAdditional);
+
+      const itemCharacterID = document.createElement("input");
+      itemCharacterID.type = "hidden";
+      itemCharacterID.name = `${this.#formFieldId}[${index}][characterID]`;
+      itemCharacterID.value = listItem.dataset.itemCharacterId!;
+      this.#form.appendChild(itemCharacterID);
+
+      const itemCharacterName = document.createElement("input");
+      itemCharacterName.type = "hidden";
+      itemCharacterName.name = `${this.#formFieldId}[${index}][characterName]`;
+      itemCharacterName.value = listItem.dataset.itemCharacterName!;
+      this.#form.appendChild(itemCharacterName);
+
       const itemID = document.createElement("input");
       itemID.type = "hidden";
       itemID.name = `${this.#formFieldId}[${index}][itemID]`;
@@ -182,18 +209,6 @@ class Item {
       itemPointAccountName.name = `${this.#formFieldId}[${index}][pointAccountName]`;
       itemPointAccountName.value = listItem.dataset.itemPointAccountName!;
       this.#form.appendChild(itemPointAccountName);
-
-      const itemCharacterID = document.createElement("input");
-      itemCharacterID.type = "hidden";
-      itemCharacterID.name = `${this.#formFieldId}[${index}][characterID]`;
-      itemCharacterID.value = listItem.dataset.itemCharacterId!;
-      this.#form.appendChild(itemCharacterID);
-
-      const itemCharacterName = document.createElement("input");
-      itemCharacterName.type = "hidden";
-      itemCharacterName.name = `${this.#formFieldId}[${index}][characterName]`;
-      itemCharacterName.value = listItem.dataset.itemCharacterName!;
-      this.#form.appendChild(itemCharacterName);
 
       const itemPoints = document.createElement("input");
       itemPoints.type = "hidden";
@@ -266,9 +281,8 @@ class Item {
   }
 }
 
-export = Item;
-
 interface ItemData {
+  additionalData: string;
   characterId: number;
   characterName: string;
   itemId: number;

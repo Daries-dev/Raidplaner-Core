@@ -2,6 +2,7 @@
 
 namespace rp\data\item;
 
+use rp\util\RPUtil;
 use wcf\data\AbstractDatabaseObjectAction;
 use wcf\system\language\LanguageFactory;
 use wcf\system\WCF;
@@ -39,8 +40,13 @@ class ItemAction extends AbstractDatabaseObjectAction
         $statement = WCF::getDB()->prepare($sql);
         foreach (LanguageFactory::getInstance()->getLanguages() as $language) {
             if (isset($additionalData[$language->languageCode])) {
-                $statement->execute([
+                $itemKey = RPUtil::generateItemUniqueKey(
                     $additionalData[$language->languageCode]['name'],
+                    $additionalData['additionalData'] ?? null
+                );
+
+                $statement->execute([
+                    $itemKey,
                     $item->getObjectID(),
                 ]);
             }

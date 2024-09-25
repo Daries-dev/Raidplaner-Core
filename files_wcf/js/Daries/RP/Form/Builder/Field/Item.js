@@ -8,12 +8,15 @@
 define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSuite/Core/Dom/Traverse", "WoltLabSuite/Core/Dom/Util", "../../../Api/Items/SearchItem", "WoltLabSuite/Core/Component/Confirmation"], function (require, exports, tslib_1, Language_1, Traverse_1, Util_1, SearchItem_1, Confirmation_1) {
     "use strict";
     var _a;
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.Item = void 0;
     Util_1 = tslib_1.__importDefault(Util_1);
     class Item {
         #addButton;
         #itemCharacter;
         #form;
         #formFieldId;
+        #itemAdditional;
         #itemList;
         #itemName;
         #itemPointAccount;
@@ -28,6 +31,10 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSui
             this.#itemName = document.getElementById(`${this.#formFieldId}_itemName`);
             if (this.#itemName === null) {
                 throw new Error(`Cannot find item name for items field with id '${this.#formFieldId}'.`);
+            }
+            this.#itemAdditional = document.getElementById(`${this.#formFieldId}_additionalData`);
+            if (this.#itemAdditional === null) {
+                throw new Error(`Cannot find item additional data for items field with id '${this.#formFieldId}'.`);
             }
             this.#itemPointAccount = document.getElementById(`${this.#formFieldId}_pointAccount`);
             if (this.#itemPointAccount === null) {
@@ -62,7 +69,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSui
             if (!this.#validateInput()) {
                 return;
             }
-            const response = await (0, SearchItem_1.searchItem)(this.#itemName.value);
+            const response = await (0, SearchItem_1.searchItem)(this.#itemName.value, this.#itemAdditional.value);
             if (!response.ok) {
                 const validationError = response.error.getValidationError();
                 if (validationError === undefined) {
@@ -71,6 +78,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSui
                 return;
             }
             const item = {
+                additionalData: this.#itemAdditional.value,
                 characterId: parseInt(this.#itemCharacter.value),
                 characterName: this.#itemCharacter.textContent,
                 itemId: response.value.itemID,
@@ -89,12 +97,13 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSui
         #addItemByData(itemData) {
             // add item to list
             const listItem = document.createElement("li");
+            listItem.dataset.itemAdditional = itemData.additionalData;
+            listItem.dataset.itemCharacterId = itemData.characterId.toString();
+            listItem.dataset.itemCharacterName = itemData.characterName;
             listItem.dataset.itemId = itemData.itemId.toString();
             listItem.dataset.itemName = itemData.itemName;
             listItem.dataset.itemPointAccountId = itemData.pointAccountId.toString();
             listItem.dataset.itemPointAccountName = itemData.pointAccountName;
-            listItem.dataset.itemCharacterId = itemData.characterId.toString();
-            listItem.dataset.itemCharacterName = itemData.characterName;
             listItem.dataset.itemPoints = itemData.points.toString();
             listItem.innerHTML = ` ${(0, Language_1.getPhrase)("rp.item.form.field", {
                 itemName: itemData.itemName,
@@ -116,6 +125,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSui
          * Empties the input fields.
          */
         #emptyInput() {
+            this.#itemAdditional.value = "";
             this.#itemName.value = "";
             this.#itemPointAccount.options.selectedIndex = 0;
             this.#itemCharacter.options.selectedIndex = 0;
@@ -134,6 +144,21 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSui
          */
         #submit() {
             (0, Traverse_1.childrenByTag)(this.#itemList, "LI").forEach((listItem, index) => {
+                const itemAdditional = document.createElement("input");
+                itemAdditional.type = "hidden";
+                itemAdditional.name = `${this.#formFieldId}[${index}][additionalData]`;
+                itemAdditional.value = listItem.dataset.itemAdditional;
+                this.#form.appendChild(itemAdditional);
+                const itemCharacterID = document.createElement("input");
+                itemCharacterID.type = "hidden";
+                itemCharacterID.name = `${this.#formFieldId}[${index}][characterID]`;
+                itemCharacterID.value = listItem.dataset.itemCharacterId;
+                this.#form.appendChild(itemCharacterID);
+                const itemCharacterName = document.createElement("input");
+                itemCharacterName.type = "hidden";
+                itemCharacterName.name = `${this.#formFieldId}[${index}][characterName]`;
+                itemCharacterName.value = listItem.dataset.itemCharacterName;
+                this.#form.appendChild(itemCharacterName);
                 const itemID = document.createElement("input");
                 itemID.type = "hidden";
                 itemID.name = `${this.#formFieldId}[${index}][itemID]`;
@@ -154,16 +179,6 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSui
                 itemPointAccountName.name = `${this.#formFieldId}[${index}][pointAccountName]`;
                 itemPointAccountName.value = listItem.dataset.itemPointAccountName;
                 this.#form.appendChild(itemPointAccountName);
-                const itemCharacterID = document.createElement("input");
-                itemCharacterID.type = "hidden";
-                itemCharacterID.name = `${this.#formFieldId}[${index}][characterID]`;
-                itemCharacterID.value = listItem.dataset.itemCharacterId;
-                this.#form.appendChild(itemCharacterID);
-                const itemCharacterName = document.createElement("input");
-                itemCharacterName.type = "hidden";
-                itemCharacterName.name = `${this.#formFieldId}[${index}][characterName]`;
-                itemCharacterName.value = listItem.dataset.itemCharacterName;
-                this.#form.appendChild(itemCharacterName);
                 const itemPoints = document.createElement("input");
                 itemPoints.type = "hidden";
                 itemPoints.name = `${this.#formFieldId}[${index}][points]`;
@@ -222,6 +237,6 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSui
             return true;
         }
     }
+    exports.Item = Item;
     _a = Item;
-    return Item;
 });

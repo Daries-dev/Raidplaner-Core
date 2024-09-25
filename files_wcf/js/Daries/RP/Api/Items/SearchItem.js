@@ -9,9 +9,10 @@ define(["require", "exports", "WoltLabSuite/Core/Ajax/Backend", "WoltLabSuite/Co
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.searchItem = searchItem;
-    async function searchItem(itemName) {
+    async function searchItem(itemName, additionalData = "") {
         const url = new URL(`${window.WSC_API_URL}index.php?api/rpc/rp/items/search`);
         url.searchParams.set("itemName", itemName);
+        url.searchParams.set("additionalData", additionalData);
         let response;
         try {
             response = (await (0, Backend_1.prepareRequest)(url).get().fetchAsJson());

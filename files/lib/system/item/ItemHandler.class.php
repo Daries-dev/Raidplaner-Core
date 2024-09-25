@@ -7,6 +7,7 @@ use rp\data\item\database\ItemDatabaseList;
 use rp\data\item\Item;
 use rp\data\item\ItemAction;
 use rp\data\item\ItemCache;
+use rp\util\RPUtil;
 use wcf\data\user\User;
 use wcf\system\language\LanguageFactory;
 use wcf\system\session\SessionHandler;
@@ -31,7 +32,7 @@ final class ItemHandler extends SingletonFactory
     /**
      * Returns an item based on the item name
      */
-    final public function getSearchItem(string $itemName = '', int $itemID = 0, bool $refresh = false, array $data = []): Item
+    final public function getSearchItem(string $itemName = '', int $itemID = 0, bool $refresh = false, string $additionalData = ''): Item
     {
         $itemName = StringUtil::trim($itemName);
         if (empty($itemName) && $itemID === 0) {
@@ -41,8 +42,10 @@ final class ItemHandler extends SingletonFactory
         $item = $searchItemID = null;
         if ($itemID) {
             $item = ItemCache::getInstance()->getItemByID($itemID);
+            $additionalData = $item ? $item->additionalData['additionalData'] : "";
         } else {
-            $item = ItemCache::getInstance()->getItemByName($itemName);
+            $itemKey = RPUtil::generateItemUniqueKey($itemName, $additionalData);
+            $item = ItemCache::getInstance()->getItemByName($itemKey);
         }
 
         $searchItemID = $item ? $item->searchItemID : null;
@@ -74,7 +77,8 @@ final class ItemHandler extends SingletonFactory
                         foreach (LanguageFactory::getInstance()->getLanguages() as $language) {
                             $itemData = $parser->getItemData(
                                 $searchItemID,
-                                $language
+                                $language,
+                                $additionalData
                             );
 
                             if (!empty($itemData)) {
@@ -84,6 +88,7 @@ final class ItemHandler extends SingletonFactory
 
                         if (!empty($newItem)) {
                             $newItem['id'] = $searchItemID;
+                            $newItem['additionalData'] = $additionalData;
                         } else {
                             $newItem = null;
                         }

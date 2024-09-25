@@ -314,7 +314,9 @@ return [
 
     DatabaseTable::create('rp1_item_index')
         ->columns([
-            NotNullVarchar191DatabaseTableColumn::create('itemName'),
+            VarcharDatabaseTableColumn::create('itemName')
+            ->length(64)
+            ->notNull(),
             NotNullInt10DatabaseTableColumn::create('itemID'),
         ])
         ->indices([

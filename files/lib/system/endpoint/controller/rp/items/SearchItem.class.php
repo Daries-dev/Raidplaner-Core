@@ -6,6 +6,7 @@ use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use rp\system\item\ItemHandler;
+use rp\util\RPUtil;
 use wcf\http\Helper;
 use wcf\system\endpoint\GetRequest;
 use wcf\system\endpoint\IController;
@@ -25,7 +26,12 @@ final class SearchItem implements IController
     {
         $parameters = Helper::mapApiParameters($request, SearchItemParameters::class);
 
-        $item = ItemHandler::getInstance()->getSearchItem($parameters->itemName);
+        $item = ItemHandler::getInstance()->getSearchItem(
+            $parameters->itemName,
+            0,
+            false,
+            $parameters->additionalData
+        );
 
         return new JsonResponse([
             'itemID' => $item->getObjectID(),
@@ -40,5 +46,7 @@ final class SearchItemParameters
     public function __construct(
         /** @var non-empty-string **/
         public readonly string $itemName,
+
+        public readonly string $additionalData,
     ) {}
 }
