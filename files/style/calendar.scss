@@ -9,42 +9,42 @@
 	padding: 15px;
 }
 
-.rp-calendar-month {
+.rpCalendar__month {
 	color: var(--wcfHeaderText);
 	font-size: var(--wcfFontSizeTitle);
 	font-weight: 600;
 	margin-bottom: 10px;
 }
 
-.rp-calendar-weekdays,
-.rp-calendar-days {
+.rpCalendar__weekdays,
+.rpCalendar__days {
 	display: grid;
 	grid-template-columns: repeat(7, 1fr);
 }
 
-.rp-calendar-weekdays {
+.rpCalendar__weekdays {
 	font-weight: 400;
 }
 
-.rp-calendar-weekday {
+.rpCalendar__weekday {
 	text-align: center;
 }
 
-.rp-calendar-days {
+.rpCalendar__days {
 	margin-top: 10px;
 }
 
-.rp-calendar-day {
+.rpCalendar__day {
 	border: 1px solid var(--wcfContentBorderInner);
 	min-height: 150px;
 	padding: 5px;
 
-	&.rp-calendar-day-empty {
+	&.rpCalendar__day__empty {
 		background-color: var(--wcfButtonDisabledBackground);
 	}
 }
 
-.rp-calendar-event {
+.rpCalendar__event {
 	align-items: center;
 	background-color: var(--rpCalendarEventBackground);
 	border: 1px solid var(--rpCalendarEventBorder);
@@ -59,7 +59,7 @@
 	}
 }
 
-.rp-calender-event-time {
+.rpCalendar__event_time {
 	font-weight: 600;
 	text-transform: uppercase;
 }
