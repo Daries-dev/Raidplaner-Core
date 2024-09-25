@@ -116,7 +116,7 @@ final class Item extends DatabaseObject implements IRouteController, ILinkableOb
             }
         }
 
-        return $itemName ?? '';
+        return $itemName ?? 'Unknown';
     }
 
     /**
