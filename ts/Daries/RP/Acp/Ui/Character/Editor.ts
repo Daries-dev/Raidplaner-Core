@@ -3,7 +3,7 @@
  *
  * @author  Marco Daries
  * @copyright   2023-2024 Daries.dev
- * @license Raidplaner is licensed under Creative Commons Attribution-ShareAlike 4.0 International 
+ * @license Raidplaner is licensed under Creative Commons Attribution-ShareAlike 4.0 International
  */
 
 import { add as addHandler } from "WoltLabSuite/Core/Event/Handler";
@@ -32,9 +32,7 @@ export class AcpUiCharacterEditor {
     const characterIds: number[] = Object.values(actionData.data.parameters.objectIDs);
 
     if (actionData.data.actionName === "dev.daries.rp.character.enable") {
-      await dboAction("enable", "rp\\data\\character\\CharacterAction")
-        .objectIds(characterIds)
-        .dispatch();
+      await dboAction("enable", "rp\\data\\character\\CharacterAction").objectIds(characterIds).dispatch();
 
       Array.from(this.#getCharacterRows(characterIds)).forEach((characterRow) => {
         characterRow.dataset.enabled = "true";
