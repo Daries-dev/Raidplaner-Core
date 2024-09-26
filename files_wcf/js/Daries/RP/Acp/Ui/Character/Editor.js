@@ -25,9 +25,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Event/Handler", "WoltL
         async #clipboardAction(actionData) {
             const characterIds = Object.values(actionData.data.parameters.objectIDs);
             if (actionData.data.actionName === "dev.daries.rp.character.enable") {
-                await (0, Ajax_1.dboAction)("enable", "rp\\data\\character\\CharacterAction")
-                    .objectIds(characterIds)
-                    .dispatch();
+                await (0, Ajax_1.dboAction)("enable", "rp\\data\\character\\CharacterAction").objectIds(characterIds).dispatch();
                 Array.from(this.#getCharacterRows(characterIds)).forEach((characterRow) => {
                     characterRow.dataset.enabled = "true";
                     const characterId = ~~characterRow.dataset.objectId;
