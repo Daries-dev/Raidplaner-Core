@@ -40,17 +40,6 @@ export default [
 		},
 
 		rules: {
-			"@typescript-eslint/ban-types": [
-				"error",
-				{
-					types: {
-						object: false,
-					},
-
-					extendDefaults: true,
-				},
-			],
-
 			"@typescript-eslint/no-explicit-any": 0,
 			"@typescript-eslint/no-non-null-assertion": 0,
 			"@typescript-eslint/no-unsafe-argument": 0,
@@ -71,6 +60,12 @@ export default [
 				"error",
 				{
 					checksVoidReturn: false,
+				},
+			],
+			"@typescript-eslint/prefer-promise-reject-errors": [
+				"error",
+				{
+					allowEmptyReject: true,
 				},
 			],
 		},
