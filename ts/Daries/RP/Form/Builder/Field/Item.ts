@@ -88,7 +88,7 @@ export class Item {
     if (!response.ok) {
       const validationError = response.error.getValidationError();
       if (validationError === undefined) {
-        throw response.error;
+                            throw new Error("Unexpected validation error", { cause: response.error });
       }
       return;
     }
@@ -252,7 +252,7 @@ export class Item {
 
     // check if item has already been added
     const duplicate = childrenByTag(this.#itemList, "div").some((item: HTMLDivElement) => {
-      item.dataset.itemName === itemName && item.dataset.itemCharacterId === this.#itemCharacter.value;
+      return item.dataset.itemName === itemName && item.dataset.itemCharacterId === this.#itemCharacter.value;
     });
 
     if (duplicate) {

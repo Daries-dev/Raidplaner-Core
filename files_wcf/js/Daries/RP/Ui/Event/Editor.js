@@ -26,7 +26,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
                 if (!response.ok) {
                     const validationError = response.error.getValidationError();
                     if (validationError === undefined) {
-                        throw response.error;
+                        throw new Error("Unexpected validation error", { cause: response.error });
                     }
                     (0, Dialog_1.dialogFactory)().fromHtml(`<p>${validationError.message}</p>`).asAlert();
                     return;
@@ -71,7 +71,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
                 if (!response.ok) {
                     const validationError = response.error.getValidationError();
                     if (validationError === undefined) {
-                        throw response.error;
+                        throw new Error("Unexpected validation error", { cause: response.error });
                     }
                     (0, Dialog_1.dialogFactory)().fromHtml(`<p>${validationError.message}</p>`).asAlert();
                     return;
@@ -86,7 +86,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
             if (!response.ok) {
                 const validationError = response.error.getValidationError();
                 if (validationError === undefined) {
-                    throw response.error;
+                    throw new Error("Unexpected validation error", { cause: response.error });
                 }
                 (0, Dialog_1.dialogFactory)().fromHtml(`<p>${validationError.message}</p>`).asAlert();
                 return;
@@ -168,7 +168,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
                 if (!response.ok) {
                     const validationError = response.error.getValidationError();
                     if (validationError === undefined) {
-                        throw response.error;
+                        throw new Error("Unexpected validation error", { cause: response.error });
                     }
                     (0, Dialog_1.dialogFactory)().fromHtml(`<p>${validationError.message}</p>`).asAlert();
                     return;
@@ -190,7 +190,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Core", "WoltLabSuite/C
                 if (!response.ok) {
                     const validationError = response.error.getValidationError();
                     if (validationError === undefined) {
-                        throw response.error;
+                        throw new Error("Unexpected validation error", { cause: response.error });
                     }
                     (0, Dialog_1.dialogFactory)().fromHtml(`<p>${validationError.message}</p>`).asAlert();
                     return;

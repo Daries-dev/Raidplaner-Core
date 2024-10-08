@@ -11,14 +11,16 @@ import { renderAttendee } from "../../../../Api/Attendees/RenderAttendee";
 import DariesRPAttendeeDragAndDropBoxElement from "../../../../Component/Attendee/DragAndDrop/daries-rp-attendee-drag-and-drop-box";
 
 async function addParticipant(button: HTMLElement): Promise<void> {
-  const { ok, result } = await dialogFactory().usingFormBuilder().fromEndpoint<Participant>(button.dataset.addParticipant!);
+  const { ok, result } = await dialogFactory()
+    .usingFormBuilder()
+    .fromEndpoint<Participant>(button.dataset.addParticipant!);
 
   if (ok) {
     const response = await renderAttendee(result.attendeeId);
     if (!response.ok) {
       const validationError = response.error.getValidationError();
       if (validationError === undefined) {
-        throw response.error;
+        throw new Error("Unexpected validation error", { cause: response.error });
       }
       return;
     }

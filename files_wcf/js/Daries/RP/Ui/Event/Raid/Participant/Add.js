@@ -8,13 +8,15 @@ define(["require", "exports", "WoltLabSuite/Core/Component/Dialog", "WoltLabSuit
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.setup = setup;
     async function addParticipant(button) {
-        const { ok, result } = await (0, Dialog_1.dialogFactory)().usingFormBuilder().fromEndpoint(button.dataset.addParticipant);
+        const { ok, result } = await (0, Dialog_1.dialogFactory)()
+            .usingFormBuilder()
+            .fromEndpoint(button.dataset.addParticipant);
         if (ok) {
             const response = await (0, RenderAttendee_1.renderAttendee)(result.attendeeId);
             if (!response.ok) {
                 const validationError = response.error.getValidationError();
                 if (validationError === undefined) {
-                    throw response.error;
+                    throw new Error("Unexpected validation error", { cause: response.error });
                 }
                 return;
             }

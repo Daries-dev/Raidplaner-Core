@@ -37,7 +37,7 @@ export class UiEventEditor {
       if (!response.ok) {
         const validationError = response.error.getValidationError();
         if (validationError === undefined) {
-          throw response.error;
+          throw new Error("Unexpected validation error", { cause: response.error });
         }
         dialogFactory().fromHtml(`<p>${validationError.message}</p>`).asAlert();
         return;
@@ -92,7 +92,7 @@ export class UiEventEditor {
       if (!response.ok) {
         const validationError = response.error.getValidationError();
         if (validationError === undefined) {
-          throw response.error;
+          throw new Error("Unexpected validation error", { cause: response.error });
         }
         dialogFactory().fromHtml(`<p>${validationError.message}</p>`).asAlert();
         return;
@@ -111,7 +111,7 @@ export class UiEventEditor {
     if (!response.ok) {
       const validationError = response.error.getValidationError();
       if (validationError === undefined) {
-        throw response.error;
+        throw new Error("Unexpected validation error", { cause: response.error });
       }
       dialogFactory().fromHtml(`<p>${validationError.message}</p>`).asAlert();
       return;
@@ -206,7 +206,7 @@ export class UiEventEditor {
       if (!response.ok) {
         const validationError = response.error.getValidationError();
         if (validationError === undefined) {
-          throw response.error;
+          throw new Error("Unexpected validation error", { cause: response.error });
         }
         dialogFactory().fromHtml(`<p>${validationError.message}</p>`).asAlert();
         return;
@@ -233,7 +233,7 @@ export class UiEventEditor {
       if (!response.ok) {
         const validationError = response.error.getValidationError();
         if (validationError === undefined) {
-          throw response.error;
+          throw new Error("Unexpected validation error", { cause: response.error });
         }
         dialogFactory().fromHtml(`<p>${validationError.message}</p>`).asAlert();
         return;

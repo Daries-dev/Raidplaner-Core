@@ -73,7 +73,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSui
             if (!response.ok) {
                 const validationError = response.error.getValidationError();
                 if (validationError === undefined) {
-                    throw response.error;
+                    throw new Error("Unexpected validation error", { cause: response.error });
                 }
                 return;
             }
@@ -213,7 +213,7 @@ define(["require", "exports", "tslib", "WoltLabSuite/Core/Language", "WoltLabSui
             }
             // check if item has already been added
             const duplicate = (0, Traverse_1.childrenByTag)(this.#itemList, "div").some((item) => {
-                item.dataset.itemName === itemName && item.dataset.itemCharacterId === this.#itemCharacter.value;
+                return item.dataset.itemName === itemName && item.dataset.itemCharacterId === this.#itemCharacter.value;
             });
             if (duplicate) {
                 Util_1.default.innerError(this.#itemName, (0, Language_1.getPhrase)("rp.item.error.duplicate"));

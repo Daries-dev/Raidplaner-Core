@@ -48,7 +48,7 @@ define(["require", "exports", "tslib", "../../../Ui/Event/Raid/Participant/DragA
             if (!response.ok) {
                 const validationError = response.error.getValidationError();
                 if (validationError === undefined) {
-                    throw response.error;
+                    throw new Error("Unexpected validation error", { cause: response.error });
                 }
                 (0, Dialog_1.dialogFactory)().fromHtml(`<p>${validationError.message}</p>`).asAlert();
                 return;
